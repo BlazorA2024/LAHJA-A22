@@ -1,0 +1,150 @@
+﻿ @using LAHJA.UI.Components.Templates_Subscriptions
+ @using Domain.ShareData
+@using LAHJA.Helpers.Services
+@using LAHJA.UI.Components.Templates_Subscriptions.RepositoryCard
+@using LAHJA.Data.UI.Components.Templates_Subscriptions
+@inject NavigationManager Navigation
+ @inject LanguageService languageService
+@inject IManageLanguageService _manageLanguageService
+@using MudBlazor
+
+@inject ISnackbar Snackbar
+
+
+
+
+
+<div Style="margin-top: 45px;  margin-left: 13px;">
+    
+        
+    
+@foreach (var item in MenuItems)
+{@* 
+        @if (!isNumberDisplayed)
+        {
+            <MudText Style="font-size: 13px; padding: 10px;">
+                @item.Name
+            </MudText>
+            isNumberDisplayed = true; // تحديث الحالة بعد عرض الرقم
+        }
+        *@
+        <MudText Style="font-size: 13px; padding: 10px;">
+            @item.Name
+        </MudText>
+    <!-- رأس البطاقة -->
+       
+        <MudCardHeader Style=" padding: 4px !important; margin: -25px 10px -32px !important;">
+      
+            <MudIcon Color="@item.Color" Icon="@item.Icon"
+                     Style="font-size: 13px !important; "/>
+    
+
+        <MudLink OnClick="() => NavigateToPage(item.Route)" Style="margin:0px !important;">
+            <MudText Style="font-size: 12px;" Class="font-medium hover-text">
+                @item.Label
+            </MudText>
+        </MudLink>
+    </MudCardHeader>
+}
+</div>
+
+@code {
+    private bool isNumberDisplayed = false; // متغير لتتبع إذا كان الرقم قد تم عرضه
+}
+
+
+@* 
+ <MudTreeView T="string" Style="height: 476px; max-height: 476px; overflow-y: auto;">
+    @foreach (var item in MenuItems)
+    {
+        <MudTreeViewItem Value="@item.Label" Icon="@item.Icon" IconColor="@item.Color"
+                         OnClick="() => NavigateToPage(item.Route)"
+                         Class="custom-tree-item">
+        </MudTreeViewItem>
+    }
+</MudTreeView>   *@
+
+@* <MudButton Style="font-size: 12px !important; padding: 4px 8px !important;" Class="font-semibold p-1">
+    <MudIcon Icon="@Icons.Material.Filled.Add"
+             Style="font-size: 12px !important; width: 12px !important; height: 12px !important;"
+             Class="mr-1.5 text-yellow-500" />
+    New
+</MudButton> *@
+
+    @* 
+<MudButton Style="padding: 2px 5px !important;margin: -21px 38px -32px !important;" Variant="Variant.Filled" Class="font-semibold p-1">
+    <MudIcon Icon="@Icons.Material.Filled.Add"
+             Style="font-size: 12px !important; "
+             Class=" text-yellow-500" />
+    New
+</MudButton>
+
+
+
+
+<MudDrawerContainer Style="height: 476px; max-height: 476px; overflow-y: auto;">
+    <MudText Style="font-size: 13px ">
+        735408478mm
+    </MudText>
+     @foreach (var item in MenuItems)
+    {
+
+        <MudLink Class="custom-tree-item" OnClick="() => NavigateToPage(item.Route)">
+            <MudText Style="margin:0px 0px -32px !important; " Class="custom-tree-item ">
+
+                <MudIcon Color="@item.Color" Icon="@item.Icon"
+                     Style="font-size: 12px !important; "
+                         Class=" text-yellow-500" />
+                <MudText Class="font-medium hover-text" Style="font-size: 12px !important;  "> @item.Label</MudText>
+            </MudText>
+
+            </MudLink> 
+
+    }
+</MudDrawerContainer>
+<style>
+    .custom-tree-item {
+        font-size: 12px !important;
+        line-height: 14px !important;
+     
+        display: flex;
+        align-items: center;
+/*          padding: 2px 6px !important;
+ */        padding: 0px 0px 0px 14px !important;
+/*              display:block ;
+ */
+    }
+
+        .custom-tree-item .mud-icon {
+            font-size: 12px !important;
+            width: 12px !important;
+            height: 12px !important;
+        }
+
+</style> *@
+@code {
+    [Parameter] public List<MenuItem> MenuItems { get; set; } = new();
+
+   
+    private void NavigateToPage(string route)
+    {
+        Navigation.NavigateTo(route);
+    }
+    
+}
+@*  <MudItem xs="12" md="2">
+        <MudPaper Elevation="1" Class="p-2">
+            <MudButton Class="font-semibold text-sm p-1">
+                <MudIcon Icon="icons" Class="mr-1.5 text-yellow-500 text-sm" /> New
+            </MudButton>
+            <MudTreeView T="string" Style="height: 476px; max-height: 476px; overflow-y: auto;" >
+                <MudTreeViewItem Value='"735408478mm"' />
+                <MudTreeViewItem Value='"All Mail"' Icon="@Icons.Material.Filled.Email" />
+                <MudTreeViewItem Value='"Drafts"' Icon="@Icons.Material.Filled.Drafts" />
+                <MudTreeViewItem Value='"Orders"' Icon="@Icons.Material.Filled.Label" IconColor="Color.Secondary" />
+
+
+                <MudTreeViewItem Value='"Trash"' Icon="@Icons.Material.Filled.Delete" />
+            </MudTreeView>
+        </MudPaper>
+    </MudItem> *@

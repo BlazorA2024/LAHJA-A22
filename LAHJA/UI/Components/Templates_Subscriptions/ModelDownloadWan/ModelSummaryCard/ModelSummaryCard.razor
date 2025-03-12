@@ -1,0 +1,35 @@
+﻿@using LAHJA.Data.UI.Components.Templates_Subscriptions
+@using LAHJA.UI.Components.Templates_Subscriptions.ModelDownloadWan.ModelDynamicCard
+@using LAHJA.UI.Components.Templates_Subscriptions.ModelDownloadWan.ModelSummaryCard
+
+@code {
+    // [Parameter] public string Title { get; set; } = "Model Summary";
+    [Parameter] public string Try { get; set; } 
+
+    // [Parameter] public string Description { get; set; } = string.Empty;
+    [Parameter] public Dictionary<string, List<string>> Languages { get; set; } = new();
+    [Parameter] public Dictionary<string, string> Links { get; set; } = new();
+    [Parameter] public List<List<DownloadCountStat> > DownloadStats { get; set; } = new();
+
+    [Parameter] public List<DownloadCountStat> ModelStats { get; set; } = new();
+ 
+
+ 
+}
+
+<MudPaper Elevation="0" Class="p-4">
+    <ModelTitle ModelStats="@ModelStats" />
+ <ModelLanguages Languages="@Languages" />
+    <ModelLinks Links="@Links" />
+    @foreach (var don in DownloadStats)
+    {
+        <ModelDownloads Try="@Try" DownloadStats="@don" />
+    }
+
+
+
+</MudPaper>
+@*  2   <ModelDescription Description="@Description" />
+        <ModelDownloads Try="📱 Huggingface Spaces" DownloadStats="@DownloadStatistics1" />
+
+ *@ 

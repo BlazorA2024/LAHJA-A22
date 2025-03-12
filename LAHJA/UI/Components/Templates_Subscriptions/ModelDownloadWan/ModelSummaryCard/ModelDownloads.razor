@@ -1,0 +1,91 @@
+﻿@inject NavigationManager Navigation
+
+@using LAHJA.Data.UI.Components.Templates_Subscriptions
+@code {
+    [Parameter] public List<DownloadCountStat> DownloadStats { get; set; } = new();
+
+    [Parameter] public string Try { get; set; } 
+    private void NavigateToPage(string route)
+    {
+        Navigation.NavigateTo(route);
+    }
+
+}
+@* @foreach (var item in DownloadStats)
+            { <!-- أماكن التجربة -->
+    <MudTypography Variant="Body1">
+        @item.Name
+        <MudLink Href="@item.Url" Target="_blank">@item.Title</MudLink>,
+        <MudLink Href="https://github.com/marketplace/models/azureml/Phi-4-multimodal-instruct/playground" Target="_blank">@item.GitHub</MudLink>,
+        <MudLink Href="https://aka.ms/phi-4-multimodal/nvidia" Target="_blank">@item.Nvid</MudLink>,
+        <MudLink Href="https://huggingface.co/spaces/microsoft/phi-4-multimodal" Target="_blank">@item.Description</MudLink> playgrounds.
+    </MudTypography><br />
+            }
+ *@
+
+ @* <MudTypography Variant="Body1">
+    @if (!string.IsNullOrEmpty(Try))
+    {
+        <strong>@Try</strong>
+    }
+    @foreach (var link in DownloadStats)
+    {
+   
+        <MudLink Href="@link.Url" Target="_blank">@link.Name</MudLink> 
+        @if (link != DownloadStats.Last())
+        {
+            <text>, </text>
+        }
+    }
+    playgrounds
+
+</MudTypography><br /> *@
+
+<MudTypography Variant="Body1">
+  
+    @foreach (var item in DownloadStats)
+    {
+        <strong>@item.Name</strong>
+
+        <MudLink OnClick="() => NavigateToPage(item.Url)" Target="_blank">@item.Link</MudLink>
+        @if (item != DownloadStats.Last())
+        {
+            <text>, </text>
+        }
+        @item.Description
+    }
+    
+
+</MudTypography><br />
+@* <MudTypography Variant="Body1">
+    @if (!string.IsNullOrEmpty(Try))
+    {
+        <strong>@Try</strong>
+    }
+    @foreach (var item in DownloadStats)
+    {
+
+        <MudLink OnClick="() => NavigateToPage(item.Url)" Target="_blank">@item.Name</MudLink>
+        @if (item != DownloadStats.Last())
+        {
+            <text>, </text>
+        }
+        @item.Description
+    }
+    
+
+</MudTypography><br /> *@
+@* 
+<MudTable Items="DownloadStats" Striped="true" Hover="true">
+    <HeaderContent>
+        <MudTh>Name</MudTh>
+        <MudTh>Downloads</MudTh>
+        <MudTh>Link</MudTh>
+    </HeaderContent>
+    <RowTemplate Context="stat">
+        <MudTd>@stat.Name</MudTd>
+        <MudTd>@stat.DownloadCount</MudTd>
+        <MudTd><MudLink Href="@stat.Url" Target="_blank">Download</MudLink></MudTd>
+    </RowTemplate>
+</MudTable>
+ *@

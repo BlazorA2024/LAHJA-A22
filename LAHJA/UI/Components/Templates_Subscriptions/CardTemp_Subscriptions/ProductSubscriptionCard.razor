@@ -1,0 +1,362 @@
+﻿@using LAHJA.Data.UI.Components.Templates_Subscriptions
+@using MudBlazor
+@using LAHJA.UI.Components.Templates_Subscriptions
+ @using Domain.ShareData
+@using LAHJA.Helpers.Services
+@using LAHJA.UI.Components.Templates_Subscriptions.CardTemp_Subscriptions
+@inject IDialogService DialogService
+@inject NavigationManager Navigation
+@inject LanguageService languageService
+@inject IManageLanguageService _manageLanguageService
+
+<style>
+    .table-header, .product-row {
+        width: 100%;
+        text-align: center;
+        margin: 0px !important;
+    }
+
+    .product-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0px 0;
+    }
+
+    .full-width {
+        width: 100%;
+    }
+</style>
+
+<MudPaper Class="pa-3">
+    <MudText Typo="Typo.h6" Class="px-4">@GetTranslation("Pricing")</MudText>
+    <MudDivider />
+
+    <MudPaper Width="100%" Style="overflow: auto;" Square="true">
+        <!-- ترويسة الجدول -->
+        <MudGrid Class="table-header full-width" Style="padding: 0px 0; ">
+            <MudItem xs="3"><MudText Typo="Typo.body2" Class="mud-text-secondary">@GetTranslation("Product")</MudText></MudItem>
+            <MudItem xs="3"><MudText Typo="Typo.body2" Class="mud-text-secondary">@GetTranslation("SubscriptionItemId")</MudText></MudItem>
+            <MudItem xs="2"><MudText Typo="Typo.body2" Class="mud-text-secondary">@GetTranslation("Qty")</MudText></MudItem>
+            <MudItem xs="4"><MudText Typo="Typo.body2" Class="mud-text-secondary">@GetTranslation("Total")</MudText></MudItem>
+        </MudGrid>
+        <MudDivider />
+
+        <!-- عرض البيانات -->
+        @foreach (var subscriptionItem in SubscriptionItems)
+        {
+            <MudGrid Class="product-row full-width">
+                <MudItem xs="3">
+                    <MudText Typo="Typo.body2" Class="mud-text-secondary">@subscriptionItem.ProductName</MudText>
+                    <MudText Typo="Typo.caption" Class="mud-text-secondary">@subscriptionItem.Price</MudText>
+                </MudItem>
+
+                <MudItem xs="3">
+                     <MudText>
+                    <MudButton Color="Color.Secondary" Class="text-gray text-mono " Style="font-size: 11px;">
+                        <MudIcon Icon="@Icons.Material.Outlined.ContentCopy" Class="mr-2"></MudIcon>
+                        @subscriptionItem.SubscriptionId
+                    </MudButton>
+                    </MudText>
+                </MudItem>
+
+                <MudItem xs="2">
+                    <MudText Typo="Typo.body2" Class="mud-text-secondary">@subscriptionItem.Quantity</MudText>
+                </MudItem>
+
+                <MudItem xs="4" Class="d-flex align-center justify-space-between">
+                  @*   <MudText style="padding-left: 42%;" Typo="Typo.body2" Class="mud-text-secondary"> *@
+                    <MudText Style="padding-left: 42%;" Typo="Typo.caption" Class="mud-text-secondary">  @subscriptionItem.TotalPrice</MudText>
+                   <MudText Typo="Typo.caption" Class="mud-text-secondary">
+                    <MudMenu Icon="@Icons.Material.Filled.MoreHoriz" AriaLabel="Open options">
+                        <MudMenuItem>Profile</MudMenuItem>
+                        <MudMenuItem Color="Color.Primary">My account</MudMenuItem>
+                        <MudDivider />
+                        <MudMenuItem>Logout</MudMenuItem>
+                    </MudMenu>
+                    </MudText>
+                </MudItem>
+            </MudGrid>
+            <MudDivider />
+        }
+    </MudPaper>
+</MudPaper>
+
+@code {
+    [Parameter] public List<PricingItem> SubscriptionItems { get; set; } = new();
+    [Parameter] public string CurrentLanguage { get; set; } = "en";
+
+    private Dictionary<string, string> TransEn = new()
+    {
+        { "Pricing", "Pricing" },
+        { "Product", "PRODUCT" },
+        { "SubscriptionItemId", "SUBSCRIPTION ITEM ID" },
+        { "Qty", "QTY" },
+        { "Total", "TOTAL" },
+    };
+
+    private Dictionary<string, string> TransAr = new()
+    {
+        { "Pricing", "التسعير" },
+        { "Product", "المنتج" },
+        { "SubscriptionItemId", "معرف الاشتراك" },
+        { "Qty", "الكمية" },
+        { "Total", "المجموع" },
+    };
+
+    private string GetTranslation(string key)
+    {
+        return CurrentLanguage == "ar" ? TransAr.GetValueOrDefault(key, key) : TransEn.GetValueOrDefault(key, key);
+    }
+
+
+   
+}
+@* 
+@code {
+    [Parameter] public List<PricingItem> SubscriptionItems { get; set; } = new();
+
+     private string CurrentLanguage = "en"; // اللغة الافتراضية هي الإنجليزية
+
+    // القواميس للترجمات
+    private Dictionary<string, string> TransEn = new Dictionary<string, string>()
+    {
+        { "Pricing", "Pricing" },
+        { "Product", "Product" },
+        { "SubscriptionItemId", "Subscription Item ID" },
+        { "Qty", "QTY" },
+        { "Total", "TOTAL" },
+    };
+
+    private Dictionary<string, string> TransAr = new Dictionary<string, string>()
+    {
+        { "Pricing", "التسعير" },
+        { "Product", "المنتج" },
+        { "SubscriptionItemId", "معرف الاشتراك" },
+        { "Qty", "الكمية" },
+        { "TOTAL", "المجموع" },
+    };
+
+    // دالة للحصول على الترجمة بناءً على اللغة الحالية
+    private string GetTranslation(string key)
+    {
+        return CurrentLanguage == "ar"
+            ? TransAr.GetValueOrDefault(key, key)
+            : TransEn.GetValueOrDefault(key, key);
+    }
+
+    // دالة لتغيير اللغة
+    // private void ChangeLanguage(string language)
+    // {
+    //     if (language != "ar" && language != "en") return; // السماح فقط بـ "ar" أو "en"
+    //     CurrentLanguage = language;
+    //     StateHasChanged(); // تحديث الواجهة
+    // }
+    private void ChangeLanguage(string language)
+    {
+        if (language != "ar" && language != "en") language = "ar"; // السماح فقط بـ "ar" أو "en"
+        CurrentLanguage = language;
+         // إعادة تحميل البيانات بالترجمة الجديدة
+        InvokeAsync(StateHasChanged); // تحديث الواجهة
+    }
+
+}
+
+<MudPaper Class="pa-3">
+    <MudText Typo="Typo.h6" Class="px-4">@GetTranslation("Pricing")</MudText>
+    <MudDivider />
+
+    <MudPaper Width="100%" Class="py-3">
+        <MudGrid JustifyContent="SpaceBetween" Class="MudGrid">
+
+            <!-- تكرار العناصر في القائمة ديناميكيًا -->
+            @foreach (var subscriptionItem in SubscriptionItems)
+            {
+                <MudItem Class="Item_">
+                    <MudStack Spacing="2">
+                        <MudText Typo="Typo.body2" Class="mud-text-secondary">@GetTranslation("Product")</MudText>
+                        <MudDivider Class="MudDivider" style="" />
+                        <MudText Typo="Typo.body2" style="font-size: 11px;">
+                            @subscriptionItem.ProductName
+                        </MudText>
+                        <MudText Typo="Typo.body2" style="font-size: 11px;">@subscriptionItem.Price</MudText>
+                    </MudStack>
+                </MudItem>
+
+                <MudItem Class="Item_">
+                    <MudStack Spacing="2">
+                        <MudText Typo="Typo.body2" Class="mud-text-secondary">@GetTranslation("SubscriptionItemId")</MudText>
+                        <MudButton Color="Color.Secondary" StartIcon="@Icons.Material.Outlined.ContentCopy" style="font-family: Menlo, Consolas, monospace; font-size: 12px;">
+                            @subscriptionItem.SubscriptionId
+                        </MudButton>
+                    </MudStack>
+                </MudItem>
+
+                <MudItem Class="Item_">
+                    <MudStack Spacing="2">
+                        <MudText Typo="Typo.body2" Class="mud-text-secondary">@GetTranslation("Qty")</MudText>
+                        <MudText Typo="Typo.body2">@subscriptionItem.Quantity</MudText>
+                    </MudStack>
+                </MudItem>
+
+                <MudItem Class="Item_">
+                    <MudStack Spacing="2">
+                        <MudText Typo="Typo.body2" Class="mud-text-secondary">@GetTranslation("TOTAL")</MudText>
+                        <MudText Typo="Typo.body2" Class="mud-text-secondary" style="font-size: 11px;">
+                            @subscriptionItem.TotalPrice
+                            <MudMenu Icon="@Icons.Material.Filled.MoreHoriz" AriaLabel="Open  user menu">
+                                <MudMenuItem>Profile</MudMenuItem>
+                                <MudMenuItem Color="Color.Primary">My account</MudMenuItem>
+                                <MudDivider />
+                                <MudMenuItem>Logout</MudMenuItem>
+                            </MudMenu>
+                        </MudText>
+                    </MudStack>
+                </MudItem>
+
+            }
+        </MudGrid>
+    </MudPaper>
+
+</MudPaper>
+ *@
+@*  <style>
+    .customwcontainer {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px; /* تقليل المسافة لتكون متناسقة */
+    }
+
+    .MudGrid {
+        gap: 214px;
+    }
+
+    .MudDivider {
+        width: 440%;
+    }
+</style>  *@
+@* <MudPaper Class="pa-3">
+    <MudText Typo="Typo.h6" Class="px-4">Pricing</MudText>
+    <MudDivider />
+
+
+<MudPaper Width="100%" Class="py-3">
+    <MudGrid JustifyContent="SpaceBetween" class="MudGrid" Style="">
+
+        <!-- العمود الأول -->
+        <MudItem>
+            <MudStack Spacing="2">
+                <MudText Typo="Typo.body2" Class="mud-text-secondary">PRODUCT</MudText>
+                <MudDivider class="MudDivider" style="" />
+                <MudText Typo="Typo.body2">
+                    Professional • price_1QldGsB7xaGIYuCbCp59S5DF
+                </MudText>
+                <MudText Typo="Typo.body2">$250.00 USD / month</MudText>
+            </MudStack>
+        </MudItem>
+
+        <!-- العمود الثاني -->
+        <MudItem>
+            <MudStack Spacing="2">
+                <MudText Typo="Typo.body2" Class="mud-text-secondary">SUBSCRIPTION ITEM ID</MudText>
+                 <MudButton Color="Color.Secondary" StartIcon="@Icons.Material.Outlined.ContentCopy" style=" font-family: Menlo, Consolas, monospace;   font-size: 12px;">
+                         @SubscriptionId
+                 </MudButton>
+            </MudStack>
+        </MudItem>
+
+        <!-- العمود الثالث -->
+        <MudItem>
+            <MudStack Spacing="2">
+                <MudText Typo="Typo.body2" Class="mud-text-secondary">QTY</MudText>
+                <MudText Typo="Typo.body2" Class="mud-text-secondary">1</MudText>
+            </MudStack>
+        </MudItem>
+
+        <!-- العمود الرابع -->
+        <MudItem>
+            <MudStack Spacing="2">
+                <MudText Typo="Typo.body2" Class="mud-text-secondary">TOTAL</MudText>
+                <MudText Typo="Typo.body2" Class="mud-text-secondary">$250.00 USD / month
+                       <MudMenu Icon="@Icons.Material.Filled.MoreVert" AriaLabel="Open user menu">
+
+                            <MudMenuItem> Profile </MudMenuItem>
+                            <MudMenuItem Color="Color.Primary">My account</MudMenuItem>
+                            <MudDivider  />
+                            <MudMenuItem>Logout</MudMenuItem>
+                            <MudMenuItem Color="Color.Primary">My account</MudMenuItem>
+                            <MudMenuItem Color="Color.Primary">My account</MudMenuItem>
+
+                        </MudMenu>
+                        <MainPage />
+
+        </MudText>
+            </MudStack>
+        </MudItem>
+
+    </MudGrid>
+     </MudPaper>
+</MudPaper> *@
+@* 
+@code {
+    [Parameter] public List<PricingItem> SubscriptionItems { get; set; } = new();
+}
+
+<MudPaper Class="pa-3">
+    <MudText Typo="Typo.h6" Class="px-4">Pricing</MudText>
+    <MudDivider />
+
+    <MudPaper Width="100%" Class="py-3">
+        <MudGrid JustifyContent="SpaceBetween" class="MudGrid">
+
+            <!-- تكرار العناصر في القائمة ديناميكيًا -->
+            @foreach (var subscriptionItem in SubscriptionItems)
+            {
+                <MudItem>
+                    <MudStack Spacing="2">
+                        <MudText Typo="Typo.body2" Class="mud-text-secondary">PRODUCT</MudText>
+                        <MudDivider class="MudDivider" style="" />
+                        <MudText Typo="Typo.body2">
+                            @subscriptionItem.ProductName
+                        </MudText>
+                        <MudText Typo="Typo.body2">@subscriptionItem.Price</MudText>
+                    </MudStack>
+                </MudItem>
+
+                <MudItem>
+                    <MudStack Spacing="2">
+                        <MudText Typo="Typo.body2" Class="mud-text-secondary">SUBSCRIPTION ITEM ID</MudText>
+                        <MudButton Color="Color.Secondary" StartIcon="@Icons.Material.Outlined.ContentCopy" style="font-family: Menlo, Consolas, monospace; font-size: 12px;">
+                            @subscriptionItem.SubscriptionId
+                        </MudButton>
+                    </MudStack>
+                </MudItem>
+
+                <MudItem>
+                    <MudStack Spacing="2">
+                        <MudText Typo="Typo.body2" Class="mud-text-secondary">QTY</MudText>
+                        <MudText Typo="Typo.body2">@subscriptionItem.Quantity</MudText>
+                    </MudStack>
+                </MudItem>
+
+                <MudItem>
+                    <MudStack Spacing="2">
+                        <MudText Typo="Typo.body2" Class="mud-text-secondary">TOTAL</MudText>
+                        <MudText Typo="Typo.body2" Class="mud-text-secondary" >
+                            @subscriptionItem.TotalPrice
+                            <MudMenu Icon="@Icons.Material.Filled.MoreHoriz" AriaLabel="Open user menu">
+                                <MudMenuItem>Profile</MudMenuItem>
+                                <MudMenuItem Color="Color.Primary">My account</MudMenuItem>
+                                <MudDivider />
+                                <MudMenuItem>Logout</MudMenuItem>
+                            </MudMenu>
+                        </MudText>
+                       
+                    </MudStack>
+                </MudItem>
+
+            }
+        </MudGrid>
+    </MudPaper>
+</MudPaper>
+ *@

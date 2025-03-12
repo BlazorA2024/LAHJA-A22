@@ -1,0 +1,84 @@
+﻿<h3>AnimeEpisodesTemplate</h3>
+
+@* <MudContainer>
+    <h3 class="text-center" style="color: #1976d2; margin-bottom: 20px;">📺 أحدث الحلقات</h3>
+    
+    <MudGrid Spacing="3">
+        @foreach (var episode in Episodes)
+        {
+            <MudItem xs="12" sm="6" md="4" lg="3">
+                <MudCard Class="hover-card">
+                    <MudImage Src="@episode.ImageUrl" Width="100%" Height="180px" Alt="@episode.AnimeTitle" Elevation="25" Class="rounded-lg ma-4"/>
+
+                    <MudCardContent>
+                        <p style="font-size: 1.2rem; font-weight: bold; color: #1976d2; margin: 0;">
+                            <MudLink Href="@episode.EpisodeUrl" Target="_blank">@episode.EpisodeTitle</MudLink>
+                        </p>
+                        <p style="font-size: 1rem; color: #616161; margin: 0;">
+                            <MudTooltip Text="شاهد المزيد عن هذا الأنمي">
+                                <MudLink Href="@episode.AnimeUrl" Target="_blank">@episode.AnimeTitle</MudLink>
+                            </MudTooltip>
+                        </p>
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+        }
+    </MudGrid>
+</MudContainer> *@
+<MudPaper>
+    <MudGrid Spacing="3">
+
+     @foreach (var episode in Episodes)
+        {
+             <MudItem xs="12" sm="6" md="4" lg="3">
+         <MudCard  Class="hover-card">
+    <MudImage Image="@episode.ImageUrl"Width="200" Height="150" Alt="Swedish Farm House" Elevation="25" Class="rounded-lg ma-4"/>
+
+
+    <MudCardActions>
+          <p style="font-size: 1.2rem; font-weight: bold; color: #1976d2; margin: 0;">
+                            <MudLink Href="@episode.EpisodeUrl" Target="_blank">@episode.EpisodeTitle</MudLink>
+                        </p>
+         <p style="font-size: 1rem; color: #616161; margin: 0;">
+                            <MudTooltip Text="شاهد المزيد عن هذا الأنمي">
+                                <MudLink Href="@episode.AnimeUrl" Target="_blank">@episode.AnimeTitle</MudLink>
+                            </MudTooltip>
+                        </p>
+    </MudCardActions>
+            </MudCard>
+            </MudItem>
+        }
+           
+
+</MudGrid>
+</MudPaper>
+@code {
+    private List<Episode> Episodes = new()
+    {
+        new Episode
+        {
+            EpisodeTitle = "الحلقة 8",
+            AnimeTitle = "Zenshuu",
+            EpisodeUrl = "https://ww3.animeluxe.org/episodes/zenshuu-الحلقة-8/",
+            AnimeUrl = "https://ww3.animeluxe.org/anime/zenshuu/",
+            ImageUrl = "https://ww3.animeluxe.org/wp-content/uploads/2025/01/2LzU3mCo3OwKNMprRNcHPcN9Tfa-500x281.jpg"
+        },
+        new Episode
+        {
+            EpisodeTitle = "الحلقة 7",
+            AnimeTitle = "Sentai Red Isekai Naru",
+            EpisodeUrl = "https://ww3.animeluxe.org/episodes/sentai-red-isekai-de-boukensha-ni-naru-الحلقة-7/",
+            AnimeUrl = "https://ww3.animeluxe.org/anime/sentai-red-isekai-de-boukensha-ni-naru/",
+            ImageUrl = "https://ww3.animeluxe.org/wp-content/uploads/2025/01/wWv4YVdsK17NbMTicoubbwOmi7i-500x281.jpg"
+        }
+    };
+
+    public class Episode
+    {
+        public string EpisodeTitle { get; set; }
+        public string AnimeTitle { get; set; }
+        public string EpisodeUrl { get; set; }
+        public string AnimeUrl { get; set; }
+        public string ImageUrl { get; set; }
+    }
+}

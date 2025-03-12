@@ -1,0 +1,230 @@
+﻿@inject NavigationManager Navigation
+@using LAHJA.Data.UI.Components.Templates_Subscriptions
+@using Domain.ShareData
+@using LAHJA.Helpers.Services
+@using LAHJA.UI.Components.ProFile.Settings
+@using MudBlazor
+@using LAHJA.UI.Components.Templates_Subscriptions.CardTemp_Subscriptions
+
+@inject IManageLanguageService _manageLanguageService
+@inject LanguageService languageService
+@* 
+<!-- ✅ قائمة الخوادم مع دعم تغيير اللغة -->
+<MudPaper Elevation="4" Class="p-4">
+    <MudGrid>
+        <!-- ✅ العنوان والوصف -->
+        <MudItem xs="12" md="4">
+            <MudText>
+                <strong>@GetTranslation("NowWatching") <b>8</b>.</strong>
+            </MudText>
+            <MudText>
+                @GetTranslation("TryOtherServers")
+            </MudText>
+        </MudItem>
+
+        <!-- ✅ أيقونة الترجمة -->
+        <MudItem xs="0" md="0">
+            <MudText Class="mb-2">
+                <MudIcon Icon="@Icons.Material.Filled.ClosedCaption" Color="Color.Tertiary" /> مترجم
+            </MudText>
+        </MudItem>
+
+        <!-- ✅ قائمة الخوادم -->
+        <MudItem xs="12" md="6">
+            <MudGrid>
+                <MudItem xs="12">
+                    <MudGrid Spacing="2">
+                        @foreach (var server in Servers)
+                        {
+                            <MudChip T="string" Href="@server.Url" Target="_blank" Variant="Variant.Filled" Icon="@Icons.Material.Filled.PlayArrow">
+                                @server.Name
+                            </MudChip>
+                        }
+                    </MudGrid>
+                </MudItem>
+            </MudGrid>
+        </MudItem>
+    </MudGrid>
+</MudPaper>
+
+@code {
+    private List<Server> Servers = new()
+    {
+        new Server("Videa", "https://example.com/videa"),
+        new Server("Mega", "https://example.com/mega"),
+        new Server("Google", "https://example.com/google"),
+        new Server("YourUpload", "https://example.com/yourupload"),
+        new Server("MP4Upload", "https://example.com/mp4upload")
+    };
+
+    private string CurrentLanguage = "en"; // اللغة الافتراضية هي الإنجليزية
+
+    // القواميس للترجمات
+    private Dictionary<string, string> TransEn = new Dictionary<string, string>()
+    {
+        { "NowWatching", "You are watching Episode" },
+        { "TryOtherServers", "If the current server does not work, try other available servers." }
+    };
+
+    private Dictionary<string, string> TransAr = new Dictionary<string, string>()
+    {
+        { "NowWatching", "أنت تشاهد الحلقة" },
+        { "TryOtherServers", "إذا لم يعمل الخادم الحالي، يرجى تجربة الخوادم الأخرى المتاحة." }
+    };
+
+    private string GetTranslation(string key)
+    {
+        return CurrentLanguage == "ar"
+            ? TransAr.GetValueOrDefault(key, key)
+            : TransEn.GetValueOrDefault(key, key);
+    }
+
+    protected override void OnInitialized()
+    {
+        languageService.OnLanguageChanged += ChangeLanguage;
+    }
+
+    protected override async void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            CurrentLanguage = await _manageLanguageService.GetLanguageAsync();
+            InvokeAsync(StateHasChanged);
+        }
+    }
+
+    private void ChangeLanguage(string language)
+    {
+        if (language != "ar" && language != "en") language = "ar"; // السماح فقط بـ "ar" أو "en"
+        CurrentLanguage = language;
+        InvokeAsync(StateHasChanged);
+    }
+
+    // كلاس نموذج للخادم
+    private class Server
+    {
+        public string Name { get; }
+        public string Url { get; }
+
+        public Server(string name, string url)
+        {
+            Name = name;
+            Url = url;
+        }
+    }
+}
+ *@
+ <MudPaper Elevation="4" Class="p-4">
+    <MudGrid>
+        <!-- ✅ العنوان والوصف -->
+        <MudItem xs="12" md="4">
+            <MudText>
+                <strong>@GetTranslation("NowWatching") <b>8</b>.</strong>
+            </MudText>
+            <MudText>
+                @GetTranslation("TryOtherServers")
+            </MudText>
+        </MudItem>
+        
+        <!-- ✅ أيقونة الترجمة -->
+        <MudItem xs="0" md="0">
+            <MudText Class="mb-2">
+                <MudIcon Icon="@Icons.Material.Filled.ClosedCaption" Color="Color.Tertiary" />                 @GetTranslation("InterpreterServers")
+
+            </MudText>
+        </MudItem>
+
+        <!-- ✅ قائمة الخوادم -->
+        <MudItem xs="12" md="6">
+            <MudGrid>
+                <MudItem xs="12">
+                    <MudGrid Spacing="2">
+                        @foreach (var server in Servers)
+                        {
+                            <MudChip T="string" Href="@server.Url" Target="_blank" Variant="Variant.Filled" Icon="@Icons.Material.Filled.PlayArrow">
+                                @server.Name
+                            </MudChip>
+                        }
+                    </MudGrid>
+                </MudItem>
+            </MudGrid>
+        </MudItem>
+    </MudGrid>
+</MudPaper>
+
+@code {
+    private List<Server> Servers = new();
+
+    private string CurrentLanguage = "en"; // اللغة الافتراضية هي الإنجليزية
+
+    // ✅ إضافة أسماء السيرفرات للترجمة
+    private Dictionary<string, string> TransEn = new()
+    {
+        { "NowWatching", "You are watching Episode" },
+        { "InterpreterServers", "interpreter" },
+        { "TryOtherServers", "If the current server does not work, try other available servers." },
+        { "Videa", "Videa" },
+        { "Mega", "Mega" },
+        { "Google", "Google Drive" },
+        { "YourUpload", "YourUpload" },
+        { "MP4Upload", "MP4Upload" }
+    };
+    
+    private Dictionary<string, string> TransAr = new()
+    {
+        { "NowWatching", "أنت تشاهد الحلقة" },
+        { "InterpreterServers", "مترجم" },
+        { "TryOtherServers", "إذا لم يعمل الخادم الحالي، يرجى تجربة الخوادم الأخرى المتاحة." },
+        { "Videa", "ڤيديا" },
+        { "Mega", "ميجا" },
+        { "Google", "جوجل درايف" },
+        { "YourUpload", "يور أبلود" },
+        { "MP4Upload", "إم بي فور أبلود" }
+    };
+
+    private string GetTranslation(string key)
+    {
+        return CurrentLanguage == "ar"
+            ? TransAr.GetValueOrDefault(key, key)
+            : TransEn.GetValueOrDefault(key, key);
+    }
+
+    // ✅ تحميل قائمة السيرفرات بناءً على اللغة المختارة
+    private void LoadServers()
+    {
+        Servers = new()
+        {
+            new Server(GetTranslation("Videa"), "https://example.com/videa"),
+            new Server(GetTranslation("Mega"), "https://example.com/mega"),
+            new Server(GetTranslation("Google"), "https://example.com/google"),
+            new Server(GetTranslation("YourUpload"), "https://example.com/yourupload"),
+            new Server(GetTranslation("MP4Upload"), "https://example.com/mp4upload")
+        };
+    }
+
+    protected override void OnInitialized()
+    {
+        languageService.OnLanguageChanged += ChangeLanguage;
+    }
+
+    protected override async void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            CurrentLanguage = await _manageLanguageService.GetLanguageAsync();
+            LoadServers(); // تحميل السيرفرات بلغتها المناسبة
+            InvokeAsync(StateHasChanged);
+        }
+    }
+
+    private void ChangeLanguage(string language)
+    {
+        if (language != "ar" && language != "en") language = "ar"; // السماح فقط بـ "ar" أو "en"
+        CurrentLanguage = language;
+        LoadServers(); // إعادة تحميل السيرفرات بعد تغيير اللغة
+        InvokeAsync(StateHasChanged);
+    }
+
+    // ✅ كلاس نموذج للسيرفر
+   
+}

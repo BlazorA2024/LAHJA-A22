@@ -1,0 +1,232 @@
+﻿@using LAHJA.Data.UI.Components.Templates_Subscriptions
+@* 
+<style>
+    .ClassPaper {
+        border-radius: 15px !important;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1) !important;
+        margin: 20px auto;
+        overflow: hidden !important;
+        /* direction: rtl; */
+        max-width: 97% !important;
+        margin-right: -0% !important;
+        margin-top: -5%;
+    }
+    border: 1px solid #dee2e6 !important;
+    border-width: 1px !important;
+    .hover-text {
+        transition: color 0.3s ease-in-out !important;
+    }
+
+        .hover-text:hover {
+            color: #1e90ff ; /* أزرق فاتح */
+        }
+
+    /* تقليل المسافات بين العناصر */
+    .mt-2 {
+        margin-top: 0.5rem;
+    }
+
+    .space-y-2 {
+        margin-bottom: 0.5rem;
+    }
+
+    /* تصغير حجم الكارد */
+    .repo-card {
+        border: 1px solid #e0e0e0;
+        border-radius: 6px;
+        transition: box-shadow 0.2s ease-in-out;
+    }
+
+        .repo-card:hover {
+            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+        }
+
+    /* تصغير حجم الخطوط */
+    .repo-name {
+        font-size: 10px;
+        margin: 0px !important;
+    }
+
+    .repo-details {
+        font-size: 9px;
+    }
+
+    /* تصغير حجم الصورة */
+    .mud-avatar {
+        width: 22px !important;
+        height: 22px !important;
+    }
+
+    /* تصغير الأيقونات */
+    .mud-icon {
+        font-size: 12px;
+    }
+
+    /* ضبط التباعد بين الفواصل */
+    .px-0.5 {
+        padding-left: 1px;
+        padding-right: 1px;
+    }
+
+    /* تحسين الوضع المظلم */
+    .dark .repo-name {
+        color: #fff;
+    }
+
+    .dark .repo-details {
+        color: #bdbdbd;
+    }
+
+    /* تصغير التصميم على الشاشات الصغيرة */
+
+
+
+</style>
+ *@
+
+@foreach (var item in Repositories)
+            {
+    <MudList T="string" Severity="Severity.Normal" Style=" margin-top: 2%;" Class="Right-layout mud-list-item-clickable repo-card mb-2 mud-paper">
+                    <MudCardActionArea  Class="mud-list-item-clickable hover-effect">
+                        <MudCardContent Style="margin-left: -3%; padding: 17px !important; margin-top: -6% !important ;" Class="repo-card-content">
+                            <!-- رأس البطاقة -->
+                <MudCardHeader Class="Right-padding">
+                                <MudAvatar Class="mr-1 w-4 h-4"  >
+                                    <MudImage Src="@item.ImageUrl"></MudImage>
+                                    </MudAvatar>
+
+                                    <MudLink Href="@item.LinkUrl" Style="margin:0px !important;" >
+                                      <MudText Style="font-size: 13px;" Class="font-medium hover-text">
+                                        @item.Name
+                                        </MudText>
+                                    </MudLink>
+                            </MudCardHeader>
+
+                            <!-- تفاصيل البطاقة -->
+                <MudText Style="margin:-7px 1px 0px 4px !important;" Class=" items-center space-x-2">
+                                        <MudIcon class="repo-name" Size="Size.Small" Icon="@Icons.Material.Filled.VideoLibrary" />
+                    <span class="repo-name">@item.Category</span>
+
+                                <span class="px-1.5 text-gray-300 dark:text-gray-500">•</span>
+
+                    <MudTooltip Text="@item.UpdatedAt.ToString("ddd, dd MMM yyyy HH:mm:ss 'GMT'")">
+                        <time class="repo-name" datetime="@item.UpdatedAt.ToString("o")">@item.GetRelativeTime()</time>
+                                </MudTooltip>
+
+                                <span class="px-1.5 text-gray-300 dark:text-gray-500">•</span>
+
+                                        <MudIcon Class="repo-name" Size="Size.Small" Icon="@Icons.Material.Filled.CloudDownload" />
+                    <span class="repo-name">@item.Downloads</span>
+
+                                <span class="px-1.5 text-gray-300 dark:text-gray-500">•</span>
+
+                                        <MudIcon class="repo-name" Size="Size.Small" Icon="@Icons.Material.Filled.Favorite" />
+                    <span class="repo-name">@item.Likes</span>
+                            </MudText>
+                        </MudCardContent>
+                    </MudCardActionArea>
+                </MudList>            }
+       
+
+@code {
+    [Parameter] public List<Repository> Repositories { get; set; } = new();
+    [Parameter] public EventCallback OnRefreshClick { get; set; }
+
+    private async Task RefreshList()
+    {
+        await OnRefreshClick.InvokeAsync();
+    }
+}
+
+@* <MudItem xs="12" md="4" >
+        <MudPaper Elevation="4" Class="p-4">
+            <MudDrawerHeader>
+                <MudText Typo="Typo.h6" Class="flex items-center font-semibold text-sm">
+                    <MudIcon Icon="mdi:trending-up" Class="mr-1 text-gray-400 text-sm" />
+                    Trending
+                    <MudText Typo="Typo.body2" Class="-mb-0.5 ml-5 text-xs font-normal text-gray-400">
+                        last 7 days
+                    </MudText>
+                </MudText>
+            </MudDrawerHeader>
+               <MudTreeView T="string" Style="height: 476px; max-height: 476px; overflow-y: auto;" >
+
+                <MudToggleButtonGroup MultiSelection="false" SelectedValuesChanged="OnCategoryChanged">
+                    @foreach (var category in Categories)
+                    {
+                        <MudToggleButton Value="@category" Class="@GetButtonClass(category) text-xs">
+                            @category
+                        </MudToggleButton>
+                    }
+                </MudToggleButtonGroup>
+     @foreach (var repo in FilteredRepositories)
+    {
+        <MudCard Class="repo-card">
+            <MudCardActionArea Href="@repo.Link">
+                <MudCardContent Class="repo-card-content">
+                    <MudCardHeader Style="padding: 0;">
+                        <MudAvatar Class="mr-1 w-4 h-4" Src="@repo.ImageUrl" />
+                        <MudText Class="repo-name">@repo.Name</MudText>
+                    </MudCardHeader>
+
+                    <MudText Style="display: flex; margin: 0px !important; width:100%">
+                                    <MudIcon Size="Size.Small" Class="mr-1.5 mud-icon" Icon="@Icons.Material.Filled.VideoLibrary" />
+                    <MudText Class="repo-name" Typo="Typo.body2">Text-to-Video</MudText>
+                    <MudText Class="px-1.5 text-gray-300 dark:text-gray-500">•</MudText>
+                                    <MudText Class="repo-name" Typo="Typo.body2">
+                        Updated 
+                        <MudTooltip Text="Wed, 26 Feb 2025 14:37:01 GMT">
+                            <time datetime="2025-02-26T14:37:01">5 days ago</time>
+                        </MudTooltip>
+                    </MudText>
+                    <MudText Class="px-1.5 text-gray-300 dark:text-gray-500">•</MudText>
+                                    <MudIcon Size="Size.Small" Class="w-3 text-gray-400 mr-0.5 mud-icon" Icon="@Icons.Material.Filled.CloudDownload" />
+                    <MudText Typo="Typo.body2">151k</MudText>
+                    <MudText Class="px-1.5 text-gray-300 dark:text-gray-500">•</MudText>
+                                    <MudIcon Size="Size.Small" Class="w-3 text-gray-400 mr-1 mud-icon" Icon="@Icons.Material.Filled.Favorite" />
+                    <MudText Typo="Typo.body2">736</MudText>
+                    </MudText>
+                </MudCardContent>
+            </MudCardActionArea>
+        </MudCard>
+    }
+
+
+              
+             <div class="mt-3 space-y-3">
+    @foreach (var repo in FilteredRepositories)
+    {
+         <MudCard Class="group repo-card border border-gray-200 dark:border-gray-700 transition hover:shadow-sm text-xs">
+            <MudCardActionArea Href="@repo.Link">
+                <MudCardContent Class="repo-card-content p-1.5">
+                    <div class="w-full truncate">
+                        <MudCardHeader>
+                            <MudAvatar Class="mr-1" Src="@repo.ImageUrl" />
+                            <MudText Class="repo-name font-mono text-black dark:group-hover:text-yellow-500 group-hover:text-indigo-600 text-xs">
+                                @repo.Name
+                            </MudText>
+                        </MudCardHeader>
+
+                        <MudText Class="repo-details text-gray-400 flex items-center text-xs whitespace-nowrap">
+                            <MudIcon Icon="mdi:video" Class="mr-1 text-[.8rem]" /> @repo.Category
+                            <span class="px-1 text-gray-300 dark:text-gray-500">•</span>
+                            <span class="truncate">Updated 
+                                <MudTooltip Text="@repo.UpdatedAt.ToString("ddd, dd MMM yyyy HH:mm:ss 'GMT'")">
+                                    <time datetime="@repo.UpdatedAt.ToString("o")">@repo.GetRelativeTime()</time>
+                                </MudTooltip>
+                            </span>
+                            <span class="px-1 text-gray-300 dark:text-gray-500">•</span>
+                            <MudIcon Icon="mdi:download" Class="w-3 text-gray-400 mr-0.5" /> @repo.Downloads
+                            <span class="px-1 text-gray-300 dark:text-gray-500">•</span>
+                            <MudIcon Icon="mdi:heart" Class="w-3 text-gray-400 mr-1" /> @repo.Likes
+                        </MudText>
+                    </div>
+                </MudCardContent>
+            </MudCardActionArea>
+        </MudCard>
+    }
+</div>
+ 
+                </MudTreeView>
+        </MudPaper>
+    </MudItem> *@

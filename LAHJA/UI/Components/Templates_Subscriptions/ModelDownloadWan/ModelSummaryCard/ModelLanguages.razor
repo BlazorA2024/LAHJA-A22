@@ -1,0 +1,11 @@
+﻿@code {
+    [Parameter] public Dictionary<string, List<string>> Languages { get; set; } = new();
+}
+
+<MudTypography Variant="H6">Supported Languages;</MudTypography>
+<MudTypography >
+@foreach (var category in Languages)
+{
+    <MudText><strong>@category.Key:</strong> @string.Join(", ", category.Value)</MudText>
+}
+</MudTypography >

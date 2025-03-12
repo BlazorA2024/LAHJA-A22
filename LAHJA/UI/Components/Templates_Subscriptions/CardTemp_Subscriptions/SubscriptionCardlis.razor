@@ -1,0 +1,243 @@
+@using LAHJA.Data.UI.Components.Templates_Subscriptions
+@inject NavigationManager Navigation
+@using MudBlazor
+@* 
+<style>
+    .MudGrida {
+        gap: 250px;
+    }
+</style>
+  *@
+@* 
+<MudPaper Class="pa-3">
+    <MudText Typo="Typo.h6" Class="px-4">
+        Subscription details
+    </MudText>
+    <MudDivider />
+
+
+    <MudPaper Width="100%" Class="py-3">
+        <MudGrid JustifyContent="SpaceBetween" Class="MudGrida">
+
+            <!-- «·⁄„Êœ «·√Ê· -->
+        <MudItem>
+            <MudStack Spacing="2">
+                <MudText Typo="Typo.body2" Class="mud-text-secondary">Customer</MudText>
+                <MudText Typo="Typo.body2" Class="mud-text-secondary">Created</MudText>
+                <MudText Typo="Typo.body2" Class="mud-text-secondary">Current period</MudText>
+                <MudText Typo="Typo.body2" Class="mud-text-secondary">ID</MudText>
+            </MudStack>
+        </MudItem>
+
+        <!-- «·⁄„Êœ «·À«‰Ì -->
+        <MudItem>
+            <MudStack Spacing="2">
+                <MudLink Href="#" Color="Color.Primary">
+                    <MudIcon Icon="@Icons.Material.Outlined.PeopleAlt" Color="Color.Primary" Class="mr-1" />
+                    admin@gmail.com 
+                </MudLink>
+                <MudTooltip>
+               <ChildContent>
+                    Jan 27, 5:23 AM
+                  </ChildContent>
+                      <TooltipContent>
+        <MudText Typo="Typo.h6">h6 title</MudText>
+        <MudText Typo="Typo.body2">body2 content</MudText>
+        <MudIcon Icon="@Icons.Material.Filled.Star" />
+    </TooltipContent>
+</MudTooltip>
+               
+
+                <MudText Typo="Typo.body2" Class="mud-text-secondary" >
+                    Jan 27 to Feb 27
+                </MudText>
+                  
+   
+            </MudStack>
+        </MudItem>
+
+        <!-- «·⁄„Êœ «·À«·À -->
+        <MudItem>
+            <MudStack Spacing="2">
+                <MudText Typo="Typo.body2" Class="mud-text-secondary">Discounts</MudText>
+                <MudText Typo="Typo.body2" Class="mud-text-secondary"> Billing method  </MudText>
+                <MudText Typo="Typo.body2" Class="mud-text-secondary">Payment method  </MudText>
+                <MudText Typo="Typo.body2" Class="mud-text-secondary"> Tax calculation</MudText>
+
+            </MudStack>
+        </MudItem>
+
+        <!-- «·⁄„Êœ «·—«»⁄ -->
+        <MudItem>
+            <MudStack Spacing="2">
+                <MudText Typo="Typo.body2" Class="mud-text-secondary"> No coupon applied</MudText>
+                <MudText Typo="Typo.body2" Class="mud-text-secondary"> Charge specific payment method </MudText>
+                <MudText Typo="Typo.body2" Class="mud-text-secondary">  ïïïï 4242 </MudText>
+                <MudText Typo="Typo.body2" Class="mud-text-secondary"> No tax rate applied</MudText>
+
+            </MudStack>
+        </MudItem>
+    </MudGrid>
+   </MudPaper>
+</MudPaper> *@
+
+
+@typeparam TItem
+
+
+ <MudPaper Class="pa-3">
+    <MudText Typo="Typo.h6" Class="px-4">
+        Subscription details
+    </MudText>
+    <MudDivider />
+
+    <MudPaper Width="100%" Class="py-3">
+        <MudGrid JustifyContent="SpaceBetween" Class="MudGrida">
+            @if (SubscriptionData != null && SubscriptionData.Any())
+            {
+                <!-- «·⁄„Êœ «·√Ê· -->
+                <MudItem>
+                    <MudStack Spacing="2">
+                        @foreach (var item in SubscriptionData.Take(4))
+                        {
+                            <MudText Typo="Typo.body2" Class="mud-text-secondary">@item.Label</MudText>
+                        }
+                    </MudStack>
+                </MudItem>
+
+                <!-- «·⁄„Êœ «·À«‰Ì -->
+                <MudItem>
+                    <MudStack Spacing="2">
+                        @foreach (var item in SubscriptionData.Take(4))
+                        {
+                            @if (item.Value == "admin@example.com")
+                            {
+                                <MudLink Href="#" OnClick="ShowActions">
+
+                                   <MudIcon Icon="@Icons.Material.Outlined.PeopleAlt" Color="Color.Primary" Class="mr-1" />
+                                    @item.Value
+                                </MudLink>
+                            }
+                            else 
+                            if (item.Value == "Jan 27, 5:23 AM")
+                            {
+
+
+
+
+                                <MudTooltip>
+                                    <ChildContent>
+                                        <MudText Typo="Typo.body2" Class="mud-text-secondary">
+                                            @item.Value
+                                        </MudText>
+                                    </ChildContent>
+                                    <TooltipContent >
+
+                                        <MudText Typo="Typo.h6">Time conversion</MudText>
+                                            <MudDivider />
+                                        <MudText Typo="Typo.body2">UTC: 2:23 AM   Jan 27, 2025</MudText>
+                                        <MudText Typo="Typo.body2">+03 ï Your customer: 2:23 AM   Jan 27, 2025
+                                        </MudText>
+                                        <MudText Typo="Typo.body2"> +03 ï Your customer: 2:23 AM   Jan 27, 2025
+                                        </MudText>
+
+                                        
+                                        
+                                        
+                                        
+                                       
+                                       
+                                    </TooltipContent>
+                                </MudTooltip>
+                            }
+                            <!--  Õﬁﬁ ≈–« ﬂ«‰ «·—ﬁ„ 12345 -->
+                            else if (item.Value == "sub_1QlhzSB7xaGIYuCbChhHGlbH")
+                            {
+                               
+                                <MudButton Color="Color.Secondary" StartIcon="@Icons.Material.Outlined.ContentCopy" style="font-family: Menlo, Consolas, monospace; font-size: 12px;">
+                                    @item.Value
+                                </MudButton>
+
+                            }
+                            else
+                            {
+                                <MudText Typo="Typo.body2" Class="mud-text-secondary">@item.Value</MudText>
+                            }
+                        }
+                    </MudStack>
+                </MudItem>
+
+                <!-- «·⁄„Êœ «·À«·À -->
+                <MudItem>
+                    <MudStack Spacing="2">
+                        @foreach (var item in SubscriptionData.Skip(4).Take(4))
+                        {
+                            <MudText Typo="Typo.body2" Class="mud-text-secondary">@item.Label</MudText>
+                        }
+                    </MudStack>
+                </MudItem>
+
+                <!-- «·⁄„Êœ «·—«»⁄ -->
+                <MudItem>
+                    <MudStack Spacing="2">
+                        @foreach (var item in SubscriptionData.Skip(4).Take(4))
+                        {
+                            <MudText Typo="Typo.body2" Class="mud-text-secondary">@item.Value</MudText>
+                        }
+                    </MudStack>
+                </MudItem>
+            }
+            else
+            {
+                <MudText Typo="Typo.body2" Class="mud-text-secondary">No subscription data available.</MudText>
+            }
+        </MudGrid>
+    </MudPaper>
+</MudPaper>
+
+@code {
+    [Parameter] public List<SubscriptionItem> SubscriptionData { get; set; } = new();
+    [Parameter] public EventCallback OnAdminsClick { get; set; }
+
+    // private void NavigateToPage()
+    // {
+    //     Navigation.NavigateTo("/target-page"); // €Ì— "target-page" ≈·Ï «·’›Õ… «·„ÿ·Ê»…
+    // }
+    // «·ÕœÀ ⁄‰œ «·‰ﬁ— ⁄·Ï “— «·≈Ã—«¡« 
+    private async Task ShowActions()
+    {
+        // Â‰« ‰ﬁÊ„ » ‰›Ì– «·ÕœÀ ⁄‰œ «·‰ﬁ— ⁄·Ï "Actions"
+        await OnAdminsClick.InvokeAsync();
+    }
+}
+ 
+
+
+
+@* 
+@code {
+    private bool showAdditionalIcons = false;
+
+    private void ShowAdditionalIcons()
+    {
+        showAdditionalIcons = true; // ≈ŸÂ«— «·√ÌﬁÊ‰«  «·≈÷«›Ì…
+    }
+
+    private void HideAdditionalIcons()
+    {
+        showAdditionalIcons = false; // ≈Œ›«¡ «·√ÌﬁÊ‰«  «·≈÷«›Ì…
+    }
+
+    private void EditAction()
+    {
+        // „‰ÿﬁ · Õ—Ì— «·⁄‰’—
+        Console.WriteLine("Edit action triggered.");
+    }
+
+    private void DeleteAction()
+    {
+        // „‰ÿﬁ ·Õ–› «·⁄‰’—
+        Console.WriteLine("Delete action triggered.");
+    }
+}
+ *@

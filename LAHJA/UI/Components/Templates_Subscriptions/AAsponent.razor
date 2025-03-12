@@ -1,0 +1,343 @@
+﻿@* @page "/Videa" *@
+@inject NavigationManager Navigation
+@using LAHJA.Data.UI.Components.Templates_Subscriptions
+@using LAHJA.UI.Components.Templates_Subscriptions.Filtered_Episodes
+ @using LAHJA.UI.Components.Templates_Subscriptions
+ @using Domain.ShareData
+@using LAHJA.Helpers.Services
+@using LAHJA.Data.UI.Components.Templates_Subscriptions
+@inject NavigationManager Navigation
+ @inject LanguageService languageService
+@inject IManageLanguageService _manageLanguageService
+@using MudBlazor
+
+@inject ISnackbar Snackbar
+<MudGrid>
+    <!-- ✅ القسم الرئيسي لمحتوى الفيديو -->
+    <MudItem xs="12" md="9">
+        <MudPaper Elevation="1" Class="p-4">
+            <video width="100%" height="auto" controls>
+                <source src="https://ww3.animeluxe.org/wp-content/uploads/2025/01/cFrwzFzOcXqKc0rn1GLraRkYjoz.jpg" type="video/mp4">
+                المتصفح لا يدعم تشغيل الفيديو.
+            </video>
+            <MudDivider />
+            <MudGrid>
+                <MudItem xs="6">
+                    <MudLink Href="https://ww3.animeluxe.org/anime/ore-dake-level-up-na-ken-season-2-arise-from-the-shadow/" Target="_blank">
+                        <MudIcon Icon="@Icons.Material.Filled.List" /> التفاصيل
+                    </MudLink>
+                </MudItem>
+                <MudItem xs="6" Class="text-right">
+                    <MudLink Href="https://ww3.animeluxe.org/episodes/ore-dake-level-up-na-ken-season-2-arise-from-the-shadow-الحلقة-7/" Target="_blank">
+                        <MudIcon Icon="@Icons.Material.Filled.SkipPrevious" /> السابقة
+                    </MudLink>
+                </MudItem>
+            </MudGrid>
+            <MudDivider />
+        </MudPaper>
+
+        <!-- ✅ قائمة الخوادم مع تقسيمها إلى صفوف من 3 عناصر -->
+        <VideaServerCard />
+    
+    </MudItem>
+
+    <!-- ✅ القائمة الجانبية للحلقات -->
+    <MudItem xs="12" md="3">
+        <MudPaper Elevation="4" Class="p-4">
+            <MudTextField @bind-Value="SearchText" Placeholder="البحث عن حلقة"
+                          AdornmentIcon="@Icons.Material.Filled.Search" Adornment="Adornment.Start" />
+            <MudList T="string" Style="height: 476px; max-height: 476px; overflow-y: auto;">
+                @foreach (var episode in FilteredEpisodes)
+                {
+                    <MudListItem Style="text-align-last: right;"
+                                 Class="@(episode.IsActive ? "mud-selected" : "")"
+                                 @onclick="() => NavigateTo(episode.Url)">
+                        <MudLink Href="@episode.Url" Target="_blank">
+                            <MudIcon Icon="@Icons.Material.Filled.PlayArrow" Style="float: left;" Class="mr-4" />
+                            @episode.Title
+                        </MudLink>
+                    </MudListItem>
+                }
+            </MudList>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+@code {
+
+   
+    private string CurrentLanguage = "en"; // اللغة الافتراضية هي الإنجليزية
+    
+    private string SearchText = ""; // نص البحث
+
+    private List<Episode> Episodes = new()
+    {
+        new Episode("الحلقة 1", "https://ww3.animeluxe.org/episodes/ore-dake-level-up-na-ken-season-2-arise-from-the-shadow-الحلقة-11/"),
+        new Episode("الحلقة 2", "https://ww3.animeluxe.org/episodes/ore-dake-level-up-na-ken-season-2-arise-from-the-shadow-الحلقة-22/"),
+        new Episode("الحلقة 3", "https://ww3.animeluxe.org/episodes/ore-dake-level-up-na-ken-season-2-arise-from-the-shadow-الحلقة-32/"),
+        new Episode("الحلقة 4", "https://ww3.animeluxe.org/episodes/ore-dake-level-up-na-ken-season-2-arise-from-the-shadow-الحلقة-4/"),
+        new Episode("الحلقة 5", "https://ww3.animeluxe.org/episodes/ore-dake-level-up-na-ken-season-2-arise-from-the-shadow-الحلقة-5/"),
+        new Episode("الحلقة 6", "https://ww3.animeluxe.org/episodes/ore-dake-level-up-na-ken-season-2-arise-from-the-shadow-الحلقة-6/"),
+        new Episode("الحلقة 7", "https://ww3.animeluxe.org/episodes/ore-dake-level-up-na-ken-season-2-arise-from-the-shadow-الحلقة-7/"),
+        new Episode("الحلقة 8", "https://ww3.animeluxe.org/episodes/ore-dake-level-up-na-ken-season-2-arise-from-the-shadow-الحلقة-8/", true)
+    };
+
+    private List<Episode> FilteredEpisodes =>
+        string.IsNullOrWhiteSpace(SearchText)
+        ? Episodes
+        : Episodes.Where(e => e.Title.Contains(SearchText, StringComparison.OrdinalIgnoreCase)).ToList();
+
+    private void NavigateTo(string url)
+    {
+        Navigation.NavigateTo(url, true);
+    }
+
+    private void PlayVideo()
+    {
+        Navigation.NavigateTo("https://ww3.animeluxe.org/wp-content/uploads/2025/01/cFrwzFzOcXqKc0rn1GLraRkYjoz.jpg", true);
+    }
+
+   
+}
+
+
+
+<MudContainer>
+    <MudPaper Class="pa-4">
+        <MudText Typo="Typo.h6">روابط التحميل</MudText>
+        <MudTable Items="downloadLinks" Hover="true" Bordered="true" Striped="true">
+            <HeaderContent>
+                <MudTh>الرابط</MudTh>
+                <MudTh>الخادم</MudTh>
+                <MudTh>الجودة</MudTh>
+                <MudTh>اللغة</MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd DataLabel="الرابط">
+                    <MudButton Variant="Variant.Text" Color="Color.Primary" Href="@context.Url" Target="_blank" StartIcon="@Icons.Material.Filled.CloudDownload">تحميل</MudButton>
+                </MudTd>
+                <MudTd DataLabel="الخادم">
+                    <MudAvatar Class="mud-size-small" Image="@context.ServerIcon" />
+                </MudTd>
+                <MudTd DataLabel="الجودة">
+                    <MudChip T="string" Color="Color.Dark">@context.Quality</MudChip>
+                </MudTd>
+                <MudTd DataLabel="اللغة" style="display: flex; flex-wrap: wrap;">
+                    <MudAvatar Class="mud-size-small" Image="@context.LanguageFlag" />
+                    <MudText Class="hidden-xs-down" style="margin-top: 2%; margin-left: 2%;">@context.Language</MudText>
+                </MudTd>
+            </RowTemplate>
+        </MudTable>
+    </MudPaper>
+</MudContainer>
+
+@code {
+    public class DownloadLink
+    {
+        public string Url { get; set; }
+        public string ServerIcon { get; set; }
+        public string Quality { get; set; }
+        public string Language { get; set; }
+        public string LanguageFlag { get; set; }
+    }
+
+    private List<DownloadLink> downloadLinks = new List<DownloadLink>
+    {
+        new DownloadLink {
+            Url = "https://workupload.com/xyz",
+            ServerIcon = "https://s2.googleusercontent.com/s2/favicons?sz=24&domain=workupload.com",
+            Quality = "1080p",
+            Language = "اليابانية",
+            LanguageFlag = "https://ww3.animeluxe.org/wp-content/themes/MiraiTheme/assets/img/flags/jp.png"
+        },
+        new DownloadLink {
+            Url = "https://mediafire.com/abc",
+            ServerIcon = "https://s2.googleusercontent.com/s2/favicons?sz=24&domain=www.mediafire.com",
+            Quality = "1080p",
+            Language = "اليابانية",
+            LanguageFlag = "https://ww3.animeluxe.org/wp-content/themes/MiraiTheme/assets/img/flags/jp.png"
+        },
+        new DownloadLink {
+            Url = "https://vk.com/def",
+            ServerIcon = "https://s2.googleusercontent.com/s2/favicons?sz=24&domain=vk.com",
+            Quality = "1080p",
+            Language = "اليابانية",
+            LanguageFlag = "https://ww3.animeluxe.org/wp-content/themes/MiraiTheme/assets/img/flags/jp.png"
+        },
+         new DownloadLink {
+            Url = "https://vk.com/def",
+            ServerIcon = "https://s2.googleusercontent.com/s2/favicons?sz=24&domain=vk.com",
+            Quality = "1080p",
+            Language = "اليابانية",
+            LanguageFlag = "https://ww3.animeluxe.org/wp-content/themes/MiraiTheme/assets/img/flags/jp.png"
+        },
+         new DownloadLink {
+            Url = "https://vk.com/def",
+            ServerIcon = "https://s2.googleusercontent.com/s2/favicons?sz=24&domain=vk.com",
+            Quality = "1080p",
+            Language = "اليابانية",
+            LanguageFlag = "https://ww3.animeluxe.org/wp-content/themes/MiraiTheme/assets/img/flags/jp.png"
+        },
+        // أضف باقي البيانات هنا بنفس الطريقة
+    };
+}
+<AnimeEpisodesTemplate />
+
+
+ @*
+@inject NavigationManager Navigation
+
+<MudGrid>
+    <!-- ✅ القسم الرئيسي لمحتوى الفيديو -->
+    <MudItem xs="12" md="9">
+        <MudPaper Elevation="1" Class="p-4">
+            <video width="100%" height="auto" controls>
+                <source src="https://ww3.animeluxe.org/wp-content/uploads/2025/01/cFrwzFzOcXqKc0rn1GLraRkYjoz.jpg" type="video/mp4">
+                المتصفح لا يدعم تشغيل الفيديو.
+            </video>
+            <MudDivider />
+            <MudGrid>
+                <MudItem xs="6">
+                    <MudLink Href="https://ww3.animeluxe.org/anime/ore-dake-level-up-na-ken-season-2-arise-from-the-shadow/" Target="_blank">
+                        <MudIcon Icon="@Icons.Material.Filled.List" /> التفاصيل
+                    </MudLink>
+                </MudItem>
+                <MudItem xs="6" Class="text-right">
+                    <MudLink Href="https://ww3.animeluxe.org/episodes/ore-dake-level-up-na-ken-season-2-arise-from-the-shadow-الحلقة-7/" Target="_blank">
+                        <MudIcon Icon="@Icons.Material.Filled.SkipPrevious" /> السابقة
+                    </MudLink>
+                </MudItem>
+            </MudGrid>
+            <MudDivider />
+        </MudPaper>
+
+        <!-- ✅ قائمة الخوادم مع تقسيمها إلى صفوف من 3 عناصر -->
+<MudPaper Elevation="4" Class="p-4">
+    <MudGrid>
+        <MudItem xs="12" md="4">
+            <MudText >
+                <strong>أنت تشاهد <b>الحلقة 8</b>.</strong>
+            </MudText>
+            <MudText >
+                إذا لم يعمل الخادم الحالي، يرجى تجربة الخوادم الأخرى المتاحة.
+            </MudText>
+        </MudItem>
+                <MudItem xs="0" md="0">
+
+                    <MudText Class="mb-2">
+                        <MudIcon Icon="@Icons.Material.Filled.ClosedCaption" Color="Color.Tertiary" /> مترجم
+                    </MudText>
+                </MudItem>
+        <MudItem xs="2" md="6">
+
+                    <MudGrid>
+
+                        <MudItem xs="12">
+                            <MudGrid Spacing="2">
+                                @foreach (var server in Servers.Take(6))
+                                {
+
+                                    <MudChip T="string" Href="@server.Url" Target="_blank" Variant="Variant.Filled" Icon="@Icons.Material.Filled.PlayArrow">
+                                        @server.Name
+                                    </MudChip>
+                                }
+                            </MudGrid>
+                        </MudItem>
+
+                    </MudGrid>
+        </MudItem>
+    </MudGrid>
+</MudPaper>
+
+    </MudItem>
+
+    <!-- ✅ القائمة الجانبية للحلقات -->
+    <MudItem xs="12" md="3">
+        <MudPaper Elevation="4" Class="p-4">
+            <MudTextField @bind-Value="SearchText" Placeholder="البحث عن حلقة"
+                          AdornmentIcon="@Icons.Material.Filled.Search" Adornment="Adornment.Start" />
+            <MudList T="string" Style="height: 476px; max-height: 476px; overflow-y: auto;">
+                @foreach (var episode in FilteredEpisodes)
+                {
+                    <MudListItem Style="text-align-last: right;"
+                                 Class="@(episode.IsActive ? "mud-selected" : "")"
+                                 @onclick="() => NavigateTo(episode.Url)">
+                        <MudLink Href="@episode.Url" Target="_blank">
+                            <MudIcon Icon="@Icons.Material.Filled.PlayArrow" Style="float: left;" Class="mr-4" />
+                            @episode.Title
+                        </MudLink>
+                    </MudListItem>
+                }
+            </MudList>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+
+@code {
+    private string SearchText { get; set; } = "";
+    public IReadOnlyCollection<string> SelectedValues = ["Milk", "Cafe Latte"];
+    public bool ReadOnly;
+    private List<Server> Servers = new()
+    {
+        new Server("Videa", "https://example.com/videa"),
+        new Server("Mega", "https://example.com/mega"),
+        new Server("Google", "https://example.com/google"),
+        new Server("YourUpload", "https://example.com/yourupload"),
+        new Server("MP4Upload", "https://example.com/mp4upload")
+    };
+
+    private List<Episode> Episodes = new()
+    {
+        new Episode("الحلقة 1", "https://ww3.animeluxe.org/episodes/ore-dake-level-up-na-ken-season-2-arise-from-the-shadow-الحلقة-1/"),
+        new Episode("الحلقة 2", "https://ww3.animeluxe.org/episodes/ore-dake-level-up-na-ken-season-2-arise-from-the-shadow-الحلقة-2/"),
+        new Episode("الحلقة 3", "https://ww3.animeluxe.org/episodes/ore-dake-level-up-na-ken-season-2-arise-from-the-shadow-الحلقة-3/"),
+        new Episode("الحلقة 4", "https://ww3.animeluxe.org/episodes/ore-dake-level-up-na-ken-season-2-arise-from-the-shadow-الحلقة-4/"),
+        new Episode("الحلقة 5", "https://ww3.animeluxe.org/episodes/ore-dake-level-up-na-ken-season-2-arise-from-the-shadow-الحلقة-5/"),
+        new Episode("الحلقة 6", "https://ww3.animeluxe.org/episodes/ore-dake-level-up-na-ken-season-2-arise-from-the-shadow-الحلقة-6/"),
+        new Episode("الحلقة 7", "https://ww3.animeluxe.org/episodes/ore-dake-level-up-na-ken-season-2-arise-from-the-shadow-الحلقة-7/"),
+        new Episode("الحلقة 8", "https://ww3.animeluxe.org/episodes/ore-dake-level-up-na-ken-season-2-arise-from-the-shadow-الحلقة-8/", true)
+    };
+
+    private List<Episode> FilteredEpisodes =>
+        string.IsNullOrWhiteSpace(SearchText)
+        ? Episodes
+        : Episodes.Where(e => e.Title.Contains(SearchText, StringComparison.OrdinalIgnoreCase)).ToList();
+
+    private void NavigateTo(string url)
+    {
+        Navigation.NavigateTo(url, true);
+    }
+
+    private void PlayVideo()
+    {
+        Navigation.NavigateTo("https://ww3.animeluxe.org/wp-content/uploads/2025/01/cFrwzFzOcXqKc0rn1GLraRkYjoz.jpg", true);
+    }
+
+    private class Episode
+    {
+        public string Title { get; }
+        public string Url { get; }
+        public bool IsActive { get; }
+
+        public Episode(string title, string url, bool isActive = false)
+        {
+            Title = title;
+            Url = url;
+            IsActive = isActive;
+        }
+    }
+
+    private class Server
+    {
+        public string Name { get; }
+        public string Url { get; }
+
+        public Server(string name, string url)
+        {
+            Name = name;
+            Url = url;
+        }
+    }
+}
+ *@

@@ -1,0 +1,192 @@
+﻿ @using LAHJA.UI.Components.Templates_Subscriptions
+ @using Domain.ShareData
+@using LAHJA.Helpers.Services
+@using LAHJA.UI.Components.Templates_Subscriptions.RepositoryCard
+@using LAHJA.Data.UI.Components.Templates_Subscriptions
+@inject NavigationManager Navigation
+ @inject LanguageService languageService
+@inject IManageLanguageService _manageLanguageService
+@using MudBlazor
+
+@inject ISnackbar Snackbar
+@*     <!-- القائمة اليسرى -->
+    <MudItem xs="12" md="2">
+        <MudPaper Elevation="1" Class="p-2">
+            <MudButton Class="font-semibold text-sm p-1">
+                <MudIcon Icon="@Icons.Material.Filled.Add" Class="mr-1.5 text-yellow-500 text-sm" /> New
+            </MudButton>
+            <MudTreeView T="string" Style="height: 476px; max-height: 476px; overflow-y: auto;">
+                @foreach (var item in MenuItems)
+                {
+                    <MudTreeViewItem Value="@item.Label" Icon="@item.Icon" IconColor="@item.Color" />
+                }
+            </MudTreeView>
+        </MudPaper>
+    </MudItem>
+
+@code {
+    private List<MenuItem> MenuItems = new()
+    {
+        new MenuItem { Label = "Inbox", Icon = Icons.Material.Filled.Inbox, Color = Color.Primary },
+        new MenuItem { Label = "All Mail", Icon = Icons.Material.Filled.Email, Color = Color.Default },
+        new MenuItem { Label = "Drafts", Icon = Icons.Material.Filled.Drafts, Color = Color.Default },
+        new MenuItem { Label = "Orders", Icon = Icons.Material.Filled.Label, Color = Color.Secondary },
+        new MenuItem { Label = "Trash", Icon = Icons.Material.Filled.Delete, Color = Color.Error }
+    };
+
+    private class MenuItem
+    {
+        public string Label { get; set; }
+        public string Icon { get; set; }
+        public Color Color { get; set; }
+    }
+} *@
+<!-- القائمة اليسرى -->
+
+
+    <MudPaper Height="104%" Elevation="1" Class="p-2">
+        <MudButton Style="padding: 2px 5px !important;margin: -21px 38px -32px !important;" Variant="Variant.Filled" Class="font-semibold p-1">
+            <MudIcon Icon="@Icons.Material.Filled.Add"
+                     Style="font-size: 12px !important; "
+                     Class=" text-yellow-500" />
+            New
+        </MudButton>
+        <LeftmenuCard MenuItems="MenuItems" />
+        <LeftmenuCard MenuItems="MenuItems1" />
+        <LeftmenuCard MenuItems="MenuItems2" />
+
+    </MudPaper>
+
+
+
+
+
+@code {
+    // اللغة الافتراضية هي الإنجليزية
+    private string CurrentLanguage = "en";
+
+    // القواميس للترجمات
+    private Dictionary<string, string> TransEn = new Dictionary<string, string>()
+    {
+        { "Organizations", "Organizations" },
+        { "Create New", "Create New" },
+        { "Profile", "Profile" },
+        { "Inbox", "Inbox (0)" },
+        { "Settings", "Settings" },
+        { "Billing", "Billing" },
+        { "Get Pro", "Get Pro" },
+        { "Resources", "Resources" },
+        { "Hub guide", "Hub guide" },
+        { "Transformers doc", "Transformers doc" },
+        { "Forum", "Forum" },
+        { "Tasks", "Tasks" },
+        { "Learn", "Learn" }
+    };
+
+    private Dictionary<string, string> TransAr = new Dictionary<string, string>()
+    {
+        { "Organizations", "المنظمات" },
+        { "Create New", "إنشاء جديد" },
+        { "Profile", "الملف الشخصي" },
+        { "Inbox", "البريد الوارد (0)" },
+        { "Settings", "الإعدادات" },
+        { "Billing", "الفواتير" },
+        { "Get Pro", "احصل على النسخة المحترفة" },
+        { "Resources", "الموارد" },
+        { "Hub guide", "دليل المركز" },
+        { "Transformers doc", "وثائق Transformers" },
+        { "Forum", "المنتدى" },
+        { "Tasks", "المهام" },
+        { "Learn", "التعلم" }
+    };
+
+    // القوائم التي تحتوي على عناصر القائمة
+    private List<MenuItem> MenuItems1 => new()
+    {
+        new MenuItem { Name = GetTranslation("Organizations") },
+        new MenuItem { Label = GetTranslation("Create New"), Icon = Icons.Material.Filled.Inbox, Color = Color.Primary, Route = "/drafts" }
+    };
+
+    private List<MenuItem> MenuItems => new()
+    {
+        new MenuItem { Name = "735408478mm" },
+        new MenuItem { Label = GetTranslation("Profile"), Icon = Icons.Material.Filled.Inbox, Color = Color.Primary, Route = "/drafts" },
+        new MenuItem { Label = GetTranslation("Inbox"), Icon = Icons.Material.Filled.Email, Color = Color.Default, Route = "/" },
+        new MenuItem { Label = GetTranslation("Settings"), Icon = Icons.Material.Filled.Drafts, Color = Color.Default, Route = "#" },
+        new MenuItem { Label = GetTranslation("Billing"), Icon = Icons.Material.Filled.Label, Color = Color.Secondary, Route = "/gfd" },
+        new MenuItem { Label = GetTranslation("Get Pro"), Icon = Icons.Material.Filled.Delete, Color = Color.Error, Route = "/aaa" }
+    };
+
+    private List<MenuItem> MenuItems2 => new()
+    {
+        new MenuItem { Name = GetTranslation("Resources") },
+        new MenuItem { Label = GetTranslation("Hub guide"), Icon = Icons.Material.Filled.Inbox, Color = Color.Primary, Route = "/drafts" },
+        new MenuItem { Label = GetTranslation("Transformers doc"), Icon = Icons.Material.Filled.Email, Color = Color.Default, Route = "/" },
+        new MenuItem { Label = GetTranslation("Forum"), Icon = Icons.Material.Filled.Drafts, Color = Color.Default, Route = "#" },
+        new MenuItem { Label = GetTranslation("Tasks"), Icon = Icons.Material.Filled.Label, Color = Color.Secondary, Route = "/gfd" },
+        new MenuItem { Label = GetTranslation("Learn"), Icon = Icons.Material.Filled.Delete, Color = Color.Error, Route = "/aaa" }
+    };
+
+    // دالة للحصول على الترجمة بناءً على اللغة الحالية
+    private string GetTranslation(string key)
+    {
+        return CurrentLanguage == "ar"
+            ? TransAr.GetValueOrDefault(key, key)
+            : TransEn.GetValueOrDefault(key, key);
+    }
+
+    // دالة لتغيير اللغة بين العربية والإنجليزية
+    private void ChangeLanguage(string language)
+    {
+        if (language != "ar" && language != "en") language = "en"; // التأكد من أن اللغة صحيحة
+        CurrentLanguage = language;
+        InvokeAsync(StateHasChanged); // تحديث الواجهة
+    }
+
+    protected override void OnInitialized()
+    {
+        // تحميل البيانات عند التهيئة
+        base.OnInitialized();
+    }
+
+    // إضافة زر لتغيير اللغة
+    protected override async void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            CurrentLanguage = await _manageLanguageService.GetLanguageAsync();
+           
+            InvokeAsync(StateHasChanged);
+        }
+    }
+}
+
+
+
+@* 
+@code {
+    private List<MenuItem> MenuItems1 = new()
+    {
+          new MenuItem { Name="Organizations", },
+        new MenuItem { Label = "Create New", Icon = Icons.Material.Filled.Inbox, Color = Color.Primary,  Route = "/drafts" },
+    };
+        private List<MenuItem> MenuItems = new()
+    {
+          new MenuItem { Name="735408478mm", },
+        new MenuItem { Label = "Profile", Icon = Icons.Material.Filled.Inbox, Color = Color.Primary,  Route = "/drafts" },
+        new MenuItem { Label = "Inbox (0)", Icon = Icons.Material.Filled.Email, Color = Color.Default , Route = "/" },
+        new MenuItem { Label = "Settings", Icon = Icons.Material.Filled.Drafts, Color = Color.Default , Route = "#" },
+        new MenuItem { Label = "Billing", Icon = Icons.Material.Filled.Label, Color = Color.Secondary  , Route = "/gfd"},
+        new MenuItem { Label = "Get Pro", Icon = Icons.Material.Filled.Delete, Color = Color.Error , Route = "/aaa" }
+    };
+    private List<MenuItem> MenuItems2 = new()
+    {
+          new MenuItem { Name="Resources", },
+        new MenuItem { Label = "Hub guide", Icon = Icons.Material.Filled.Inbox, Color = Color.Primary,  Route = "/drafts" },
+        new MenuItem { Label = "Transformers doc", Icon = Icons.Material.Filled.Email, Color = Color.Default , Route = "/" },
+        new MenuItem { Label = "Forum", Icon = Icons.Material.Filled.Drafts, Color = Color.Default , Route = "#" },
+        new MenuItem { Label = "Tasks", Icon = Icons.Material.Filled.Label, Color = Color.Secondary  , Route = "/gfd"},
+        new MenuItem { Label = "Learn", Icon = Icons.Material.Filled.Delete, Color = Color.Error , Route = "/aaa" }
+    };
+    
+} *@

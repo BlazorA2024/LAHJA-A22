@@ -1,0 +1,144 @@
+﻿@inject NavigationManager Navigation
+@using LAHJA.Data.UI.Components.Templates_Subscriptions
+@using Domain.ShareData
+@using LAHJA.Helpers.Services
+@using LAHJA.UI.Components.ProFile.Settings
+@using MudBlazor
+@using LAHJA.UI.Components.Templates_Subscriptions.ModelDownloadWan.ModelDynamicCard
+
+@inject IManageLanguageService _manageLanguageService
+@inject LanguageService languageService
+
+<DynamicModelCard Repositories="Repositories" OnModelClick="OnModelClick" />
+
+@code {
+    private List<RepositoryModelSize> Repositories = new()
+    {
+        new RepositoryModelSize
+        {
+            Name = "Safetensors",
+            LinkUrl = "https://huggingface.co/docs/safetensors",
+            ModelSize = "5.57B params",
+            TensorType = "BF16"
+        }
+    };
+
+    private async Task OnModelClick(RepositoryModelSize repo)
+    {
+        Console.WriteLine($"تم النقر على {repo.Name}");
+    }
+}
+
+
+<!-- Safetensors Section -->
+@*  <MudGrid Class="d-flex gap-1.5 flex-wrap">
+                <MudText Class="text-sm mr-auto d-flex items-center gap-1 overflow-hidden rounded-lg font-semibold">
+                    <svg viewBox="0 0 57 44" width="1em" height="1em" fill="currentColor" aria-hidden="true">
+                        <path d="M36.816 20.1474L54.9918 27.4409C55.5142 27.6506 55.9623 28.0112 56.2788 28.4766C56.5954 28.9421 56.7661 29.4913 56.7691 30.0542C56.7722 30.6171 56.6074 31.1682 56.2959 31.637C55.9844 32.1059 55.5402 32.4713 55.0201 32.6866L29.953 43.0646C29.2593 43.3518 28.4799 43.3518 27.7862 43.0646L2.71624 32.6894C2.19613 32.4741 1.75197 32.1087 1.44044 31.6398C1.12892 31.171 0.964165 30.62 0.967204 30.057C0.970244 29.4941 1.14094 28.9449 1.45751 28.4794C1.77408 28.014 2.22216 27.6534 2.74456 27.4437L21.2404 20.0227C22.2997 19.5979 25.6477 20.8441 28.8682 20.8555C32.3096 20.8668 35.6292 19.6715 36.816 20.1474ZM11.3042 30.1119L28.8682 37.3828L46.435 30.1119L28.8682 23.0619L11.3042 30.1119ZM29.9247 0.388251L54.9918 10.4462C55.5142 10.6559 55.9623 11.0165 56.2788 11.482C56.5954 11.9474 56.7661 12.4967 56.7691 13.0596C56.7722 13.6225 56.6074 14.1735 56.2959 14.6424C55.9844 15.1112 55.5402 15.4766 55.0201 15.6919L29.953 26.07C29.2593 26.3572 28.4799 26.3572 27.7862 26.07L2.71624 15.6948C2.19613 15.4795 1.75197 15.1141 1.44044 14.6452C1.12892 14.1763 0.964165 13.6253 0.967204 13.0624C0.970244 12.4995 1.14094 11.9503 1.45751 11.4848C1.77408 11.0193 2.22216 10.6588 2.74456 10.4491L27.8117 0.388251C28.4896 0.1157 29.2467 0.1157 29.9247 0.388251ZM11.3042 13.1172L28.8682 20.3881L46.435 13.1172L28.8682 6.06729L11.3042 13.1172Z"></path>
+                    </svg>
+                    Safetensors
+                    <MudLink Target="_blank" Href="https://huggingface.co/docs/safetensors" Class="text-xs text-gray-400 hover:text-gray-500">
+                        <MudIcon Icon="Icons.Material.Filled.OpenInNew" />
+                    </MudLink>
+                </MudText>
+
+                <MudText Style="padding-top: 16px !important;" class="d-flex flex-wrap  gap-y-1 text-sm">
+                    <MudChip Style="padding: 0px !important;height: 24px !important;" T="string" Class="d-inline-flex h-6 shrink-0 items-center overflow-hidden rounded-lg border">
+                        <MudText Style="margin: 0px !important" class="repo-name border-r px-2 text-gray-500">Model size</MudText>
+                        <MudText Style="margin: 0px !important" class=" repo-name px-1.5">5.57B params</MudText>
+                    </MudChip>
+
+                    <MudChip Style="padding: 0px !important;height: 24px !important;" T="string" Class="d-inline-flex h-6 shrink-0 items-center overflow-hidden rounded-lg border">
+                        <MudText Style="margin: 0px !important" class=" repo-name border-r px-2 text-gray-500">Tensor type</MudText>
+                        <MudText class=" repo-name d-flex px-1.5">
+                            BF16
+                            <div class="mx-1 text-gray-400">·</div>
+                        </MudText>
+                    </MudChip>
+
+                    <MudButton Class="bg-gradient-to-t inline-flex h-6 w-6 items-center justify-center overflow-hidden rounded-lg border hover:shadow-inner dark:hover:brightness-125">
+                        <svg class="text-xs" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" role="img" width="1em" height="1em" viewBox="0 0 32 32" fill="currentColor">
+                            <path d="M10 6v2h12.59L6 24.59L7.41 26L24 9.41V22h2V6H10z"></path>
+                        </svg>
+                    </MudButton>
+                </MudText>
+            </MudGrid> *@
+
+@* 
+@code {
+    private List<Server> Servers = new();
+
+    private string CurrentLanguage = "en"; // اللغة الافتراضية هي الإنجليزية
+
+    // ✅ إضافة أسماء السيرفرات للترجمة
+    private Dictionary<string, string> TransEn = new()
+    {
+        { "NowWatching", "You are watching Episode" },
+        { "InterpreterServers", "interpreter" },
+        { "TryOtherServers", "If the current server does not work, try other available servers." },
+        { "Videa", "Videa" },
+        { "Mega", "Mega" },
+        { "Google", "Google Drive" },
+        { "YourUpload", "YourUpload" },
+        { "MP4Upload", "MP4Upload" }
+    };
+    
+    private Dictionary<string, string> TransAr = new()
+    {
+        { "NowWatching", "أنت تشاهد الحلقة" },
+        { "InterpreterServers", "مترجم" },
+        { "TryOtherServers", "إذا لم يعمل الخادم الحالي، يرجى تجربة الخوادم الأخرى المتاحة." },
+        { "Videa", "ڤيديا" },
+        { "Mega", "ميجا" },
+        { "Google", "جوجل درايف" },
+        { "YourUpload", "يور أبلود" },
+        { "MP4Upload", "إم بي فور أبلود" }
+    };
+
+    private string GetTranslation(string key)
+    {
+        return CurrentLanguage == "ar"
+            ? TransAr.GetValueOrDefault(key, key)
+            : TransEn.GetValueOrDefault(key, key);
+    }
+
+    // ✅ تحميل قائمة السيرفرات بناءً على اللغة المختارة
+    private void LoadServers()
+    {
+        Servers = new()
+        {
+            new Server(GetTranslation("Videa"), "https://example.com/videa"),
+            new Server(GetTranslation("Mega"), "https://example.com/mega"),
+            new Server(GetTranslation("Google"), "https://example.com/google"),
+            new Server(GetTranslation("YourUpload"), "https://example.com/yourupload"),
+            new Server(GetTranslation("MP4Upload"), "https://example.com/mp4upload")
+        };
+    }
+
+    protected override void OnInitialized()
+    {
+        languageService.OnLanguageChanged += ChangeLanguage;
+    }
+
+    protected override async void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            CurrentLanguage = await _manageLanguageService.GetLanguageAsync();
+            LoadServers(); // تحميل السيرفرات بلغتها المناسبة
+            InvokeAsync(StateHasChanged);
+        }
+    }
+
+    private void ChangeLanguage(string language)
+    {
+        if (language != "ar" && language != "en") language = "ar"; // السماح فقط بـ "ar" أو "en"
+        CurrentLanguage = language;
+        LoadServers(); // إعادة تحميل السيرفرات بعد تغيير اللغة
+        InvokeAsync(StateHasChanged);
+    }
+
+    // ✅ كلاس نموذج للسيرفر
+   
+}
+ *@

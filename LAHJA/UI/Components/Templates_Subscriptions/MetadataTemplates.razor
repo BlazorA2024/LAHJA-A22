@@ -1,0 +1,88 @@
+﻿@* @using MudBlazor
+@inject IDialogService DialogService
+
+<MudPaper Class="pa-3">
+
+    <MudCard Class="pa-3">
+        <MudCardHeader>
+            <CardHeaderContent>
+                <MudText Typo="Typo.h6">Metadata</MudText>
+
+            </CardHeaderContent>
+            <CardHeaderActions>
+          
+                <MudIconButton  OnClick="OpenDialog" Icon="@Icons.Material.Filled.Create" />
+
+
+
+
+
+
+            </CardHeaderActions>
+
+        </MudCardHeader>
+        <MudCardContent style="border: dotted;width: 95%;margin-left: 2%;height: 100px;">
+            <MudText style="text-align: -webkit-center;  margin-top: 2%;">No Metadata Available</MudText>
+        </MudCardContent>
+
+    </MudCard>
+</MudPaper>
+
+
+@code {
+    private async Task OpenDialog()
+    {
+        var parameters = new DialogParameters
+        {
+            { "Message", "مرحبًا بك في النافذة!" }
+        };
+
+        await DialogService.ShowAsync<CustomDialog>("عنوان النافذة", parameters);
+    }
+}
+ *@
+@* 
+<MudPaper Class="pa-4">
+    <!-- تغليف Menu والأيقونات في عنصر واحد للكشف عن الماوس فوق المنطقة بالكامل -->
+    <div @onmouseover="ShowAdditionalIcons" @onmouseout="HideAdditionalIcons">
+        <MudMenu Icon="@Icons.Material.Filled.Create" AriaLabel="Open user menu">
+            <MudMenuItem> Profile </MudMenuItem>
+            <MudMenuItem>My account</MudMenuItem>
+            <MudMenuItem>Logout</MudMenuItem>
+        </MudMenu>
+
+        @if (showAdditionalIcons)
+        {
+            <!-- عرض الأيقونات الإضافية عند مرور الماوس -->
+            <MudIconButton Icon="@Icons.Material.Filled.Edit" OnClick="EditAction" Class="ml-2" />
+            <MudIconButton Icon="@Icons.Material.Filled.Delete" OnClick="DeleteAction" Class="ml-2" />
+        }
+    </div>
+</MudPaper>
+
+@code {
+    private bool showAdditionalIcons = false;
+
+    private void ShowAdditionalIcons()
+    {
+        showAdditionalIcons = true; // إظهار الأيقونات الإضافية
+    }
+
+    private void HideAdditionalIcons()
+    {
+        showAdditionalIcons = false; // إخفاء الأيقونات الإضافية
+    }
+
+    private void EditAction()
+    {
+        // منطق لتحرير العنصر
+        Console.WriteLine("Edit action triggered.");
+    }
+
+    private void DeleteAction()
+    {
+        // منطق لحذف العنصر
+        Console.WriteLine("Delete action triggered.");
+    }
+}
+ *@ 

@@ -1,0 +1,108 @@
+﻿ @using LAHJA.UI.Components.Templates_Subscriptions
+ @using Domain.ShareData
+@using LAHJA.Helpers.Services
+@using LAHJA.UI.Components.Templates_Subscriptions.CardTemp_Subscriptions
+@using LAHJA.Data.UI.Components.Templates_Subscriptions
+@inject NavigationManager Navigation
+ @inject LanguageService languageService
+@inject IManageLanguageService _manageLanguageService
+
+@using MudBlazor
+
+@inject ISnackbar Snackbar
+
+ 
+<!-- استدعاء القالب الفرعي واستخدامه -->
+<ProductSubscriptionCard SubscriptionItems="SubscriptionItems" CurrentLanguage="@CurrentLanguage" />
+
+
+
+@code {
+    // بيانات ديناميكية
+    // public List<PricingItem> SubscriptionItems { get; set; } = new List<PricingItem>
+    // {
+    //     new PricingItem
+    //     {
+    //         ProductName = "Professional",
+    //         Price = "$250.00 USD / month",
+    //         SubscriptionId = "price_1QldGsB7xaGIYuCbCp59S5DF",
+    //         Quantity = 1,
+    //         TotalPrice = "$250.00 USD / month"
+    //     },
+        
+    // };
+    
+        private List<PricingItem> SubscriptionItems { get; set; } = new List<PricingItem>();
+
+        private string CurrentLanguage = "en"; // اللغة الافتراضية هي الإنجليزية
+
+        // ✅ قواميس الترجمة
+        private Dictionary<string, string> TransEn = new()
+    {
+        { "Professional", "Professional" },
+        { "PriceFormat", "{0} USD / month" }, // تنسيق السعر بالإنجليزية
+        { "TotalPrice", "Total Price" }
+    };
+
+        private Dictionary<string, string> TransAr = new()
+    {
+        { "Professional", "احترافي" },
+        { "PriceFormat", "{0} دولار أمريكي / شهر" }, // تنسيق السعر بالعربية
+        { "TotalPrice", "السعر الإجمالي" }
+    };
+
+        // ✅ دالة الترجمة
+        private string GetTranslation(string key)
+        {
+            return CurrentLanguage == "ar"
+                ? TransAr.GetValueOrDefault(key, key)
+                : TransEn.GetValueOrDefault(key, key);
+        }
+
+        // ✅ دالة تحميل العناصر مع الترجمة
+        private void LoadSubscriptionItems()
+        {
+            SubscriptionItems = new List<PricingItem>
+        {
+            new PricingItem
+            {
+                ProductName = GetTranslation("Professional"),
+                Price = string.Format(GetTranslation("PriceFormat"), "$250.00"),
+                SubscriptionId = "price_1QldGsB7p59S5DF",
+                Quantity = 1,
+                TotalPrice = string.Format(GetTranslation("PriceFormat"), "$250.00")
+            },
+        };
+        }
+
+        // ✅ تغيير اللغة وتحديث البيانات
+        private void ChangeLanguage(string language)
+        {
+            if (language != "ar" && language != "en") language = "ar"; // السماح فقط بـ "ar" أو "en"
+            CurrentLanguage = language;
+            LoadSubscriptionItems(); // إعادة تحميل البيانات بالترجمة الجديدة
+            InvokeAsync(StateHasChanged); // تحديث الواجهة
+        }
+
+        // ✅ تحميل اللغة عند بدء التشغيل
+        protected override void OnInitialized()
+        {
+            languageService.OnLanguageChanged += ChangeLanguage;
+            LoadSubscriptionItems(); // تحميل البيانات عند التهيئة
+        }
+
+        protected override async void OnAfterRender(bool firstRender)
+        {
+            if (firstRender)
+            {
+                CurrentLanguage = await _manageLanguageService.GetLanguageAsync();
+                LoadSubscriptionItems(); // تحميل البيانات مجددًا
+                InvokeAsync(StateHasChanged);
+            }
+        }
+
+        // ✅ كلاس PricingItem
+        
+
+
+}

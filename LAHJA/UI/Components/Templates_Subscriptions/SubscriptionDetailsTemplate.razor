@@ -1,0 +1,296 @@
+﻿@using LAHJA.Data.UI.Components.Templates_Subscriptions
+@using MudBlazor
+
+ @using LAHJA.UI.Components.Templates_Subscriptions
+ @using Domain.ShareData
+@using LAHJA.Helpers.Services
+@using LAHJA.UI.Components.Templates_Subscriptions.CardTemp_Subscriptions
+@using LAHJA.Data.UI.Components.Templates_Subscriptions
+@inject NavigationManager Navigation
+ @inject LanguageService languageService
+@inject IManageLanguageService _manageLanguageService
+
+@using MudBlazor
+
+@inject ISnackbar Snackbar
+
+<SubscriptionDetailsCard SubscriptionDetailss="SubscriptionDetailss"
+    OninvoicesClick="HandleinvoicesClick" />
+
+@code {
+    // // بيانات ديناميكية
+    // public List<SubscriptionDetails> SubscriptionDetailss { get; set; } = new List<SubscriptionDetails>
+    // {
+    //     new SubscriptionDetails
+    //     {
+    //         Started="Started",
+    //         Invoice="Next invoice",
+    //         Cancellation ="Test mode auto-cancellation",
+    //         NextInvoice="$250.00 on Feb 27",
+    //         TestModeDate="Apr 27",
+    //        StartDate ="Jan 27"
+    //     },
+
+    // };
+ 
+        // قائمة تفاصيل الاشتراك
+    //     public List<SubscriptionDetails> SubscriptionDetailss { get; set; } = new List<SubscriptionDetails>
+    // {
+    //     new SubscriptionDetails
+    //     {
+    //         Started = "Started",
+    //         Invoice = "Next invoice",
+    //         Cancellation = "Test mode auto-cancellation",
+    //         NextInvoice = "$250.00 on Feb 27",
+    //         TestModeDate = "Apr 27",
+    //         StartDate = "Jan 27"
+    //     }
+    // };
+    private List<SubscriptionDetails> SubscriptionDetailss { get; set; } = new();
+
+
+    private string CurrentLanguage = "en"; // اللغة الافتراضية هي العربية
+
+    // القواميس للترجمات
+    private Dictionary<string, string> TransEn = new Dictionary<string, string>()
+    {
+        { "Started", "Started" },
+        { "Invoice", "Next invoice" },
+        { "Cancellation", "Test mode auto-cancellation" },
+        { "NextInvoice", "Next invoice" },
+        { "TestModeDate", "Test Mode Date" },
+        { "StartDate", "Start Date" }
+    };
+
+    private Dictionary<string, string> TransAr = new Dictionary<string, string>()
+    {
+        { "Started", "تم البدء" },
+        { "Invoice", "الفاتورة التالية" },
+        { "Cancellation", "إلغاء الوضع التجريبي التلقائي" },
+        { "NextInvoice", "250.00 دولار أمريكي في 27 فبراير" },
+        { "TestModeDate", "27 أبريل" },
+        { "StartDate", "27 يناير" }
+    };
+
+    // دالة للحصول على الترجمة بناءً على اللغة الحالية
+    private string GetTranslation(string key)
+    {
+        return CurrentLanguage == "ar"
+            ? TransAr.GetValueOrDefault(key, key)
+            : TransEn.GetValueOrDefault(key, key);
+    }
+
+    // دالة لتغيير اللغة
+
+    // دالة لتغيير اللغة
+    private void ChangeLanguage(string language)
+    {
+        if (language != "ar" && language != "en") language = "ar"; // السماح فقط بـ "ar" أو "en"
+        CurrentLanguage = language;
+
+        LoadSubscriptionDetailsData(); // إعادة تحميل البيانات بالترجمات الجديدة
+
+        InvokeAsync(StateHasChanged);
+        // تحديث الواجهة
+    }
+
+    // تحميل بيانات تفاصيل الاشتراك مع الترجمة
+    private void LoadSubscriptionDetailsData()
+    {
+        SubscriptionDetailss = new List<SubscriptionDetails>
+        {
+            new SubscriptionDetails
+            {
+                Started = GetTranslation("Started"),
+                Invoice = GetTranslation("Invoice"),
+                Cancellation = GetTranslation("Cancellation"),
+                NextInvoice = GetTranslatedValue("$250.00 on Feb 27"),
+                TestModeDate = GetTranslation("TestModeDate"),
+                StartDate = GetTranslation("StartDate")
+            }
+        };
+    }
+
+    private string GetTranslatedValue(string value)
+    {
+        return CurrentLanguage == "ar" ? TranslateValueToArabic(value) : value;
+    }
+
+    private string TranslateValueToArabic(string value)
+    {
+        // مثال لترجمة قيم العملة أو نصوص أخرى تحتاج إلى ترجمة
+        if (value == "$250.00 on Feb 27")
+            return "250.00 دولار أمريكي في 27 فبراير";
+
+        return value;
+    }
+    protected override void OnInitialized()
+    {
+        // تحميل البيانات عند التهيئة
+        LoadSubscriptionDetailsData();
+        languageService.OnLanguageChanged += ChangeLanguage;
+    }
+    protected override async void OnAfterRender(bool firstRender)
+
+    {
+        if (firstRender)
+        {
+            CurrentLanguage = await _manageLanguageService.GetLanguageAsync();
+            LoadSubscriptionDetailsData();
+            InvokeAsync(StateHasChanged);
+
+        }
+
+
+    }
+   
+    private void HandleinvoicesClick()
+    {
+        Navigation.NavigateTo("/"); // غير "target-page" إلى الصفحة المطلوبة
+    }
+}
+
+
+
+
+@*
+
+
+<MudPaper Width="100%" Class="py-3">
+    <MudGrid JustifyContent="SpaceBetween" AlignItems="Center">
+        <!-- القسم الأول: تاريخ البدء -->
+        <MudItem>
+            <MudStack Spacing="1">
+                <MudText Typo="Typo.h6" Class="px-4">Started</MudText>
+                <MudText Typo="Typo.body2" Class="px-4 mud-text-secondary" @onmouseover="ShowTooltip" @onmouseout="HideTooltip">
+
+                    Jan 27
+                </MudText>
+
+
+                @if (IsTooltipVisible)
+                {
+                    <div class="tooltip">
+                        هذا نص توضيحي عند التأشير
+                    </div>
+                }
+
+
+
+            </MudStack>
+        </MudItem>
+
+        <MudDivider Vertical="true" FlexItem="true" style="height: 100px !important; margin-top: 2%;" />
+
+        <!-- القسم الثاني: الفاتورة القادمة -->
+        <MudItem>
+            <MudStack Spacing="1">
+                <MudText Typo="Typo.h6" Class="px-4">Next invoice</MudText>
+                <MudText Typo="Typo.body2" Color="Color.Primary" Class="px-4 mud-text-secondary">
+                    $250.00 on Feb 27
+                </MudText>
+            </MudStack>
+        </MudItem>
+
+        <MudDivider Vertical="true" FlexItem="true" style="height: 100px !important; margin-top: 2%;" />
+
+        <!-- القسم الثالث: إلغاء الوضع التجريبي -->
+        <MudItem>
+            <MudStack Spacing="1">
+                <MudText Typo="Typo.h6" Class="px-4">
+                    Test mode auto-cancellation
+
+                    <MudIcon Icon="@Icons.Material.Filled.Info" class="mr-3"></MudIcon>
+
+                </MudText>
+                <MudText Typo="Typo.body2" Class="px-4 mud-text-secondary">Apr 27</MudText>
+            </MudStack>
+        </MudItem>
+    </MudGrid>
+</MudPaper>
+                     <MudIcon Icon="@Icons.Material.Filled.ErrorOutline" Color="Color.Primary" />
+                    *@
+@*
+<MudPaper Width="100%" Class="py-3">
+
+    <MudGrid JustifyContent="SpaceBetween" AlignItems="Center">
+        @foreach (var SubscriptionDetails in SubscriptionDetailss)
+            {
+        <!-- القسم الأول: تاريخ البدء -->
+        <MudItem>
+            <MudStack Spacing="1">
+                    <MudText Typo="Typo.h6" Class="px-4">@SubscriptionDetails.Started</MudText>
+
+
+                <MudTooltip>
+                    <ChildContent>
+                        <MudText Typo="Typo.body2" Class="px-4 mud-text-secondary">
+                                @SubscriptionDetails.StartDate
+
+                        </MudText>
+                    </ChildContent>
+                    <TooltipContent>
+
+                            <MudText Typo="Typo.h6">Time conversion</MudText>
+                            <MudDivider />
+                            <MudText Typo="Typo.body2">UTC: 2:23 AM   Jan 27, 2025</MudText>
+                            <MudText Typo="Typo.body2">
+                                +03 • Your customer: 2:23 AM   Jan 27, 2025
+                            </MudText>
+
+
+                    </TooltipContent>
+                </MudTooltip>
+            </MudStack>
+        </MudItem>
+
+        <MudDivider Vertical="true" FlexItem="true" style="height: 100px !important; margin-top: 2%;" />
+
+        <!-- القسم الثاني: الفاتورة القادمة -->
+        <MudItem>
+            <MudStack Spacing="1">
+                    <MudText Typo="Typo.h6" Class="px-4">  @SubscriptionDetails.Invoice</MudText>
+                <MudLink Href="#" OnClick="ShowActions" Typo="Typo.body2" Color="Color.Primary" Class="px-4 mud-text-secondary">
+
+                        @SubscriptionDetails.NextInvoice
+                </MudLink>
+
+            </MudStack>
+        </MudItem>
+
+        <MudDivider Vertical="true" FlexItem="true" style="height: 100px !important; margin-top: 2%;" />
+
+        <!-- القسم الثالث: إلغاء الوضع التجريبي -->
+        <MudItem>
+            <MudStack Spacing="1">
+                <MudText Typo="Typo.h6" Class="px-4">
+                        @SubscriptionDetails.Cancellation
+                    <MudIcon style="font-size: 16px; " Icon="@Icons.Material.Filled.Info" class="mr-3"></MudIcon>
+                </MudText>
+                    <MudText Typo="Typo.body2" Class="px-4 mud-text-secondary">@SubscriptionDetails.TestModeDate</MudText>
+            </MudStack>
+        </MudItem>
+            }
+    </MudGrid>
+</MudPaper>
+
+@code {
+    // البيانات المدخلة للمكون
+
+    [Parameter] public List<SubscriptionDetails> SubscriptionDetailss { get; set; } = new();
+
+    [Parameter] public EventCallback OninvoicesClick { get; set; }
+
+    // حالة ظهور التلميح
+
+    // أحداث التلميح
+
+
+
+    private async Task ShowActions()
+    {
+        // هنا نقوم بتنفيذ الحدث عند النقر على "Actions"
+        await OninvoicesClick.InvokeAsync();
+    }
+}
+ *@

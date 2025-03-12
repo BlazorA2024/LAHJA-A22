@@ -1,0 +1,445 @@
+@using LAHJA.Data.UI.Components.Templates_Subscriptions
+@inject NavigationManager Navigation
+@using MudBlazor
+@* 
+<style>
+    .MudGrida {
+        gap: 250px;
+    }
+</style>
+  *@
+@* 
+<MudPaper Class="pa-3">
+    <MudText Typo="Typo.h6" Class="px-4">
+        Subscription details
+    </MudText>
+    <MudDivider />
+
+
+    <MudPaper Width="100%" Class="py-3">
+        <MudGrid JustifyContent="SpaceBetween" Class="MudGrida">
+
+            <!-- «·⁄„Êœ «·√Ê· -->
+        <MudItem>
+            <MudStack Spacing="2">
+                <MudText Typo="Typo.body2" Class="mud-text-secondary">Customer</MudText>
+                <MudText Typo="Typo.body2" Class="mud-text-secondary">Created</MudText>
+                <MudText Typo="Typo.body2" Class="mud-text-secondary">Current period</MudText>
+                <MudText Typo="Typo.body2" Class="mud-text-secondary">ID</MudText>
+            </MudStack>
+        </MudItem>
+
+        <!-- «·⁄„Êœ «·À«‰Ì -->
+        <MudItem>
+            <MudStack Spacing="2">
+                <MudLink Href="#" Color="Color.Primary">
+                    <MudIcon Icon="@Icons.Material.Outlined.PeopleAlt" Color="Color.Primary" Class="mr-1" />
+                    admin@gmail.com 
+                </MudLink>
+                <MudTooltip>
+               <ChildContent>
+                    Jan 27, 5:23 AM
+                  </ChildContent>
+                      <TooltipContent>
+        <MudText Typo="Typo.h6">h6 title</MudText>
+        <MudText Typo="Typo.body2">body2 content</MudText>
+        <MudIcon Icon="@Icons.Material.Filled.Star" />
+    </TooltipContent>
+</MudTooltip>
+               
+
+                <MudText Typo="Typo.body2" Class="mud-text-secondary" >
+                    Jan 27 to Feb 27
+                </MudText>
+                  
+   
+            </MudStack>
+        </MudItem>
+
+        <!-- «·⁄„Êœ «·À«·À -->
+        <MudItem>
+            <MudStack Spacing="2">
+                <MudText Typo="Typo.body2" Class="mud-text-secondary">Discounts</MudText>
+                <MudText Typo="Typo.body2" Class="mud-text-secondary"> Billing method  </MudText>
+                <MudText Typo="Typo.body2" Class="mud-text-secondary">Payment method  </MudText>
+                <MudText Typo="Typo.body2" Class="mud-text-secondary"> Tax calculation</MudText>
+
+            </MudStack>
+        </MudItem>
+
+        <!-- «·⁄„Êœ «·—«»⁄ -->
+        <MudItem>
+            <MudStack Spacing="2">
+                <MudText Typo="Typo.body2" Class="mud-text-secondary"> No coupon applied</MudText>
+                <MudText Typo="Typo.body2" Class="mud-text-secondary"> Charge specific payment method </MudText>
+                <MudText Typo="Typo.body2" Class="mud-text-secondary">  ïïïï 4242 </MudText>
+                <MudText Typo="Typo.body2" Class="mud-text-secondary"> No tax rate applied</MudText>
+
+            </MudStack>
+        </MudItem>
+    </MudGrid>
+   </MudPaper>
+</MudPaper> *@
+
+@* 
+@typeparam TItem
+
+
+ <MudPaper Class="pa-3">
+    <MudText Typo="Typo.h6" Class="px-4">
+        Subscription details
+    </MudText>
+    <MudDivider />
+
+    <MudPaper Width="100%" Class="py-3">
+        <MudGrid JustifyContent="SpaceBetween" Class="MudGrida">
+            @if (SubscriptionData != null && SubscriptionData.Any())
+            {
+                <!-- «·⁄„Êœ «·√Ê· -->
+                <MudItem>
+                    <MudStack Spacing="2">
+                        @foreach (var item in SubscriptionData.Take(4))
+                        {
+                            <MudText Typo="Typo.body2" Class="mud-text-secondary">@item.Label</MudText>
+                        }
+                    </MudStack>
+                </MudItem>
+
+                <!-- «·⁄„Êœ «·À«‰Ì -->
+                <MudItem>
+                    <MudStack Spacing="2">
+                        @foreach (var item in SubscriptionData.Take(4))
+                        {
+                            @if (item.Label == "Customer") 
+                            {
+                                <MudLink Href="#" OnClick="ShowActions">
+
+                                   <MudIcon Icon="@Icons.Material.Outlined.PeopleAlt" Color="Color.Primary" Class="mr-1" />
+                                    @item.Value
+                                </MudLink>
+                            }
+                            else if (item.Label == "Created") 
+                            {
+
+
+
+
+                                <MudTooltip>
+                                    <ChildContent>
+                                        <MudText Typo="Typo.body2" Class="mud-text-secondary">
+                                            @item.Value
+                                        </MudText>
+                                    </ChildContent>
+                                    <TooltipContent >
+
+                                        <MudText Typo="Typo.h6">Time conversion</MudText>
+                                            <MudDivider />
+                                        <MudText Typo="Typo.body2">UTC: 2:23 AM   Jan 27, 2025</MudText>
+                                        <MudText Typo="Typo.body2">+03 ï Your customer: 2:23 AM   Jan 27, 2025
+                                        </MudText>
+                                        <MudText Typo="Typo.body2"> +03 ï Your customer: 2:23 AM   Jan 27, 2025
+                                        </MudText>
+
+                                        
+                                        
+                                        
+                                        
+                                       
+                                       
+                                    </TooltipContent>
+                                </MudTooltip>
+                            }
+                            <!--  Õﬁﬁ ≈–« ﬂ«‰ «·—ﬁ„ 12345 -->
+                            else if (item.Value == "sub_1QlhzSB7xaGIYuCbChhHGlbH")
+                            {
+                               
+                                <MudButton Color="Color.Secondary" StartIcon="@Icons.Material.Outlined.ContentCopy" style="font-family: Menlo, Consolas, monospace; font-size: 12px;">
+                                    @item.Value
+                                </MudButton>
+
+                            }
+                            else
+                            {
+                                <MudText Typo="Typo.body2" Class="mud-text-secondary">@item.Value</MudText>
+                            }
+                        }
+                    </MudStack>
+                </MudItem>
+
+                <!-- «·⁄„Êœ «·À«·À -->
+                <MudItem>
+                    <MudStack Spacing="2">
+                        @foreach (var item in SubscriptionData.Skip(4).Take(4))
+                        {
+                            <MudText Typo="Typo.body2" Class="mud-text-secondary">@item.Label</MudText>
+                        }
+                    </MudStack>
+                </MudItem>
+
+                <!-- «·⁄„Êœ «·—«»⁄ -->
+                <MudItem>
+                    <MudStack Spacing="2">
+                        @foreach (var item in SubscriptionData.Skip(4).Take(4))
+                        {
+                            <MudText Typo="Typo.body2" Class="mud-text-secondary">@item.Value</MudText>
+                        }
+                    </MudStack>
+                </MudItem>
+            }
+            else
+            {
+                <MudText Typo="Typo.body2" Class="mud-text-secondary">No subscription data available.</MudText>
+            }
+        </MudGrid>
+    </MudPaper>
+</MudPaper>
+
+@code {
+    [Parameter] public List<SubscriptionItem> SubscriptionData { get; set; } = new();
+    [Parameter] public EventCallback OnAdminsClick { get; set; }
+
+    // private void NavigateToPage()
+    // {
+    //     Navigation.NavigateTo("/target-page"); // €Ì— "target-page" ≈·Ï «·’›Õ… «·„ÿ·Ê»…
+    // }
+    // «·ÕœÀ ⁄‰œ «·‰ﬁ— ⁄·Ï “— «·≈Ã—«¡« 
+    private async Task ShowActions()
+    {
+        // Â‰« ‰ﬁÊ„ » ‰›Ì– «·ÕœÀ ⁄‰œ «·‰ﬁ— ⁄·Ï "Actions"
+        await OnAdminsClick.InvokeAsync();
+    }
+}
+ 
+
+ *@
+ @using LAHJA.UI.Components.Templates_Subscriptions
+ @using Domain.ShareData
+@using LAHJA.Helpers.Services
+@using LAHJA.UI.Components.Templates_Subscriptions.CardTemp_Subscriptions
+@using LAHJA.Data.UI.Components.Templates_Subscriptions
+@inject NavigationManager Navigation
+ @inject LanguageService languageService
+@inject IManageLanguageService _manageLanguageService
+@using MudBlazor
+
+@inject ISnackbar Snackbar
+<SubscriptionCardlis TItem="SubscriptionItem" SubscriptionData="SubscriptionData" OnAdminsClick="HandleAdminsClick" />
+<!-- «” œ⁄«¡ «·„ﬂÊ‰ Ê „—Ì— «·»Ì«‰«  ·Â -->
+@code {
+    // private List<SubscriptionItem> SubscriptionData { get; set; } = new();
+
+    // protected override void OnInitialized()
+    // {
+    //     SubscriptionData = new List<SubscriptionItem>
+    //     {
+    //         new SubscriptionItem { Label = "Customer", Value = "admin@example.com" },
+    //         new SubscriptionItem { Label = "Created", Value = "Jan 27, 5:23 AM" },
+    //         new SubscriptionItem { Label = "Current period", Value = "Jan 27 to Feb 27" },
+    //         new SubscriptionItem { Label = "ID", Value = "sub_1QlhzSB7xaGIYuCbChhHGlbH" },
+    //         new SubscriptionItem { Label = "Discounts", Value = "No coupon applied" },
+    //         new SubscriptionItem { Label = "Billing method", Value = "Charge specific payment method" },
+    //         new SubscriptionItem { Label = "Payment method", Value = "ïïïï 4242" },
+    //         new SubscriptionItem { Label = "Tax calculation", Value = "No tax rate applied" }
+    //     };
+    // }
+    //  private List<SubscriptionItem> SubscriptionData { get; set; } = new();
+
+    //     private string CurrentLanguage = "er"; // «··€… «·«› —«÷Ì… ÂÌ «·⁄—»Ì…
+
+    //     // «·ﬁÊ«„Ì” ·· —Ã„« 
+    //     private Dictionary<string, string> TransEn = new Dictionary<string, string>()
+    // {
+    //     { "Customer", "Customer" },
+    //     { "Created", "Created" },
+    //     { "Current period", "Current period" },
+    //     { "ID", "ID" },
+    //     { "Discounts", "Discounts" },
+    //     { "Billing method", "Billing method" },
+    //     { "Payment method", "Payment method" },
+    //     { "Tax calculation", "Tax calculation" }
+    // };
+
+    //     private Dictionary<string, string> TransAr = new Dictionary<string, string>()
+    // {
+    //     { "Customer", "«·⁄„Ì·" },
+    //     { "Created", " „ «·≈‰‘«¡" },
+    //     { "Current period", "«·› —… «·Õ«·Ì…" },
+    //     { "ID", "«·„⁄—›" },
+    //     { "Discounts", "«·Œ’Ê„« " },
+    //     { "Billing method", "ÿ—Ìﬁ… «·›Ê —…" },
+    //     { "Payment method", "ÿ—Ìﬁ… «·œ›⁄" },
+    //     { "Tax calculation", "Õ”«» «·÷—Ì»…" }
+    // };
+
+    //     private void LoadSubscriptionData()
+    //     {
+    //         //  Õ„Ì· »Ì«‰«  «·«‘ —«ﬂ „⁄ «” Œœ«„ «· —Ã„… ·ﬂ· ﬁÌ„…
+    //         SubscriptionData = new List<SubscriptionItem>
+    //     {
+    //         new SubscriptionItem { Label = GetTranslation("Customer"), Value = GetTranslatedValue("admin@example.com") },
+    //         new SubscriptionItem { Label = GetTranslation("Created"), Value = GetTranslatedValue("Jan 27, 5:23 AM") },
+    //         new SubscriptionItem { Label = GetTranslation("Current period"), Value = GetTranslatedValue("Jan 27 to Feb 27") },
+    //         new SubscriptionItem { Label = GetTranslation("ID"), Value = GetTranslatedValue("sub_1QlhzSB7xaGIYuCbChhHGlbH") },
+    //         new SubscriptionItem { Label = GetTranslation("Discounts"), Value = GetTranslatedValue("No coupon applied") },
+    //         new SubscriptionItem { Label = GetTranslation("Billing method"), Value = GetTranslatedValue("Charge specific payment method") },
+    //         new SubscriptionItem { Label = GetTranslation("Payment method"), Value = GetTranslatedValue("ïïïï 4242") },
+    //         new SubscriptionItem { Label = GetTranslation("Tax calculation"), Value = GetTranslatedValue("No tax rate applied") }
+    //     };
+    //     }
+
+    //     // œ«·… · —Ã„… «·ﬁÌ„ œ«Œ· «·‹ Value
+    //     private string GetTranslatedValue(string value)
+    //     {
+    //         return CurrentLanguage == "ar" ? TranslateValueToArabic(value) : value;
+    //     }
+
+    //     // œ«·… · —Ã„… «·ﬁÌ„ ≈·Ï «·⁄—»Ì… (Õ”» «·Õ«Ã…)
+    //     private string TranslateValueToArabic(string value)
+    //     {
+    //         // „À«· · €ÌÌ— «·‰’Ê’ «· Ì ﬁœ  Õ «Ã ≈·Ï  —Ã„…° Ì„ﬂ‰  ⁄œÌ·Â« Õ”» Õ«Ã ﬂ
+    //         if (value == "admin@example.com")
+    //             return "admin@example.com"; // ·« Õ«Ã… · —Ã„… «·»—Ìœ «·≈·ﬂ —Ê‰Ì
+    //         if (value == "Jan 27, 5:23 AM")
+    //             return "27 Ì‰«Ì—° 5:23 ’»«Õ«"; //  —Ã„… «· «—ÌŒ Ê«·Êﬁ 
+
+    //         // Ì„ﬂ‰ ≈÷«›… «·„“Ìœ „‰ «·ﬁÌ„ · —Ã„ Â«
+    //         return value; // ≈⁄«œ… «·ﬁÌ„… ﬂ„« ÂÌ ≈–« ·„  ﬂ‰ Â‰«ﬂ Õ«Ã… · —Ã„ Â«
+    //     }
+
+    //     // œ«·… ··Õ’Ê· ⁄·Ï «· —Ã„… »‰«¡ ⁄·Ï «··€… «·Õ«·Ì…
+    //     private string GetTranslation(string key)
+    //     {
+    //         return CurrentLanguage == "ar"
+    //             ? TransAr.GetValueOrDefault(key, key)
+    //             : TransEn.GetValueOrDefault(key, key);
+    //     }
+
+    //     // · €ÌÌ— «··€… œÌ‰«„ÌﬂÌ«
+    //     private void ChangeLanguage(string language)
+    //     {
+    //         CurrentLanguage = language;
+    //         LoadSubscriptionData(); // ≈⁄«œ…  Õ„Ì· «·»Ì«‰«  „⁄ «··€… «·ÃœÌœ…
+    //         StateHasChanged(); //  ÕœÌÀ «·Ê«ÃÂ… »⁄œ  €ÌÌ— «··€…
+    //     }
+
+    //     protected override void OnInitialized()
+    //     {
+    //         LoadSubscriptionData(); //  Õ„Ì· «·»Ì«‰«  ⁄‰œ «· ÂÌ∆…
+    //     }
+
+
+
+    private List<SubscriptionItem> SubscriptionData { get; set; } = new();
+
+    private string CurrentLanguage = "en"; // «··€… «·«› —«÷Ì… ÂÌ «·⁄—»Ì…
+
+    // «·ﬁÊ«„Ì” ·· —Ã„« 
+    private Dictionary<string, string> TransEn = new Dictionary<string, string>()
+    {
+        { "Customer", "Customer" },
+        { "Created", "Created" },
+        { "Current period", "Current period" },
+        { "ID", "ID" },
+        { "Discounts", "Discounts" },
+        { "Billing method", "Billing method" },
+        { "Payment method", "Payment method" },
+        { "Tax calculation", "Tax calculation" }
+    };
+
+    private Dictionary<string, string> TransAr = new Dictionary<string, string>()
+    {
+        { "Customer", "«·⁄„Ì·" },
+        { "Created", " „ «·≈‰‘«¡" },
+        { "Current period", "«·› —… «·Õ«·Ì…" },
+        { "ID", "«·„⁄—›" },
+        { "Discounts", "«·Œ’Ê„« " },
+        { "Billing method", "ÿ—Ìﬁ… «·›Ê —…" },
+        { "Payment method", "ÿ—Ìﬁ… «·œ›⁄" },
+        { "Tax calculation", "Õ”«» «·÷—Ì»…" }
+    };
+
+    private void LoadSubscriptionData()
+    {
+        SubscriptionData = new List<SubscriptionItem>
+        {
+            new SubscriptionItem { Label = GetTranslation("Customer"),UserLink = GetTranslation("UserLink"), Value = "admin@example.com" },
+            new SubscriptionItem { Label = GetTranslation("Created"), Value = GetTranslatedValue("Jan 27, 5:23 AM") },
+            new SubscriptionItem { Label = GetTranslation("Current period"), Value = GetTranslatedValue("Jan 27 to Feb 27") },
+            new SubscriptionItem { Label = GetTranslation("ID"), Value = GetTranslatedValue("sub_1QlhzSB7xaGIYuCbChhHGlbH") },
+            new SubscriptionItem { Label = GetTranslation("Discounts"), Value = GetTranslatedValue("No coupon applied") },
+            new SubscriptionItem { Label = GetTranslation("Billing method"), Value = GetTranslatedValue("Charge specific payment method") },
+            new SubscriptionItem { Label = GetTranslation("Payment method"), Value = GetTranslatedValue("ïïïï 4242") },
+            new SubscriptionItem { Label = GetTranslation("Tax calculation"), Value = GetTranslatedValue("No tax rate applied") }
+        };
+    }
+
+    private string GetTranslatedValue(string value)
+    {
+        return CurrentLanguage == "ar" ? TranslateValueToArabic(value) : value;
+    }
+
+    private string TranslateValueToArabic(string value)
+    {
+        var valueTranslations = new Dictionary<string, string>
+        {
+            { "Jan 27, 5:23 AM", "27 Ì‰«Ì—° 5:23 ’»«Õ«" },
+            { "Jan 27 to Feb 27", "27 Ì‰«Ì— ≈·Ï 27 ›»—«Ì—" },
+            { "No coupon applied", "·„ Ì „  ÿ»Ìﬁ √Ì ﬂÊ»Ê‰" },
+            { "Charge specific payment method", " Õ’Ì· »ÿ—Ìﬁ… œ›⁄ „Õœœ…" },
+            { "No tax rate applied", "·„ Ì „  ÿ»Ìﬁ ÷—Ì»…" }
+        };
+
+        return valueTranslations.GetValueOrDefault(value, value);
+    }
+
+    private string GetTranslation(string key)
+    {
+        return CurrentLanguage == "ar"
+            ? TransAr.GetValueOrDefault(key, key)
+            : TransEn.GetValueOrDefault(key, key);
+    }
+
+   
+    // œ«·… · €ÌÌ— «··€…
+    private void ChangeLanguage(string language)
+    {
+        if (language != "ar" && language != "en") language = "ar"; // «·”„«Õ ›ﬁÿ »‹ "ar" √Ê "en"
+        CurrentLanguage = language;
+
+        LoadSubscriptionData(); // ≈⁄«œ…  Õ„Ì· «·»Ì«‰«  »«· —Ã„«  «·ÃœÌœ…
+
+        InvokeAsync(StateHasChanged);
+        //  ÕœÌÀ «·Ê«ÃÂ…
+    }
+
+  
+    protected override void OnInitialized()
+    {
+        //  Õ„Ì· «·»Ì«‰«  ⁄‰œ «· ÂÌ∆…
+        LoadSubscriptionData();
+        languageService.OnLanguageChanged += ChangeLanguage;
+    }
+    protected override async void OnAfterRender(bool firstRender)
+
+    {
+        if (firstRender)
+        {
+            CurrentLanguage = await _manageLanguageService.GetLanguageAsync();
+            LoadSubscriptionData();
+            InvokeAsync(StateHasChanged);
+
+        }
+
+
+    }
+    private void HandleAdminsClick()
+    {
+        Navigation.NavigateTo("/Videa"); //  ÊÃÌÂ «·„” Œœ„ ··’›Õ… «·—∆Ì”Ì…
+    }
+
+    // private async Task ShowActions()
+    // {
+    //     // Â‰« ‰ﬁÊ„ » ‰›Ì– «·ÕœÀ ⁄‰œ «·‰ﬁ— ⁄·Ï "Actions"
+    //     await OnAdminsClick.InvokeAsync();
+    // }
+}

@@ -1,0 +1,231 @@
+﻿  @using LAHJA.UI.Components.Templates_Subscriptions
+ @using Domain.ShareData
+@using LAHJA.Helpers.Services
+@using LAHJA.UI.Components.Templates_Subscriptions.RepositoryCard
+@using LAHJA.Data.UI.Components.Templates_Subscriptions
+@inject NavigationManager Navigation
+ @inject LanguageService languageService
+@inject IManageLanguageService _manageLanguageService
+@using MudBlazor
+
+@inject ISnackbar Snackbar
+@* 
+@code {
+    [Parameter] public List<string> Categories { get; set; } = new();
+    [Parameter] public string SelectedCategory { get; set; } = "All";
+    [Parameter] public EventCallback<string> OnCategorySelected { get; set; }
+
+    private async Task SelectCategory(string category)
+    {
+        await OnCategorySelected.InvokeAsync(category);
+    }
+}
+
+<MudChipSet T="string" SelectionMode="SelectionMode.MultiSelection">
+    @foreach (var category in Categories)
+    {
+        <MudChip Variant="Variant.Filled"
+                 Color="@(category == SelectedCategory ? Color.Dark : Color.Default)"
+                 OnClick="() => SelectCategory(category)">
+            @category
+        </MudChip>
+    }
+</MudChipSet>
+ *@  
+@*  
+ <MudPaper Class="mt-7  space-y-8 md:mt-9" Elevation="1">
+    <MudCard Class="repo-card " Style="height: 200px;">
+        <MudCardContent Style="flex-grow: 0 !important; padding: 0px !important;" Class="flex items-center">
+            <MudChip Style="font-size: 10px; padding: 0px 2px !important; height: 25px !important;"
+                     Text="NEW" T="string"
+                     Class="mr-2 rounded-sm bg-yellow-200 text-xs font-semibold text-yellow-900 dark:bg-yellow-500/10 dark:text-yellow-500" />
+
+            <MudText Style="font-size: 13px;" Class="font-semibold text-black">
+                Follow your favorite AI creators
+            </MudText>
+
+            <MudButton Class="ml-auto" OnClick="RefreshList">
+                <MudIcon Icon="@Icons.Material.Filled.Refresh" Class="text-xs mr-0.5" />
+                <MudText Class="underline max-sm:hidden">Refresh List</MudText>
+            </MudButton>
+
+            <MudButton Class="ml-auto text-black sm:ml-4" OnClick="Close">
+                <MudIcon Icon="@Icons.Material.Filled.Close" Class="text-xl" />
+            </MudButton>
+        </MudCardContent>
+
+        @foreach (var item in creators)
+        {
+            <MudCardContent Style="flex-grow: 0 !important; padding: 2px 15px !important;" Class="flex items-center">
+                <MudAvatar Class="mr-1 w-4 h-4">
+                    <MudImage Src="@item.ImageUrl"></MudImage>
+                </MudAvatar>
+
+                <MudLink Style="font-size: 12px;" Href="@item.LinkUrl" Class="font-semibold text-black">
+                    @item.Name
+                </MudLink>
+
+                <MudText Style="font-size: 13px;">· @item.Description</MudText>
+
+                <MudChip Class="ml-auto" OnClick="() => Follow(item)" Text="Follow" T="string" />
+            </MudCardContent>
+        }
+    </MudCard>
+</MudPaper>
+
+@code {
+    [Parameter] public List<Creator> creators { get; set; } = new();
+    [Parameter] public EventCallback<Creator> OnFollowClick { get; set; }
+    [Parameter] public EventCallback OnRefreshClick { get; set; }
+    [Parameter] public EventCallback OnCloseClick { get; set; }
+
+    private async Task Follow(Creator creator)
+    {
+        await OnFollowClick.InvokeAsync(creator);
+    }
+
+    private async Task RefreshList()
+    {
+        await OnRefreshClick.InvokeAsync();
+    }
+
+    private async Task Close()
+    {
+        await OnCloseClick.InvokeAsync();
+    }
+} *@
+@* <MudPaper Class="mt-7 space-y-8 md:mt-9" Elevation="1">
+    <MudCard Class="repo-card" Style="height: 200px;">
+         @foreach (var item in creators1)
+        {
+            <MudCardContent Style="flex-grow: 0 !important; padding: 0px !important;" Class="flex items-center">
+                <MudChip Style="font-size: 10px; padding: 0px 2px !important; height: 25px !important; margin-left: 13px !important;}"
+                     Text="@item.Name" T="string"
+                     Class="mr-2 repo-card rounded-sm bg-yellow-200 text-xs font-semibold text-yellow-900 dark:bg-yellow-500/10 dark:text-yellow-500" />
+
+            <MudText Style="font-size: 13px;" Class="font-semibold">
+                    @item.Description
+            </MudText>
+
+            <MudButton Style="margin-right: -43% !important; font-size: 12px !important;" Class="ml-auto" OnClick="RefreshList">
+                <MudIcon Style="margin: 1px -6px !important; font-size: 13px !important;" Icon="@Icons.Material.Filled.Refresh" Class="text-xs mr-0.5" />
+                    <MudText Style=" font-size: 12px !important;" Class="underline max-sm:hidden">
+                        @item.DescriptionRefresh
+                    </MudText>
+            </MudButton>
+
+            <MudButton Class="ml-auto  sm:ml-4" OnClick="Close">
+                <MudIcon  Icon="@Icons.Material.Filled.Close" Class="text-xl" />
+            </MudButton>
+        </MudCardContent>
+        }
+        @foreach (var item in creators)
+        {
+            <MudCardContent Style="flex-grow: 0 !important; padding: 2px 15px !important;" Class="flex items-center">
+                <MudAvatar Class="mr-1 w-4 h-4">
+                    <MudImage Src="@item.ImageUrl"></MudImage>
+                </MudAvatar>
+
+                <MudLink Style="font-size: 12px;" Href="@item.LinkUrl" Class="font-semibold text-black">
+                    @item.Name
+                </MudLink>
+
+                <MudText Style="font-size: 12px;">· @item.Description</MudText>
+
+                <MudChip Color="Color.Dark" Class="ml-auto" OnClick="() => Follow(item)" Text="Follow" T="string" />
+            </MudCardContent>
+        }
+    </MudCard>
+</MudPaper>
+ *@
+<MudPaper Class="mt-7 space-y-8 md:mt-9" Elevation="1">
+    <MudCard Class="repo-card p-3 sm:p-5" Style="height: auto;">
+
+        @foreach (var item in creators1)
+        {
+            <MudCardContent Style="flex-grow: 0 !important; padding: 0px !important;"
+                            Class="flex flex-wrap items-center justify-between gap-2">
+
+                <!-- الشريحة (Chip) -->
+                <MudChip Style="font-size: 10px; padding: 2px 5px !important; height: 25px !important;"
+                         Text="@item.Name" T="string"
+                         Class="repo-card rounded-sm bg-yellow-200 text-xs font-semibold text-yellow-900 dark:bg-yellow-500/10 dark:text-yellow-500" />
+
+                <!-- النص -->
+                <MudText Style="font-size: 12px;" Class="font-semibold truncate">
+                    @item.Description
+                </MudText>
+
+                <!-- زر التحديث -->
+                <MudButton Style="font-size: 12px !important;"
+                           Class="ml-auto flex items-center max-sm:mr-0"
+                           OnClick="RefreshList">
+
+                    <MudIcon Style="font-size: 13px !important;" Icon="@Icons.Material.Filled.Refresh" />
+                    <MudText Style="font-size: 12px !important;" Class="underline max-sm:hidden">
+                        @item.DescriptionRefresh
+                    </MudText>
+                </MudButton>
+
+                <!-- زر الإغلاق -->
+                <MudButton Class="Middleutton ml-auto sm:ml-4" OnClick="Close">
+                    <MudIcon Icon="@Icons.Material.Filled.Close" Class="text-xl max-sm:text-lg" />
+                </MudButton>
+            </MudCardContent>
+        }
+
+        @foreach (var item in creators)
+        {
+            <MudCardContent Style="flex-grow: 0 !important; padding: 5px 10px !important;"
+                            Class="flex flex-wrap items-center gap-2 justify-between">
+
+                <!-- الصورة الرمزية -->
+                <MudAvatar Class="w-6 h-6 sm:w-8 sm:h-8">
+                    <MudImage Src="@item.ImageUrl" Alt="@item.Name"></MudImage>
+                </MudAvatar>
+
+                <!-- الرابط -->
+                <MudLink Style="font-size: 11px;"
+                         Href="@item.LinkUrl"
+                         Class="font-semibold text-black truncate">
+                    @item.Name
+                </MudLink>
+
+                <!-- النص -->
+                <MudText Style="font-size: 11px;" Class="truncate">· @item.Description</MudText>
+
+                <!-- زر المتابعة -->
+                <MudChip Color="Color.Dark"
+                         Class="ml-auto max-sm:text-xs max-sm:px-2 max-sm:py-1"
+                         OnClick="() => Follow(item)"
+                         Text="Follow" T="string" />
+            </MudCardContent>
+        }
+
+    </MudCard>
+</MudPaper>
+
+@code {
+    [Parameter] public List<Creator> creators { get; set; } = new();
+     [Parameter] public List<Creator> creators1 { get; set; } = new();
+
+    
+    [Parameter] public EventCallback<Creator> OnFollowClick { get; set; }
+    [Parameter] public EventCallback OnRefreshClick { get; set; }
+    [Parameter] public EventCallback OnCloseClick { get; set; }
+
+    private async Task Follow(Creator creator)
+    {
+        await OnFollowClick.InvokeAsync(creator);
+    }
+
+    private async Task RefreshList()
+    {
+        await OnRefreshClick.InvokeAsync();
+    }
+
+    private async Task Close()
+    {
+        await OnCloseClick.InvokeAsync();
+    }
+}

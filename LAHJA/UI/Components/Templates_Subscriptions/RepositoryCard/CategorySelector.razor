@@ -1,0 +1,32 @@
+﻿<h3>CategorySelector</h3>
+@using MudBlazor
+<MudChipSet T="string" SelectionMode="SelectionMode.MultiSelection" @bind-Value="SelectedCategories">
+    @foreach (var category in Categories)
+    {
+        <MudChip Color="@(SelectedCategories.Contains(category) ? Color.Dark : Color.Default)"
+                 OnClick="() => ToggleCategory(category)">
+            @category
+        </MudChip>
+    }
+</MudChipSet>
+
+@code {
+    [Parameter] public List<string> Categories { get; set; } = new();
+    [Parameter] public List<string> SelectedCategories { get; set; } = new();
+    [Parameter] public EventCallback<List<string>> SelectedCategoriesChanged { get; set; }
+
+    private void ToggleCategory(string category)
+    {
+        if (SelectedCategories.Contains(category))
+        {
+            SelectedCategories.Remove(category);
+        }
+        else
+        {
+            SelectedCategories.Add(category);
+        }
+
+        // لإعلام الصفحة الأم بأن الفئات المختارة قد تغيرت
+        SelectedCategoriesChanged.InvokeAsync(SelectedCategories);
+    }
+}

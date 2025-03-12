@@ -1,0 +1,258 @@
+﻿@page "/Videa"
+@using LAHJA.UI.Components.Templates_Subscriptions.Filtered_Episodes
+
+@* <MudContainer MaxWidth="MaxWidth.ExtraLarge"  Style="padding:2%" >
+ *@
+<MudGrid Justify="Justify.SpaceBetween">
+    <!-- القائمة اليسرى -->
+    <MudItem xs="12" md="2">
+    <LeftmenuTemplate />
+    </MudItem>
+
+    <!-- المحتوى في المنتصف -->
+  <MudItem xs="12" md="6">
+          
+<MiddleContentTemplate />
+
+    </MudItem>
+
+    
+    <!-- القائمة اليمنى -->
+    <MudItem xs="12" md="4">
+
+    <RightMenuTemplate />
+    </MudItem>
+
+</MudGrid>
+
+@* 
+    <style>
+            .ClassPaper{
+                border-radius: 15px !important;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1) !important;
+    margin: 20px auto;
+    overflow: hidden !important;
+    /* direction: rtl; */
+    max-width: 97% !important;
+    margin-right: -4% !important;
+    margin-top: -5%;
+         }
+
+    </style>
+<style>
+/* تقليل المسافات بين العناصر */
+.mt-2 { margin-top: 0.5rem; }
+.space-y-2 { margin-bottom: 0.5rem; }
+ 
+/* تصغير حجم الكارد */
+.repo-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    transition: box-shadow 0.2s ease-in-out;
+}
+
+.repo-card:hover {
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* تصغير حجم الخطوط */
+.repo-name {
+    font-size: 10px;
+        margin: 0px !important;
+ }
+
+.repo-details {
+    font-size: 9px;
+}
+
+/* تصغير حجم الصورة */
+.mud-avatar {
+    width: 22px !important;
+    height: 22px !important;
+}
+
+/* تصغير الأيقونات */
+.mud-icon {
+    font-size: 12px;
+}
+
+/* ضبط التباعد بين الفواصل */
+.px-0.5 {
+    padding-left: 1px;
+    padding-right: 1px;
+}
+
+/* تحسين الوضع المظلم */
+.dark .repo-name { color: #fff; }
+.dark .repo-details { color: #bdbdbd; }
+
+/* تصغير التصميم على الشاشات الصغيرة */
+
+<MudItem xs="12" md="3">
+
+     <MudPaper Elevation="4" Class="p-4 ">
+
+            <MudMenu Label="Following 0 " Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Translate" EndIcon="@Icons.Material.Filled.KeyboardArrowDown">
+                <MudMenuItem Label="Item 1" />
+                <MudMenuItem Label="Item 2" />
+                <MudMenuItem Label="Item 3" />
+            </MudMenu>
+
+
+</style>
+ *@
+ 
+ @code {
+    // // private string SelectedCategory = "All";
+    // // private List<string> Categories = new() { "All", "Text-to-Video", "AI Model" };
+
+    // // public class Repository
+    // // {
+    // //     public string Name { get; set; }
+    // //     public string ImageUrl { get; set; }
+    // //     public string Link { get; set; }
+    // //     public string Category { get; set; }
+    // //     public DateTime UpdatedAt { get; set; }
+    // //     public int Downloads { get; set; }
+    // //     public int Likes { get; set; }
+
+    // //     public string GetRelativeTime()
+    // //     {
+    // //         var diff = DateTime.UtcNow - UpdatedAt;
+    // //         if (diff.TotalDays >= 1) return $"{(int)diff.TotalDays} days ago";
+    // //         if (diff.TotalHours >= 1) return $"{(int)diff.TotalHours} hours ago";
+    // //         return $"{(int)diff.TotalMinutes} minutes ago";
+    // //     }
+    // // }
+
+    // // private List<Repository> Repositories = new()
+    // // {
+    // //     new Repository
+    // //     {
+    // //         Name = "Wan-AI/Wan2.1-T2V-14B",
+    // //         ImageUrl = "https:cdn-avatars.huggingface.co/v1/production/uploads/67b610677ea7952def8b29c6/N6jQbbeaa_FcUY-wI1dgG.png",
+    // //         Link = "/Wan-AI/Wan2.1-T2V-14B",
+    // //         Category = "Text-to-Video",
+    // //         UpdatedAt = DateTime.UtcNow.AddDays(-4),
+    // //         Downloads = 142000,
+    // //         Likes = 662
+    // //     },
+    // //     new Repository
+    // //     {
+    // //         Name = "Example-AI/Model-XYZ",
+    // //         ImageUrl = "https:via.placeholder.com/50",
+    // //         Link = "/Example-AI/Model-XYZ",
+    // //         Category = "AI Model",
+    // //         UpdatedAt = DateTime.UtcNow.AddHours(-10),
+    // //         Downloads = 78000,
+    // //         Likes = 320
+    // //     }
+    // // };
+
+    // // private IEnumerable<Repository> FilteredRepositories => 
+    // //     SelectedCategory == "All" ? Repositories : Repositories.Where(r => r.Category == SelectedCategory);
+
+    // // private void OnCategoryChanged(IEnumerable<string> values)
+    // // {
+    // //     SelectedCategory = values.FirstOrDefault() ?? "All";
+    // // }
+    // //   private void OnCategoryChanged(HashSet<string> selectedCategories)
+    // // {
+    // //     تنفيذ المنطق عند تغيير الفئة
+    // // }
+    // // private string GetButtonClass(string category) =>
+    // //     SelectedCategory == category 
+    // //         ? "bg-black text-white dark:bg-gray-800"
+    // //         : "text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-900 dark:hover:text-gray-300";
+}
+
+
+@* 
+<MudContainer Class="overflow-hidden py-8 lg:flex-1 lg:px-8 lg:pb-14">
+    <!-- عنوان الزر -->
+    <MudStack Direction="Row" AlignItems="AlignItems.Center">
+        <MudButton Class="font-semibold leading-none flex items-center text-xl lg:text-base pr-4" Type="Button">
+            <MudStack Direction="Row" AlignItems="AlignItems.Center" Gap="2px">
+                <MudIcon Icon="@Icon1" Class="text-xs rounded-full bg-gray-200 dark:bg-gray-800 border-white dark:border-gray-950" />
+                <MudIcon Icon="@Icon2" Class="text-xs rounded-full bg-gray-200 dark:bg-gray-800 border-white dark:border-gray-950" />
+                <MudIcon Icon="@Icon3" Class="text-xs rounded-full bg-gray-200 dark:bg-gray-800 border-white dark:border-gray-950" />
+            </MudStack>
+            <MudText Class="ml-2.5 font-normal text-gray-400">Following</MudText>
+            <MudText Class="ml-2.5 font-normal text-gray-400">0</MudText>
+            <MudIcon Icon="mdi:chevron-down" Class="text-gray-500 -mr-1" />
+        </MudButton>
+    </MudStack>
+
+    <!-- قائمة الأزرار -->
+   <MudStack Direction="Row" Wrap="true" Gap="1" Class="text-sm">
+        <MudButton Class="rounded-lg px-2 bg-black text-white dark:bg-gray-800" OnClick="() => FilterItems('All')">All</MudButton>
+        <MudButton Class="rounded-lg px-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-900 dark:hover:text-gray-300" OnClick="() => FilterItems('Models')">Models</MudButton>
+        <MudButton Class="rounded-lg px-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-900 dark:hover:text-gray-300" OnClick="() => FilterItems('Datasets')">Datasets</MudButton>
+        <MudButton Class="rounded-lg px-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-900 dark:hover:text-gray-300" OnClick="() => FilterItems('Spaces')">Spaces</MudButton>
+        <MudButton Class="rounded-lg px-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-900 dark:hover:text-gray-300" OnClick="() => FilterItems('Papers')">Papers</MudButton>
+        <MudButton Class="rounded-lg px-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-900 dark:hover:text-gray-300" OnClick="() => FilterItems('Collections')">Collections</MudButton>
+        <MudButton Class="rounded-lg px-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-900 dark:hover:text-gray-300" OnClick="() => FilterItems('Community')">Community</MudButton>
+        <MudButton Class="rounded-lg px-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-900 dark:hover:text-gray-300" OnClick="() => FilterItems('Posts')">Posts</MudButton>
+        <MudButton Class="rounded-lg px-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-900 dark:hover:text-gray-300" OnClick="() => FilterItems('Upvotes')">Upvotes</MudButton>
+        <MudButton Class="rounded-lg px-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-900 dark:hover:text-gray-300" OnClick="() => FilterItems('Likes')">Likes</MudButton>
+        <MudButton Class="rounded-lg px-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-900 dark:hover:text-gray-300" OnClick="() => FilterItems('Articles')">Articles</MudButton>
+    </MudStack> 
+
+    <!-- العناصر التي يجب متابعتها -->
+    <MudStack Class="mt-7 space-y-8 md:mt-9">
+        <MudCard Class="shadow-xs mt-6 rounded-xl border border-gray-100 px-3.5 pb-2.5 pt-3">
+            <MudCardContent>
+                <MudStack Direction="Row" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
+                    <MudText Class="font-semibold text-black">
+                        <MudChip T="string" Class="mr-2" Color="Color.Warning" />
+                        Follow your favorite AI creators
+                    </MudText>
+                    <MudIconButton Icon="mdi:refresh" Color="Color.Secondary" />
+                </MudStack>
+            </MudCardContent>
+
+            <!-- تحديد النوع T لـ MudList -->
+            <MudList T="String">
+                <MudListItem>
+                    <MudAvatar Class="mr-2" Src="https://cdn-avatars.huggingface.co/v1/production/uploads/63491dc83d8dc83a55cb749c/IoqJrOIaEnYO_S7si4KGp.jpeg" />
+                    <MudText>
+                        <MudLink Href="/bwang0911" Class="text-gray-600 hover:underline">bwang0911</MudLink>
+                        <MudText Class="text-gray-600">· Research on sentence embedding models</MudText>
+                    </MudText>
+                    <MudButton Class="ml-auto" Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small">Follow</MudButton>
+                </MudListItem>
+
+                <MudListItem>
+                    <MudAvatar Class="mr-2" Src="https://cdn-avatars.huggingface.co/v1/production/uploads/5f17f0a0925b9863e28ad517/fXIY5i9RLsIa1v3CCuVtt.jpeg" />
+                    <MudText>
+                        <MudLink Href="/victor" Class="text-gray-600 hover:underline">victor</MudLink>
+                        <MudText Class="text-gray-600">· Person building this platform</MudText>
+                    </MudText>
+                    <MudButton Class="ml-auto" Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small">Follow</MudButton>
+                </MudListItem>
+
+                <MudListItem>
+                    <MudAvatar Class="mr-2" Src="https://cdn-avatars.huggingface.co/v1/production/uploads/65bb837dbfb878f46c77de4c/UVtVbF_3rdt0DC8xTkpL1.jpeg" />
+                    <MudText>
+                        <MudLink Href="/prithivMLmods" Class="text-gray-600 hover:underline">prithivMLmods</MudLink>
+                        <MudText Class="text-gray-600">· Realism-driven image generation, and more</MudText>
+                    </MudText>
+                    <MudButton Class="ml-auto" Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small">Follow</MudButton>
+                </MudListItem>
+            </MudList>
+        </MudCard>
+    </MudStack>
+</MudContainer>
+
+@code {
+    private string Icon1 = "mdi:circle";
+    private string Icon2 = "mdi:circle";
+    private string Icon3 = "mdi:circle";
+
+    private void FilterItems(string category)
+    {
+        // تنفيذ المنطق لتصفية العناصر هنا
+        Console.WriteLine($"Filter applied: {category}");
+    }
+}
+ *@

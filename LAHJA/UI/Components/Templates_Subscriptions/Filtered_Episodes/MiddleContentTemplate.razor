@@ -1,0 +1,724 @@
+﻿  @using LAHJA.UI.Components.Templates_Subscriptions
+ @using Domain.ShareData
+@using LAHJA.Helpers.Services
+@using LAHJA.UI.Components.Templates_Subscriptions.RepositoryCard
+@using LAHJA.Data.UI.Components.Templates_Subscriptions
+@inject NavigationManager Navigation
+ @inject LanguageService languageService
+@inject IManageLanguageService _manageLanguageService
+@using MudBlazor
+@inject IJSRuntime JS
+
+@inject ISnackbar Snackbar
+
+<style>
+    .nchip-filled {
+        background-color: #ffffffee !important;
+    }
+
+    .repo-card {
+        border: 1px solid #e0e0e0;
+        border-radius: 6px;
+        transition: box-shadow 0.2s ease-in-out;
+    }
+</style>   <!-- المحتوى في المنتصف -->
+@* 
+<MudItem xs="12" md="6">
+
+    <MudPaper Elevation="0" Class="p-4">
+        <MudMenu Label="Following 0 " StartIcon="@Icons.Material.Filled.SelfImprovement" EndIcon="@Icons.Material.Filled.KeyboardArrowDown">
+            <MudMenuItem> Following  </MudMenuItem>
+            <MudMenuItem> Following  </MudMenuItem>
+            <MudMenuItem> Following  </MudMenuItem>
+
+        </MudMenu>
+
+
+   
+<MudChipSet Style="" T="string" SelectionMode="SelectionMode.MultiSelection">
+    @foreach (var category in Categories)
+    {
+        <MudChip Class=""
+                 Color="@(category == SelectedCategory ? Color.Dark : Color.Default)"
+                 OnClick="() => SelectCategory(category)">
+            @category
+        </MudChip>
+    }
+</MudChipSet>
+
+@if (FilteredCreators.Any())
+{
+    <MiddleContentCard creators1="creators1"
+                       creators="FilteredCreators"
+                       OnFollowClick="OnFollowClick"
+                       OnRefreshClick="OnRefreshClick"
+                       OnCloseClick="OnCloseClick" />
+}
+else
+{
+    <MudText Color="Color.Secondary">لا يوجد مستودعات لهذه الفئة.</MudText>
+}
+    </MudPaper>
+</MudItem>
+@code {
+    private List<string> Categories = new() { "All", "Models", "Primary", "Warning", "Info", "Datasets", "Spaces", "Warning", "Models", "Primary" };
+    private string SelectedCategory = "All";
+    private List<Creator> creators1 = new()
+    {
+        new Creator
+        {
+            Name = "NEW",
+            DescriptionRefresh = "Refresh List",
+            Description = "Follow your favorite AI creators",
+            Category = "Models"
+        },
+    };
+    private List<Creator> creators = new()
+    {
+        new Creator
+        {
+            Name = "stabilityai",
+            LinkUrl = "/stabilityai",
+            ImageUrl = "https://cdn-avatars.huggingface.co/v1/production/uploads/643feeb67bc3fbde1385cc25/7vmYr2XwVcPtkLzac_jxQ.png",
+            Description = "Sharing open-source image generation models",
+            Category = "Models"
+        },
+        new Creator
+        {
+            Name = "huggingface",
+            LinkUrl = "/huggingface",
+            ImageUrl = "https://cdn-avatars.huggingface.co/v1/production/uploads/1583856921041-5dd96eb166059660ed1ee413.png",
+            Description = "Leading platform for sharing AI models",
+            Category = "Datasets"
+        },
+        new Creator
+        {
+            Name = "Qwen",
+            ImageUrl = "/Qwen",
+            LinkUrl = "https://cdn-avatars.huggingface.co/v1/production/uploads/620760a26e3b7210c2ff1943/-s1gyJfvbE1RgO5iBeNOi.png",
+            Description = "Developing advanced large language and vision models",
+            Category = "Spaces"
+        }
+    };
+
+    private List<Creator> FilteredCreators =>
+        SelectedCategory == "All" ? creators : creators.Where(c => c.Category == SelectedCategory).ToList();
+
+    private void SelectCategory(string category)
+    {
+        SelectedCategory = category;
+    }
+
+    private async Task OnFollowClick(Creator creator)
+    {
+        // هنا يتم تنفيذ الحدث عند النقر على "Follow"
+        Console.WriteLine($"You followed {creator.Name}!");
+    }
+
+    private async Task OnRefreshClick()
+    {
+        // تنفيذ حدث تحديث القائمة
+        Console.WriteLine("List has been refreshed!");
+    }
+
+    // private async Task OnCloseClick()
+    // {
+    //     // تنفيذ حدث إغلاق
+    //     Console.WriteLine("Closed the card!");
+    // }
+    private async Task OnCloseClick()
+    {
+        // مسح القائمة لجعلها فارغة
+        creators.Clear();
+
+        // التأكد من إعادة تحميل الواجهة بعد التحديث
+        StateHasChanged();
+
+        Console.WriteLine("Closed the card and cleared the list!");
+    }
+
+}
+ *@
+
+
+    <MudPaper Elevation="0" Class="p-4 ">
+        <MudMenu Label="Following 0" StartIcon="@Icons.Material.Filled.SelfImprovement" EndIcon="@Icons.Material.Filled.KeyboardArrowDown">
+            <MudMenuItem Icon="@Icons.Material.Filled.Deblur">Following</MudMenuItem>
+            <MudMenuItem Icon="@Icons.Material.Filled.SelfImprovement">Following</MudMenuItem>
+        </MudMenu>
+
+        <MudChipSet T="string" SelectionMode="SelectionMode.MultiSelection">
+            @foreach (var category in Categories)
+            {
+                <MudChip Color="@(category == SelectedCategory ? Color.Dark : Color.Default)"
+                         OnClick="() => SelectCategory(category)">
+                    @category
+                </MudChip>
+            }
+        </MudChipSet>
+
+
+        @if (FilteredCreators.Any())
+        {
+            <MiddleContentCard creators1="creators1"
+                               creators="FilteredCreators"
+                               OnFollowClick="OnFollowClick"
+                               OnRefreshClick="OnRefreshClick"
+                               OnCloseClick="OnCloseClick" />
+        }
+        else
+        {
+            <MudText Color="Color.Secondary">لا يوجد مستودعات لهذه الفئة.</MudText>
+        }
+    </MudPaper>
+
+@code {
+    private string CurrentLanguage = "en"; // اللغة الافتراضية
+
+    // قاموس الترجمة الإنجليزية
+    private Dictionary<string, string> TransEn = new Dictionary<string, string>()
+{
+    { "All", "All" },
+    { "Models", "Models" },
+    { "Primary", "Primary" },
+    { "Warning", "Warning" },
+    { "Info", "Info" },
+    { "Datasets", "Datasets" },
+    { "Spaces", "Spaces" },
+    { "NEW", "NEW" },
+    { "Refresh List", "Refresh List" },
+    { "Follow your favorite AI creators", "Follow your favorite AI creators" },
+    { "Stabilityai", "Stabilityai" },
+    { "Sharing open-source image generation models", "Sharing open-source image generation models" },
+    { "Huggingface", "Huggingface" },
+    { "Leading platform for sharing AI models", "Leading platform for sharing AI models" },
+    { "Qwen", "Qwen" },
+    { "Developing advanced large language models", "Developing advanced large language models" }
+};
+
+    // قاموس الترجمة العربية
+    private Dictionary<string, string> TransAr = new Dictionary<string, string>()
+{
+    { "All", "الكل" },
+    { "Models", "النماذج" },
+    { "Primary", "أساسي" },
+    { "Warning", "تحذير" },
+    { "Info", "معلومات" },
+    { "Datasets", "مجموعات البيانات" },
+    { "Spaces", "المساحات" },
+    { "NEW", "جديد" },
+    { "Refresh List", "تحديث القائمة" },
+    { "Follow your favorite AI creators", " منشئي الذكاء الاصطناعي المفضل لديك" },
+    { "Stabilityai", "الاستقرار" },
+    { "Sharing open-source image generation models", "مشاركة نماذج إنشاء الصور مفتوحة المصدر" },
+    { "Huggingface", "وجه العناق" },
+    { "Leading platform for sharing AI models", "المنصة الرائدة لمشاركة نماذج الذكاء الاصطناعي" },
+    { "Qwen", "كوين" },
+    { "Developing advanced large language models", "تطوير نماذج لغوية ضخمة متقدمة" }
+};
+
+    // استرجاع الترجمة بناءً على اللغة الحالية
+    private string GetTranslation(string key)
+    {
+        return CurrentLanguage == "ar" ? TransAr.GetValueOrDefault(key, key) : TransEn.GetValueOrDefault(key, key);
+    }
+
+    // قائمة التصنيفات مع الترجمة
+    private List<string> Categories = new();
+    private string SelectedCategory = "All";
+    private bool ShowCreators = true; // للتحكم في عرض القائمة
+
+    // قائمة المنشئين
+    private List<Creator> creators1 = new();
+    private List<Creator> creators = new();
+
+    // تحميل البيانات بالترجمة الصحيحة
+    private void LoadCreators()
+    {
+        Categories = new()
+    {
+        GetTranslation("All"),
+        GetTranslation("Models"),
+        GetTranslation("Primary"),
+        GetTranslation("Warning"),
+        GetTranslation("Info"),
+        GetTranslation("Datasets"),
+        GetTranslation("Spaces")
+    };
+
+        creators1 = new()
+    {
+        new Creator
+        {
+            Name = GetTranslation("NEW"),
+            DescriptionRefresh = GetTranslation("Refresh List"),
+            Description = GetTranslation("Follow your favorite AI creators"),
+            Category = GetTranslation("Models")
+        }
+    };
+
+        creators = new()
+    {
+        new Creator
+        {
+            Name = GetTranslation("Stabilityai"),
+            LinkUrl = "/stabilityai",
+            ImageUrl = "https://cdn-avatars.huggingface.co/v1/production/uploads/643feeb67bc3fbde1385cc25/7vmYr2XwVcPtkLzac_jxQ.png",
+            Description = GetTranslation("Sharing open-source image generation models"),
+            Category = GetTranslation("Models")
+        },
+        new Creator
+        {
+            Name =GetTranslation("Huggingface"),
+            LinkUrl = "/huggingface",
+            ImageUrl = "https://cdn-avatars.huggingface.co/v1/production/uploads/1583856921041-5dd96eb166059660ed1ee413.png",
+            Description = GetTranslation("Leading platform for sharing AI models"),
+            Category = GetTranslation("Datasets")
+        },
+        new Creator
+        {
+            Name = GetTranslation("Qwen"),
+            LinkUrl = "/Qwen",
+            ImageUrl = "https://cdn-avatars.huggingface.co/v1/production/uploads/620760a26e3b7210c2ff1943/-s1gyJfvbE1RgO5iBeNOi.png",
+            Description = GetTranslation("Developing advanced large language models"),
+            Category = GetTranslation("Spaces")
+        }
+    };
+    }
+
+    // تصفية المنشئين حسب الفئة المختارة
+    private List<Creator> FilteredCreators =>
+        ShowCreators && SelectedCategory == GetTranslation("All")
+            ? creators
+            : creators.Where(c => c.Category == SelectedCategory).ToList();
+
+    // دالة تغيير اللغة
+    // private void ChangeLanguage(string language)
+    // {
+    //     if (language != "ar" && language != "en") language = "en"; // السماح فقط بـ "ar" أو "en"
+    //     CurrentLanguage = language;
+
+    //     LoadCreators(); // إعادة تحميل البيانات بالترجمات الجديدة
+    //     InvokeAsync(StateHasChanged);
+    // }
+   
+   
+        private async Task ChangeLanguage(string language)
+        {
+            if (language != "ar" && language != "en") language = "en";
+            CurrentLanguage = language;
+
+            string dir = CurrentLanguage == "ar" ? "rtl" : "ltr";
+            await JS.InvokeVoidAsync("eval", $"document.body.dir = '{dir}';"); // ✅ استدعاء JavaScript بعد إصلاح الخطأ
+
+            StateHasChanged(); // تحديث الواجهة
+        }
+    
+
+    // دالة اختيار الفئة
+    private void SelectCategory(string category)
+    {
+        SelectedCategory = category;
+        ShowCreators = true; // عند تحديد فئة، نظهر العناصر
+        StateHasChanged();
+    }
+
+    // زر المتابعة
+    private async Task OnFollowClick(Creator creator)
+    {
+        Console.WriteLine($"You followed {creator.Name}!");
+    }
+
+    // زر التحديث
+    private async Task OnRefreshClick()
+    {
+        Console.WriteLine(GetTranslation("Refresh List"));
+
+        creators = new List<Creator>
+    {
+        new Creator
+        {
+            Name = "New Creator 1",
+            LinkUrl = "/newcreator1",
+            ImageUrl = "https://cdn-icons-png.flaticon.com/512/149/149071.png",
+            Description = GetTranslation("This is a new creator added"),
+            Category = GetTranslation("Models")
+        },
+        new Creator
+        {
+            Name = "New Creator 2",
+            LinkUrl = "/newcreator2",
+            ImageUrl = "https://cdn-icons-png.flaticon.com/512/149/149071.png",
+            Description = GetTranslation("Another new AI creator"),
+            Category = GetTranslation("Datasets")
+        }
+    };
+
+        StateHasChanged();
+    }
+
+    // زر الإغلاق
+    private async Task OnCloseClick()
+    {
+        ShowCreators = false;
+        StateHasChanged();
+    }
+
+    // تحميل البيانات عند التهيئة
+    protected override void OnInitialized()
+    {
+        LoadCreators();
+    }
+    // إعادة تحميل البيانات بعد تغيير اللغة
+    protected override async void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            CurrentLanguage = await _manageLanguageService.GetLanguageAsync();
+            LoadCreators();
+            InvokeAsync(StateHasChanged);
+        }
+    }
+    // private List<string> Categories = new() { "All", "Models", "Primary", "Warning", "Info", "Datasets", "Spaces" };
+    // private string SelectedCategory = "All";
+    // private bool ShowCreators = true; // للتحكم في عرض القائمة
+    // private List<Creator> creators1 = new()
+    // {
+    //     new Creator
+    //     {
+    //         Name = "NEW",
+    //         DescriptionRefresh = "Refresh List",
+    //         Description = "Follow your favorite AI creators",
+    //         Category = "Models"
+    //     },
+    // };
+    // private List<Creator> creators = new()
+    // {
+    //     new Creator
+    //     {
+    //         Name = "stabilityai",
+    //         LinkUrl = "/stabilityai",
+    //         ImageUrl = "https://cdn-avatars.huggingface.co/v1/production/uploads/643feeb67bc3fbde1385cc25/7vmYr2XwVcPtkLzac_jxQ.png",
+    //         Description = "Sharing open-source image generation models",
+    //         Category = "Models"
+    //     },
+    //     new Creator
+    //     {
+    //         Name = "huggingface",
+    //         LinkUrl = "/huggingface",
+    //         ImageUrl = "https://cdn-avatars.huggingface.co/v1/production/uploads/1583856921041-5dd96eb166059660ed1ee413.png",
+    //         Description = "Leading platform for sharing AI models",
+    //         Category = "Datasets"
+    //     },
+    //     new Creator
+    //     {
+    //         Name = "Qwen",
+    //         LinkUrl = "/Qwen",
+    //         ImageUrl = "https://cdn-avatars.huggingface.co/v1/production/uploads/620760a26e3b7210c2ff1943/-s1gyJfvbE1RgO5iBeNOi.png",
+    //         Description = "Developing advanced large language  models",
+    //         Category = "Spaces"
+    //     }
+    // };
+
+    // private List<Creator> FilteredCreators =>
+    //     ShowCreators && SelectedCategory == "All"
+    //         ? creators
+    //         : creators.Where(c => c.Category == SelectedCategory).ToList();
+
+    // private void SelectCategory(string category)
+    // {
+    //     SelectedCategory = category;
+    //     ShowCreators = true; // عند تحديد فئة، نظهر العناصر
+    
+    //     StateHasChanged();
+    // }
+
+    // private async Task OnFollowClick(Creator creator)
+    // {
+    //     Console.WriteLine($"You followed {creator.Name}!");
+    // }
+
+    // private async Task OnRefreshClick()
+    // {
+    //     Console.WriteLine("تم تحديث القائمة!");
+
+    //     // تحديث البيانات بقائمة جديدة
+    //     creators = new List<Creator>
+    //     {
+    //         new Creator
+    //         {
+    //             Name = "New Creator 1",
+    //             LinkUrl = "/newcreator1",
+    //             ImageUrl = "https://cdn-icons-png.flaticon.com/512/149/149071.png",
+    //             Description = "This is a new creator added",
+    //             Category = "Models"
+    //         },
+    //         new Creator
+    //         {
+    //             Name = "New Creator 2",
+    //             LinkUrl = "/newcreator2",
+    //             ImageUrl = "https://cdn-icons-png.flaticon.com/512/149/149071.png",
+    //             Description = "Another new AI creator",
+    //             Category = "Datasets"
+    //         }
+    //     };
+
+    //     // تحديث الواجهة
+    //     StateHasChanged();
+    // }
+
+    // private async Task OnCloseClick()
+    // {
+    //     ShowCreators = false; // عند النقر على الإغلاق، نخفي القائمة
+    //     StateHasChanged(); // تحديث الواجهة
+    // }
+}
+
+@* 
+<!-- أزرار الفئات -->
+
+<MudChipSet T="string" SelectionMode="SelectionMode.MultiSelection">
+    @foreach (var category in Categories)
+    {
+        <MudChip Variant="Variant.Filled"
+                 Color="@(category == SelectedCategory ? Color.Dark : Color.Default)"
+                 OnClick="() => SelectCategory(category)">
+            @category
+        </MudChip>
+    }
+</MudChipSet>
+  @if (FilteredRepositories.Any())
+        {
+<MudPaper Class="mt-7 space-y-8 md:mt-9" Elevation="1">
+    <MudCard Style="height: 200px;" Class="">
+        <MudCardContent Style="flex-grow: 0 !important; padding: 0px !important;" Class="flex  flex items-center">
+            <MudChip Style="font-size: 10px;padding: 0px 2px !important; height: 25px !important;" Text="NEW" T="string" Class="mr-2 rounded-sm bg-yellow-200 text-xs font-semibold text-yellow-900 dark:bg-yellow-500/10 dark:text-yellow-500" />
+            <MudText Style="font-size: 13px;" Class="font-semibold text-black">Follow your favorite AI creators</MudText>
+            <MudButton Class=" ml-autoflex items-center " OnClick="RefreshList">
+                <MudIcon Icon="@Icons.Material.Filled.Refresh" Class="text-xs mr-0.5" />
+                <MudText Class="underline max-sm:hidden">Refresh List</MudText>
+            </MudButton>
+            <MudButton Class="ml-auto text-black sm:ml-4" OnClick="Close">
+                <MudIcon Icon="@Icons.Material.Filled.Close" Class="text-xl" />
+            </MudButton>
+        </MudCardContent>
+
+            @foreach (var creator in creators)
+            {
+            <MudCardContent Style=" flex-grow: 0 !important; padding:2px 15px !important;" Class=" flex items-center">
+                <MudAvatar Class="mr-1 w-4 h-4">
+                    <MudImage Src="@creator.Avatar"></MudImage>
+                </MudAvatar>
+                <MudLink Style="font-size: 12px;" Href="@creator.ProfileUrl" Class="font-semibold text-black">
+                        @creator.Name
+                    </MudLink>
+                    <MudText Style="font-size: 13px;" Class="">· @creator.Description</MudText>
+              
+                <MudChip  Class="ml-auto" OnClick="() => Follow(creator)" Text="Follow" T="string" />
+
+                </MudCardContent>
+            }
+    </MudCard>
+</MudPaper>
+}
+else
+{
+    <MudText Color="Color.Secondary">لا يوجد مستودعات لهذه الفئة.</MudText>
+}
+@code {
+    private List<string> Categories = new() { "All", "Models", "Datasets", "Spaces" };
+    private string SelectedCategory = "All"; // افتراضيًا يكون "All" هو المحدد
+    
+
+    private List<Creator> creators = new ()
+    {
+        new Creator
+        {
+            Name = "stabilityai",
+            ProfileUrl = "/stabilityai",
+            Avatar = "https://cdn-avatars.huggingface.co/v1/production/uploads/643feeb67bc3fbde1385cc25/7vmYr2XwVcPtkLzac_jxQ.png",
+            Description = "Sharing open-source image generation models"
+        },
+        new Creator
+        {
+            Name = "huggingface",
+            ProfileUrl = "/huggingface",
+            Avatar = "https://cdn-avatars.huggingface.co/v1/production/uploads/1583856921041-5dd96eb166059660ed1ee413.png",
+            Description = "Leading platform for sharing AI models"
+        },
+        new Creator
+        {
+            Name = "Qwen",
+            ProfileUrl = "/Qwen",
+            Avatar = "https://cdn-avatars.huggingface.co/v1/production/uploads/620760a26e3b7210c2ff1943/-s1gyJfvbE1RgO5iBeNOi.png",
+            Description = "Developing advanced large language and vision models"
+        }
+    };
+    private List<Creator> FilteredRepositories =>
+           SelectedCategory == "All" ? Categories : Categories.Where(r => r.category == SelectedCategory).ToList();
+
+    private void SelectCategory(string category)
+    {
+        SelectedCategory = category; // عند النقر، يتم تغيير العنصر المحدد
+    }
+    private void RefreshList()
+    {
+        // Add your refresh logic here
+    }
+
+    private void Close()
+    {
+        // Add your close logic here
+    }
+
+    private void Follow(Creator creator)
+    {
+        // Add your follow logic here
+    }
+
+    public class Creator
+    {
+        public string Name { get; set; }
+        public string ProfileUrl { get; set; }
+        public string Avatar { get; set; }
+        public string Category { get; set; }
+
+        public string Description { get; set; }
+    }
+}
+ *@
+@* 
+ <style>
+     .nchip-filled{
+        background-color: #ffffffee !important;
+     }
+
+    .repo-card {
+        border: 1px solid #e0e0e0;
+        border-radius: 6px;
+        transition: box-shadow 0.2sease-in-out;
+    }
+ </style>
+<MudChipSet Style="" T="string" SelectionMode="SelectionMode.MultiSelection">
+    @foreach (var category in Categories)
+    {
+        <MudChip Class=""
+                 Color="@(category == SelectedCategory ? Color.Dark : Color.Default)"
+                 OnClick="() => SelectCategory(category)">
+            @category
+        </MudChip>
+    }
+</MudChipSet>
+
+@if (FilteredCreators.Any())
+{
+    <MudPaper Class="mt-7  space-y-8 md:mt-9" Elevation="1">
+        <MudCard Class="repo-card " Style="height: 200px;">
+            <MudCardContent Style="flex-grow: 0 !important; padding: 0px !important;" Class="flex items-center">
+                <MudChip Style="font-size: 10px; padding: 0px 2px !important; height: 25px !important;"
+                         Text="NEW" T="string"
+                         Class="mr-2 rounded-sm bg-yellow-200 text-xs font-semibold text-yellow-900 dark:bg-yellow-500/10 dark:text-yellow-500" />
+
+                <MudText Style="font-size: 13px;" Class="font-semibold text-black">
+                    Follow your favorite AI creators
+                </MudText>
+
+                <MudButton Class="ml-auto" OnClick="RefreshList">
+                    <MudIcon Icon="@Icons.Material.Filled.Refresh" Class="text-xs mr-0.5" />
+                    <MudText Class="underline max-sm:hidden">Refresh List</MudText>
+                </MudButton>
+
+                <MudButton Class="ml-auto text-black sm:ml-4" OnClick="Close">
+                    <MudIcon Icon="@Icons.Material.Filled.Close" Class="text-xl" />
+                </MudButton>
+            </MudCardContent>
+
+            @foreach (var creator in FilteredCreators)
+            {
+                <MudCardContent Style="flex-grow: 0 !important; padding: 2px 15px !important;" Class="flex items-center">
+                    <MudAvatar Class="mr-1 w-4 h-4">
+                        <MudImage Src="@creator.Avatar"></MudImage>
+                    </MudAvatar>
+
+                    <MudLink Style="font-size: 12px;" Href="@creator.ProfileUrl" Class="font-semibold text-black">
+                        @creator.Name
+                    </MudLink>
+
+                    <MudText Style="font-size: 13px;">· @creator.Description</MudText>
+
+                    <MudChip Class="ml-auto" OnClick="() => Follow(creator)" Text="Follow" T="string" />
+                </MudCardContent>
+            }
+        </MudCard>
+    </MudPaper>
+}
+else
+{
+    <MudText Color="Color.Secondary">لا يوجد مستودعات لهذه الفئة.</MudText>
+}
+
+@code {
+    private List<string> Categories = new() { "All", "Models", "Primary", "Warning", "Info", "Datasets", "Spaces", "Warning", "Models", "Primary",  };
+    private string SelectedCategory = "All";
+
+    private List<Creator> creators = new()
+    {
+        new Creator
+        {
+            Name = "stabilityai",
+            ProfileUrl = "/stabilityai",
+            Avatar = "https://cdn-avatars.huggingface.co/v1/production/uploads/643feeb67bc3fbde1385cc25/7vmYr2XwVcPtkLzac_jxQ.png",
+            Description = "Sharing open-source image generation models",
+            Category = "Models"
+        },
+        new Creator
+        {
+            Name = "huggingface",
+            ProfileUrl = "/huggingface",
+            Avatar = "https://cdn-avatars.huggingface.co/v1/production/uploads/1583856921041-5dd96eb166059660ed1ee413.png",
+            Description = "Leading platform for sharing AI models",
+            Category = "Datasets"
+        },
+        new Creator
+        {
+            Name = "Qwen",
+            ProfileUrl = "/Qwen",
+            Avatar = "https://cdn-avatars.huggingface.co/v1/production/uploads/620760a26e3b7210c2ff1943/-s1gyJfvbE1RgO5iBeNOi.png",
+            Description = "Developing advanced large language and vision models",
+            Category = "Spaces"
+        }
+    };
+
+    private List<Creator> FilteredCreators =>
+        SelectedCategory == "All" ? creators : creators.Where(c => c.Category == SelectedCategory).ToList();
+
+    private void SelectCategory(string category)
+    {
+        SelectedCategory = category;
+    }
+
+    private void RefreshList()
+    {
+        // منطق تحديث القائمة
+    }
+
+    private void Close()
+    {
+        // منطق الإغلاق
+    }
+
+    private void Follow(Creator creator)
+    {
+        // منطق المتابعة
+    }
+
+    public class Creator
+    {
+        public string Name { get; set; }
+        public string ProfileUrl { get; set; }
+        public string Avatar { get; set; }
+        public string Category { get; set; }
+        public string Description { get; set; }
+    }
+}
+ *@

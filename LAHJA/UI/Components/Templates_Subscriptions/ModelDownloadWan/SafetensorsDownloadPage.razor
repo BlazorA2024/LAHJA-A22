@@ -1,0 +1,153 @@
+﻿@page "/Wan-AI/Wan2.1-T2V-14B"
+@inject NavigationManager Navigation
+@using LAHJA.Data.UI.Components.Templates_Subscriptions
+@using LAHJA.UI.Components.Templates_Subscriptions.Filtered_Episodes
+ @using LAHJA.UI.Components.Templates_Subscriptions.ModelDownloadWan
+ @using Domain.ShareData
+@using LAHJA.Helpers.Services
+@using LAHJA.Data.UI.Components.Templates_Subscriptions
+@inject NavigationManager Navigation
+ @inject LanguageService languageService
+@inject IManageLanguageService _manageLanguageService
+@using MudBlazor
+
+@inject ISnackbar Snackbar
+<MudGrid Justify="Justify.SpaceBetween">
+    <!-- ✅ القسم الرئيسي لمحتوى الفيديو -->
+    <MudItem xs="12" md="6">
+
+   
+<MudContainer>
+<ModelSummaryTemplate />
+<MudTypography Variant="Body1">
+        🎉 <strong>Phi-4 Models:</strong>
+        [<MudLink Href="https://huggingface.co/microsoft/Phi-4-multimodal-instruct" Target="_blank">Multimodal-Instruct</MudLink> |
+        <MudLink Href="https://huggingface.co/microsoft/Phi-4-multimodal-instruct-onnx" Target="_blank">ONNX</MudLink>] &
+        [<MudLink Href="https://huggingface.co/microsoft/Phi-4-mini-instruct" Target="_blank">Mini-Instruct</MudLink> |
+        <MudLink Href="https://huggingface.co/microsoft/Phi-4-mini-instruct-onnx" Target="_blank">ONNX</MudLink>].
+    </MudTypography>
+
+    <!-- فيديو العرض -->
+    <MudTypography Variant="Body1" Class="mt-3">
+        Watch as Phi-4 Multimodal analyzes spoken language to help plan a trip to Seattle, demonstrating its advanced audio processing and recommendation capabilities.
+    </MudTypography>
+        <MudContainer Class="my-4">
+            <MudCard Class="mx-auto">
+                <MudCardContent>
+                    <video style="width: 100%; height: auto; object-fit: contain;" playsinline controls loop muted autoplay>
+                        <source type="video/mp4" src="https://github.com/nguyenbh/phi4mm-demos/raw/refs/heads/main/clips/Phi-4-multimodal_SeattleTrip.mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </MudCardContent>
+            </MudCard>
+        </MudContainer>
+        </MudContainer>
+</MudItem>
+    <MudItem xs="12" md="5">
+
+
+        <MudPaper Height="100%" Class="p-4 ">
+            <DownloadStatsTemplate />
+               <DynamicModeTemplate />
+ 
+        </MudPaper>
+
+    </MudItem>
+</MudGrid>
+@*
+<MudPaper Class="d-flex gap-1.5 flex-wrap">
+    <MudText Class="text-sm mr-auto d-flex items-center gap-1 overflow-hidden rounded-lg font-semibold">
+        <MudIcon Icon="Icons.Material.Filled.Info" />
+        Safetensors
+        <MudLink Target="_blank" Href="https://huggingface.co/docs/safetensors" Class="text-xs text-gray-400 hover:text-gray-500">
+            <MudIcon Icon="Icons.Material.Filled.OpenInNew" />
+        </MudLink>
+    </MudText>
+
+    <div class="d-flex flex-wrap gap-x-1.5 gap-y-1 text-sm">
+        <MudChip T="string" Class="d-inline-flex h-6 shrink-0 items-center overflow-hidden rounded-lg border">
+            <div class="border-r px-2 text-gray-500">Model size</div>
+            <div class="px-1.5">5.57B params</div>
+        </MudChip>
+
+        <MudChip T="string" Class="d-inline-flex h-6 shrink-0 items-center overflow-hidden rounded-lg border">
+            <div class="border-r px-2 text-gray-500">Tensor type</div>
+            <div class="d-flex px-1.5">
+                BF16
+                <div class="mx-1 text-gray-400">·</div>
+            </div>
+        </MudChip>
+
+        <MudButton Class="bg-gradient-to-t inline-flex h-6 w-6 items-center justify-center overflow-hidden rounded-lg border hover:shadow-inner dark:hover:brightness-125">
+            <MudIcon Icon="Icons.Material.Filled.Close" Class="text-xs" />
+        </MudButton>
+    </div>
+</MudPaper>
+
+
+ *@
+@*   <MudPaper Elevation="0" Class="p-4 ">
+    <!-- العنوان -->
+    <MudTypography Variant="H4" Class="relative group flex items-center">
+        <MudLink Href="#model-summary" Target="_self"
+                 Class="block pr-1.5 text-lg md:absolute md:p-1.5 md:opacity-0 md:group-hover:opacity-100 md:right-full">
+            <MudIcon Icon="@Icons.Material.Filled.Link" Class="text-gray-500 hover:text-black dark:hover:text-gray-200 w-4" />
+        </MudLink>
+        <span>Model Summary</span>
+    </MudTypography>
+
+    <!-- وصف الموديل -->
+    <MudTypography Variant="Body1">
+        Phi-4-multimodal-instruct is a lightweight open multimodal foundation model that leverages the language, vision, and speech research used for Phi-3.5 and 4.0 models. It processes text, image, and audio inputs, generating text outputs, and comes with a 128K token context length. The model incorporates supervised fine-tuning, direct preference optimization, and RLHF to enhance instruction adherence and safety.
+    </MudTypography>
+
+    <!-- اللغات المدعومة -->
+    <MudTypography Variant="H6">Supported Languages</MudTypography>
+    <MudTypography >
+        <MudText>. <strong>Text:</strong> Arabic, Chinese, Czech, Danish, Dutch, English, Finnish, French, German, Hebrew, Hungarian, Italian, Japanese, Korean, Norwegian, Polish, Portuguese, Russian, Spanish, Swedish, Thai, Turkish, Ukrainian</MudText>
+        <MudText>. <strong>Vision:</strong> English</MudText>
+            <MudText>. <strong>Audio:</strong> English, Chinese, German, French, Italian, Japanese, Spanish, Portuguese</MudText>
+    </MudTypography>
+
+    <!-- الروابط الرئيسية -->
+        <MudTypography Variant="Body1">
+            📰 <MudLink Href="https://aka.ms/phi4-feb2025" Target="_blank">Phi-4-multimodal Microsoft Blog</MudLink> <br />
+            📖 <MudLink Href="https://aka.ms/phi-4-multimodal/techreport" Target="_blank">Technical Report</MudLink> <br />
+            🏡 <MudLink Href="https://aka.ms/phi-4-multimodal/azure" Target="_blank">Phi Portal</MudLink> <br />
+        👩‍🍳 <MudLink Href="https://github.com/microsoft/PhiCookBook" Target="_blank">Phi Cookbook</MudLink>
+    </MudTypography><br />
+
+
+    <!-- أماكن التجربة -->
+    <MudTypography Variant="Body1">
+        🖥️ Try It on
+        <MudLink Href="https://aka.ms/phi-4-multimodal/azure" Target="_blank">Azure</MudLink>,
+        <MudLink Href="https://github.com/marketplace/models/azureml/Phi-4-multimodal-instruct/playground" Target="_blank">GitHub</MudLink>,
+        <MudLink Href="https://aka.ms/phi-4-multimodal/nvidia" Target="_blank">Nvidia</MudLink>,
+        <MudLink Href="https://huggingface.co/spaces/microsoft/phi-4-multimodal" Target="_blank">Huggingface</MudLink> playgrounds.
+    </MudTypography><br />
+
+    <!-- مشاريع HuggingFace -->
+    <MudTypography Variant="Body1">
+        📱 Huggingface Spaces:
+        <MudLink Href="https://huggingface.co/spaces/microsoft/ThoughtsOrganizer" Target="_blank">Thoughts Organizer</MudLink>,
+        <MudLink Href="https://huggingface.co/spaces/microsoft/StoriesComeAlive" Target="_blank">Stories Come Alive</MudLink>,
+        <MudLink Href="https://huggingface.co/spaces/microsoft/PhineSpeechTranslator" Target="_blank">Phine Speech Translator</MudLink>.
+    </MudTypography><br />
+
+    <!-- نماذج Phi-4 -->
+    <MudTypography Variant="Body1">
+        🎉 <strong>Phi-4 Models:</strong>
+        [<MudLink Href="https://huggingface.co/microsoft/Phi-4-multimodal-instruct" Target="_blank">Multimodal-Instruct</MudLink> |
+        <MudLink Href="https://huggingface.co/microsoft/Phi-4-multimodal-instruct-onnx" Target="_blank">ONNX</MudLink>] &
+        [<MudLink Href="https://huggingface.co/microsoft/Phi-4-mini-instruct" Target="_blank">Mini-Instruct</MudLink> |
+        <MudLink Href="https://huggingface.co/microsoft/Phi-4-mini-instruct-onnx" Target="_blank">ONNX</MudLink>].
+    </MudTypography>
+
+    <!-- فيديو العرض -->
+    <MudTypography Variant="Body1" Class="mt-3">
+        Watch as Phi-4 Multimodal analyzes spoken language to help plan a trip to Seattle, demonstrating its advanced audio processing and recommendation capabilities.
+    </MudTypography>
+
+
+   </MudPaper> *@

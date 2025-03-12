@@ -1,0 +1,15 @@
+﻿@code {
+    [Parameter] public Dictionary<string, string> Links { get; set; } = new();
+}
+
+<MudTypography Variant="Body1">
+    @foreach (var link in Links)
+    {
+        <MudLink Style="margin:0px !important;" Href="@link.Value" Target="_blank"> <MudText Style="margin:0px !important;" Class="font-medium hover-text">@link.Key</MudText></MudLink>
+
+        <br />
+    }
+</MudTypography>
+@* 📌                                      
+*@
+            

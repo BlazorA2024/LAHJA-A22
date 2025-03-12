@@ -1,0 +1,241 @@
+﻿@using Domain.ShareData
+@using LAHJA.Data.UI.Components.Templates_Subscriptions
+@using LAHJA.Helpers.Services
+@using LAHJA.UI.Components.ProFile.Settings
+@using MudBlazor
+@using LAHJA.UI.Components.Templates_Subscriptions.CardTemp_Subscriptions
+
+@inject IManageLanguageService _manageLanguageService
+@inject LanguageService languageService
+
+<style>
+    .custom-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+        /*         margin: 20px auto;
+         */
+    }
+
+    .custom {
+        width: 100% !important;
+        height: 100% !important;
+    }
+    .MudMenuItem{
+
+    }
+</style>
+@*         <MudSpacer />
+ *@
+   @* <MudButton Color="Color.Primary" EndIcon="@Icons.Material.Filled.ArrowDropDown" OnClick="ShowActions">
+                    Actions
+                </MudButton> *@
+@* 
+<MudPaper Class="py-3 px-4 custom-container">
+    <MudGrid JustifyContent="Start" AlignItems="Center" Spacing="3" Class="flex-grow-1 custom-container">
+        @foreach (var SubscriptionInfo in SubscriptionInfoT)
+            {
+        <!-- القسم الأول: رابط الاشتراكات -->
+        <MudItem xs="12" sm="12" md="12">
+            <MudText Typo="Typo.h6">
+                    <MudLink Href="@SubscriptionInfo.SubscriptionLink">@SubscriptionInfo.SubscriptionTitle</MudLink>
+            </MudText>
+        </MudItem>
+
+        <!-- القسم الثاني: معلومات المستخدم -->
+        <MudItem>
+            <div Class=" custom-container">
+
+
+                <MudText Typo="Typo.h6">
+                        <MudLink Href="@SubscriptionInfo.UserLink" Color="Color.Primary">@SubscriptionInfo.UserEmail</MudLink>
+                </MudText>
+                <MudText Typo="Typo.body2">on</MudText>
+                    <MudText Typo="Typo.h6" Color="Color.Primary">@SubscriptionInfo.UserPlan</MudText>
+                    <MudChip T="string" Color="@GetStatusColor(SubscriptionInfo.UserStatus)">@SubscriptionInfo.UserStatus</MudChip>
+            </div>
+        </MudItem>
+
+        <!-- زر نسخ معرف الاشتراك -->
+        <MudItem Style="margin-inline-start: auto;">
+                <MudStack Spacing="1" Direction="RowReverse" JustifyContent="FlexStart" Class="flex-1">
+
+                    <MudButton Color="Color.Secondary"  Class="text-gray text-mono" Style="margin-top: -1px;transform: translateY(1.1px);font-size: 11px; margin-left: 4px;" OnClick="CopySubscriptionId">
+                        @SubscriptionInfo.SubscriptionId
+                                            <MudIcon style="font-size: 16px; margin-left: 10px;" Icon="@Icons.Material.Outlined.ContentCopy" class="mr-3"></MudIcon>
+
+                </MudButton>
+               
+
+                <!-- القسم الثالث: زر الإجراءات -->
+       
+                   
+
+                        <MudMenu Color="Color.Primary" EndIcon="@Icons.Material.Filled.ArrowDropDown"  Label="Actions" Dense="true">
+                        <MudMenuItem style="font-size: 10px;">ProfilCharge specific  </MudMenuItem>
+                                <MudMenuItem style="font-size: 10px !important;" Color="Color.Primary">My Charge specific  </MudMenuItem>
+                                <MudDivider />
+                        <MudMenuItem style="font-size: 10px;">Logout specific  </MudMenuItem>
+                            </MudMenu>
+             
+            </MudStack>
+        </MudItem>
+        <MudDivider />
+            }
+    </MudGrid>
+
+
+
+</MudPaper>
+
+
+@code {
+    // البيانات المدخلة للمكون
+    [Parameter] public List<SubscriptionInfoTempla> SubscriptionInfoT { get; set; } = new();
+
+    // // الأحداث
+    [Parameter] public EventCallback<string> OnCopy { get; set; }
+    [Parameter] public EventCallback OnActionsClick { get; set; }
+
+    // تحديد لون الحالة
+    private Color GetStatusColor(string status) => status switch
+    {
+        "Active" => Color.Success,
+        "Pending" => Color.Secondary,
+        "Cancelled" => Color.Error,
+        _ => Color.Default
+    };
+
+    // الحدث عند نسخ المعرف
+    private async Task CopySubscriptionId()
+    {
+        // هنا نقوم بتنفيذ الحدث عند نسخ المعرف
+        await OnCopy.InvokeAsync();
+    }
+
+
+    // الحدث عند النقر على زر الإجراءات
+    private async Task ShowActions()
+    {
+        // هنا نقوم بتنفيذ الحدث عند النقر على "Actions"
+        await OnActionsClick.InvokeAsync();
+    }
+}
+ *@
+ 
+<SubscriptionInfoCard SubscriptionInfoT="SubscriptionInfoT"
+             OnCopy="HandleCopy"
+             OnActionsClick="HandleActionsClick" />
+
+@code {
+    // بيانات ديناميكية
+    // public List<SubscriptionInfoTempla> SubscriptionInfoT { get; set; } = new List<SubscriptionInfoTempla>
+    // {
+    //     new SubscriptionInfoTempla
+    //     {
+    //         SubscriptionLink="https://example.com/another-subscription",
+    //          SubscriptionTitle="Another Subscription",
+    //          UserLink="https://example.com/another-user",
+    //          UserEmail="anotheruser@example.com",
+    //          UserPlan="Basic Plan",
+    //          UserStatus="Pending",
+    //          SubscriptionId="sub_1QlhzSB7xaGIYuCbChhHGlbH",
+    //          SubscrActions="Actions"
+    //     },
+
+    // };
+
+    // قائمة تفاصيل الاشتراك
+    // قائمة تفاصيل الاشتراك
+    public List<SubscriptionInfoTempla> SubscriptionInfoT { get; set; }
+    private string CurrentLanguage = "en"; // اللغة الافتراضية هي الإنجليزية
+
+    // القواميس للترجمات
+    private Dictionary<string, string> TransEn = new Dictionary<string, string>()
+{
+    { "SubscriptionTitle", "Another Subscription" },
+    { "UserPlan", "Basic Plan " },
+    { "UserStatus", "Pending " },
+    { "SubscriptionId", "Subscription ID" },
+    { "SubscrActions", "Actions" },
+};
+
+    private Dictionary<string, string> TransAr = new Dictionary<string, string>()
+{
+    { "SubscriptionTitle", "عنوان الاشتراك" },
+    { "UserPlan", "خطة المستخدم" },
+    { "UserStatus", "حالة المستخدم" },
+    { "SubscriptionId", "معرف الاشتراك" },
+    { "SubscrActions", "الإجراءات" },
+};
+
+    // دالة للحصول على الترجمة بناءً على اللغة الحالية
+    private string GetTranslation(string key)
+    {
+        return CurrentLanguage == "ar"
+            ? TransAr.GetValueOrDefault(key, key)
+            : TransEn.GetValueOrDefault(key, key);
+    }
+
+    // دالة لتغيير اللغة
+    private void ChangeLanguage(string language)
+    {
+        if (language != "ar" && language != "en") language="ar"; // السماح فقط بـ "ar" أو "en"
+        CurrentLanguage = language;
+         
+        LoadSubscriptionInfoData(); // إعادة تحميل البيانات بالترجمات الجديدة
+
+        InvokeAsync(StateHasChanged);
+         // تحديث الواجهة
+    }
+
+    // تحميل بيانات تفاصيل الاشتراك مع الترجمة
+    private void LoadSubscriptionInfoData()
+    {
+        SubscriptionInfoT = new List<SubscriptionInfoTempla>
+    {
+        new SubscriptionInfoTempla
+        {
+            SubscriptionLink = GetTranslation("SubscriptionLink"),
+            SubscriptionTitle = GetTranslation("SubscriptionTitle"),
+            UserLink = GetTranslation("UserLink"),
+            UserEmail = "anotheruser@example.com", // لا حاجة لترجمة البريد الإلكتروني
+            UserPlan = GetTranslation("UserPlan"),
+            UserStatus = GetTranslation("UserStatus"),
+            SubscriptionId = "sub_1QlhzSB7xaGIYuCbChhHGlbH", // يمكن إضافة الترجمة لها إذا لزم الأمر
+            SubscrActions = GetTranslation("SubscrActions")
+        },
+    };
+    }
+
+    protected override void OnInitialized()
+    {
+         // تحميل البيانات عند التهيئة
+        LoadSubscriptionInfoData();
+        languageService.OnLanguageChanged += ChangeLanguage;
+    }
+    protected override async void OnAfterRender(bool firstRender)
+
+    {
+        if (firstRender)
+        {
+            CurrentLanguage = await _manageLanguageService.GetLanguageAsync();
+            LoadSubscriptionInfoData();
+            InvokeAsync(StateHasChanged);
+
+        }
+
+
+    }
+
+    private void HandleCopy(string subscriptionId)
+    {
+        Console.WriteLine($"تم نسخ المعرف: {subscriptionId}");
+    }
+
+    private void HandleActionsClick()
+    {
+        Console.WriteLine("تم النقر على زر الإجراءات.");
+    }
+} 

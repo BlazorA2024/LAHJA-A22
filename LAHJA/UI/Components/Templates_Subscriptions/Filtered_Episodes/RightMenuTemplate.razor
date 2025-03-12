@@ -1,0 +1,833 @@
+﻿ @using LAHJA.UI.Components.Templates_Subscriptions
+ @using Domain.ShareData
+@using LAHJA.Helpers.Services
+@using LAHJA.UI.Components.Templates_Subscriptions.RepositoryCard
+@using LAHJA.Data.UI.Components.Templates_Subscriptions
+@inject NavigationManager Navigation
+ @inject LanguageService languageService
+@inject IManageLanguageService _manageLanguageService
+@using MudBlazor
+
+@inject ISnackbar Snackbar
+@* 
+<style>
+    .ClassPaper {
+        border-radius: 15px !important;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1) !important;
+        margin: 20px auto;
+        overflow: hidden !important;
+        /* direction: rtl; */
+        max-width: 97% !important;
+        margin-right: -0% !important;
+        margin-top: -5%;
+    }
+
+    .hover-text {
+        transition: color 0.3s ease-in-out;
+    }
+
+        .hover-text:hover {
+            color: #1e90ff; /* أزرق فاتح */
+        }
+
+    /* تقليل المسافات بين العناصر */
+    .mt-2 {
+        margin-top: 0.5rem;
+    }
+
+    .space-y-2 {
+        margin-bottom: 0.5rem;
+    }
+
+    /* تصغير حجم الكارد */
+    .repo-card {
+        border: 1px solid #e0e0e0;
+        border-radius: 6px;
+        transition: box-shadow 0.2s ease-in-out;
+    }
+
+        .repo-card:hover {
+            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+        }
+
+    /* تصغير حجم الخطوط */
+    .repo-name {
+        font-size: 10px;
+        margin: 0px !important;
+    }
+
+    .repo-details {
+        font-size: 9px;
+    }
+
+    /* تصغير حجم الصورة */
+    .mud-avatar {
+        width: 22px !important;
+        height: 22px !important;
+    }
+
+    /* تصغير الأيقونات */
+    .mud-icon {
+        font-size: 12px;
+    }
+
+    /* ضبط التباعد بين الفواصل */
+    .px-0.5 {
+        padding-left: 1px;
+        padding-right: 1px;
+    }
+
+    /* تحسين الوضع المظلم */
+    .dark .repo-name {
+        color: #fff;
+    }
+
+    .dark .repo-details {
+        color: #bdbdbd;
+    }
+
+    /* تصغير التصميم على الشاشات الصغيرة */
+
+
+
+</style> *@
+
+
+
+    <MudPaper Height="100%" Elevation="4" Class="p-4 ClassPaper">
+        @foreach (var item in Repositories1)
+        {
+
+            <MudDrawerHeader>
+                <MudText Typo="Typo.h6" Class="flex items-center font-semibold text-sm">
+                    <MudIcon Class="mr-1 text-gray-400" Size="Size.Small">
+                        <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" role="img"
+                             width="1em" height="1em" viewBox="0 0 5 4" fill="currentColor">
+                            <path d="M0.637335 0.531238C0.637335 0.420781 0.547792 0.331238 0.437335 0.331238C0.326878 0.331238 0.237335 0.420781 0.237335 0.531238V3.759C0.237335 3.86946 0.326878 3.959 0.437335 3.959H3.67562C3.78607 3.959 3.87562 3.86946 3.87562 3.759C3.87562 3.64854 3.78607 3.559 3.67562 3.559H0.637335V2.64129C0.645864 2.63389 0.653879 2.62566 0.661267 2.61661L1.10921 2.06816L1.79415 2.90678C1.83213 2.95328 1.889 2.98026 1.94905 2.98026C2.00909 2.98026 2.06596 2.95328 2.10395 2.90678L3.79926 0.831099C3.86913 0.74555 3.85642 0.619556 3.77088 0.549684C3.68533 0.479812 3.55933 0.49252 3.48946 0.578069L1.94905 2.46409L1.2641 1.62547C1.22612 1.57897 1.16925 1.55199 1.1092 1.55199C1.04916 1.55199 0.992287 1.57897 0.954303 1.62547L0.637335 2.01357V0.531238Z"></path>
+                            <path opacity="0.5" d="M0.637329 3.4685C0.637927 3.46779 0.63852 3.46707 0.63911 3.46635L1.31502 2.6388L1.05719 2.32214L0.637329 2.83619L0.637329 3.4685ZM2.97627 2.69627L2.74979 2.4281L3.00719 2.11295L3.12649 2.25421L3.70464 1.54635C3.77451 1.4608 3.9005 1.44809 3.98605 1.51796C4.0716 1.58784 4.08431 1.71383 4.01444 1.79938L3.28397 2.69374C3.24635 2.7398 3.19018 2.76673 3.13071 2.76722C3.07124 2.76771 3.01464 2.7417 2.97627 2.69627ZM2.48469 1.49428L2.2581 1.22598C2.21973 1.18055 2.16313 1.15455 2.10366 1.15504C2.04419 1.15553 1.98802 1.18245 1.9504 1.22851L1.57794 1.68454L1.83577 2.0012L2.10788 1.66805L2.22729 1.80943L2.48469 1.49428Z"></path>
+                        </svg>
+                    </MudIcon>
+                    @item.Name
+
+                    <MudText Typo="Typo.body2" Class="-mb-0.5 ml-5 text-xs font-normal text-gray-400">
+                        @item.Description
+                    </MudText>
+                </MudText>
+            </MudDrawerHeader>
+        }
+        <MudChipSet T="string" SelectionMode="SelectionMode.MultiSelection">
+            @foreach (var category in Categories)
+            {
+                <MudChip Variant="Variant.Filled"
+                         Color="@(category == SelectedCategory ? Color.Dark : Color.Default)"
+                         OnClick="() => SelectCategory(category)">
+                    @category
+                </MudChip>
+            }
+        </MudChipSet>
+
+
+
+
+
+
+
+
+
+@*         <MudTreeView T="string" Style="height: 476px; max-height: 476px; overflow-y: auto; margin-top: 5%;">
+ *@            @if (FilteredRepositories.Any())
+            {
+                <RightMenuCard Repositories="FilteredRepositories" />
+            }
+            else
+            {
+                <MudText Color="Color.Secondary">لا يوجد مستودعات لهذه الفئة.</MudText>
+            }
+@*         </MudTreeView>
+ *@    </MudPaper>
+
+@code {
+   
+    private string CurrentLanguage = "en"; // اللغة الافتراضية هي الإنجليزية
+
+    // قاموس الترجمة الإنجليزية
+    private Dictionary<string, string> TransEn = new Dictionary<string, string>()
+{
+    { "Trending", "Trending" },
+    { "Last 7 days", "Last 7 days" },
+    { "Text-to-Video", "Text-to-Video" },
+    { "AI Model", "AI Model" },
+    { "All", "All" },
+    { "Models", "Models" },
+    { "Datasets", "Datasets" },
+    { "Spaces", "Spaces" }
+};
+
+    // قاموس الترجمة العربية
+    private Dictionary<string, string> TransAr = new Dictionary<string, string>()
+{
+    { "Trending", "الأكثر رواجًا" },
+    { "Last 7 days", "آخر 7 أيام" },
+    { "Text-to-Video", "تحويل نص الا فيديو" },
+    { "AI Model", " الذكاء الاصطناعي" },
+    { "All", "الكل" },
+    { "Models", "النماذج" },
+    { "Datasets", " البيانات" },
+    { "Spaces", "المساحات" }
+};
+
+    // قائمة المستودعات (Repositories)
+    private List<Repository> Repositories1 { get; set; } = new();
+    private List<Repository> Repositories { get; set; } = new();
+    private List<string> Categories { get; set; } = new();
+
+    private string SelectedCategory = "All";
+
+    // تحميل البيانات بالترجمة الصحيحة
+    private void LoadRepositories()
+    {
+        Repositories1 = new()
+    {
+        new Repository
+        {
+            Name = GetTranslation("Trending"),
+            Description = GetTranslation("Last 7 days")
+        }
+    };
+
+        Repositories = new()
+    {
+        new Repository
+        {
+            Name = "Wan-AI/Wan2.1-T2V-14B",
+            ImageUrl = "/N6jQbbeaa_FcUY-wI1dgG.webp",
+            LinkUrl = "/Wan-AI/Wan2.1-T2V-14B",
+            Category = GetTranslation("Text-to-Video"),
+            UpdatedAt = DateTime.UtcNow.AddDays(-4),
+            Downloads = 142000,
+            Likes = 662
+        },
+        new Repository
+        {
+            Name = "Example-AI/Model-XYZ",
+            ImageUrl = "https://via.placeholder.com/50",
+            LinkUrl = "/Example-AI/Model-XYZ",
+            Category = GetTranslation("AI Model"),
+            UpdatedAt = DateTime.UtcNow.AddHours(-10),
+            Downloads = 78000,
+            Likes = 320
+        }
+    };
+
+        Categories = new()
+    {
+        GetTranslation("All"),
+        GetTranslation("Models"),
+        GetTranslation("Datasets"),
+        GetTranslation("Spaces")
+    };
+    }
+
+    // دالة لترجمة النصوص بناءً على اللغة المحددة
+    private string GetTranslation(string key)
+    {
+        return CurrentLanguage == "ar"
+            ? TransAr.GetValueOrDefault(key, key)
+            : TransEn.GetValueOrDefault(key, key);
+    }
+
+    // دالة لتغيير اللغة
+    private void ChangeLanguage(string language)
+    {
+        if (language != "ar" && language != "en") language = "en"; // السماح فقط بـ "ar" أو "en"
+        CurrentLanguage = language;
+
+        LoadRepositories(); // إعادة تحميل البيانات بالترجمات الجديدة
+        InvokeAsync(StateHasChanged);
+    }
+
+    // تصفية المستودعات حسب الفئة المختارة
+    private List<Repository> FilteredRepositories =>
+        SelectedCategory == GetTranslation("All") ? Repositories : Repositories.Where(r => r.Category == SelectedCategory).ToList();
+
+    // دالة لاختيار الفئة
+    private void SelectCategory(string category)
+    {
+        SelectedCategory = category;
+        StateHasChanged();
+    }
+
+    // تحميل البيانات عند التهيئة
+    protected override void OnInitialized()
+    {
+        LoadRepositories();
+    }
+
+    // إعادة تحميل البيانات بعد تغيير اللغة
+    protected override async void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            CurrentLanguage = await _manageLanguageService.GetLanguageAsync();
+            LoadRepositories();
+            InvokeAsync(StateHasChanged);
+        }
+    }
+
+
+    // private List<string> Categories = new() { "All", "Models", "Datasets", "Spaces" };
+    // private string SelectedCategory = "All";
+    // private List<Repository> Repositories1 { get; set; } = new()
+    // {
+    //     new Repository
+    //     {
+    //         Name = "Trending",
+    //         Description="last 7 days"
+    //     }
+    // };
+    // private List<Repository> Repositories { get; set; } = new()
+    // {
+    //     new Repository
+    //     {
+    //         Name = "Wan-AI/Wan2.1-T2V-14B",
+    //         ImageUrl = "/N6jQbbeaa_FcUY-wI1dgG.webp",
+    //         LinkUrl = "/Wan-AI/Wan2.1-T2V-14B",
+    //         Category = "Text-to-Video",
+    //         UpdatedAt = DateTime.UtcNow.AddDays(-4),
+    //         Downloads = 142000,
+    //         Likes = 662
+    //     },
+    //     new Repository
+    //     {
+    //         Name = "Example-AI/Model-XYZ",
+    //         ImageUrl = "https://via.placeholder.com/50",
+    //         LinkUrl = "/Example-AI/Model-XYZ",
+    //         Category = "AI Model",
+    //         UpdatedAt = DateTime.UtcNow.AddHours(-10),
+    //         Downloads = 78000,
+    //         Likes = 320
+    //     },
+    //     new Repository
+    //     {
+    //         Name = "Mxample-AI/Model-XYZ",
+    //         ImageUrl = "https://via.placeholder.com/50",
+    //         LinkUrl = "/Example-AI/Model-XYZ",
+    //         Category = "AI Model",
+    //         UpdatedAt = DateTime.UtcNow.AddHours(-10),
+    //         Downloads = 68000,
+    //         Likes = 360
+    //     }
+    // };
+
+    // private List<Repository> FilteredRepositories =>
+    //     SelectedCategory == "All" ? Repositories : Repositories.Where(r => r.Category == SelectedCategory).ToList();
+
+    // private void SelectCategory(string category)
+    // {
+    //     SelectedCategory = category;
+    //     StateHasChanged();
+    // }
+
+    // private List<string> Categories = new() { "All", "Models", "Datasets", "Spaces" };
+    // private string SelectedCategory = "All";
+}
+@* <MudItem xs="12" md="4">
+            <MudPaper Elevation="4" Class="p-4 ClassPaper">
+        <!-- عنوان القائمة -->
+        <MudDrawerHeader>
+            <MudText Typo="Typo.h6" Class="flex items-center font-semibold text-sm">
+                <MudIcon Icon="mdi:trending-up" Class="mr-1 text-gray-400 text-sm" />
+                Trending
+                <MudText Typo="Typo.body2" Class="-mb-0.5 ml-5 text-xs font-normal text-gray-400">
+                    last 7 days
+                </MudText>
+            </MudText>
+        </MudDrawerHeader>
+          <MudToggleButtonGroup MultiSelection="false" SelectedValuesChanged="OnCategoryChanged" Class="flex gap-1 text-sm">
+    <MudToggleButton Value="All" Class="rounded-lg px-2 bg-black text-white dark:bg-gray-800">
+        All
+    </MudToggleButton>
+
+    <MudToggleButton Value="Models" Class="rounded-lg px-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-900 dark:hover:text-gray-300">
+        Models
+    </MudToggleButton>
+
+    <MudToggleButton Value="Datasets" Class="rounded-lg px-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-900 dark:hover:text-gray-300">
+        Datasets
+    </MudToggleButton>
+
+    <MudToggleButton Value="Spaces" Class="rounded-lg px-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-900 dark:hover:text-gray-300">
+        Spaces
+    </MudToggleButton>
+</MudToggleButtonGroup>
+
+
+        <!-- قائمة الفئات -->
+                <MudTreeView T="string" Style="height: 476px; max-height: 476px; overflow-y: auto; margin-top: 5%;">
+        
+
+         
+
+            <!-- قائمة الريبو -->
+            @foreach (var repo in FilteredRepositories)
+            {
+                <MudList Severity="Severity.Normal" Style="height:14%" Class="mud-list-item-clickable repo-card mb-2 mud-paper">
+                    <MudCardActionArea Href="@repo.Link" Class="mud-list-item-clickable hover-effect">
+                        <MudCardContent Style="margin-left: -3%; padding: 19px !important; margin-top: -6% !important ;" Class="repo-card-content">
+                            <!-- رأس البطاقة -->
+                            <MudCardHeader Style="padding: 0;">
+                                <MudAvatar Class="mr-1 w-4 h-4"  >
+                                    <MudImage Src="@repo.ImageUrl"></MudImage>
+                                    </MudAvatar>
+                                <MudText Style="font-size: 13px;" Class="font-medium hover-text">@repo.Name</MudText>
+                            </MudCardHeader>
+
+                            <!-- تفاصيل البطاقة -->
+                            <MudText Style="margin: 0px !important;" Class=" items-center space-x-2">
+                                        <MudIcon class="repo-name" Size="Size.Small" Icon="@Icons.Material.Filled.VideoLibrary" />
+                                        <span class="repo-name">@repo.Category</span>
+
+                                <span class="px-1.5 text-gray-300 dark:text-gray-500">•</span>
+
+                                <MudTooltip Text="@repo.UpdatedAt.ToString("ddd, dd MMM yyyy HH:mm:ss 'GMT'")">
+                                            <time class="repo-name" datetime="@repo.UpdatedAt.ToString("o")">@repo.GetRelativeTime()</time>
+                                </MudTooltip>
+
+                                <span class="px-1.5 text-gray-300 dark:text-gray-500">•</span>
+
+                                        <MudIcon class="repo-name" Size="Size.Small" Icon="@Icons.Material.Filled.CloudDownload" />
+                                        <span class="repo-name">@repo.Downloads</span>
+
+                                <span class="px-1.5 text-gray-300 dark:text-gray-500">•</span>
+
+                                        <MudIcon class="repo-name" Size="Size.Small" Icon="@Icons.Material.Filled.Favorite" />
+                                        <span class="repo-name">@repo.Likes</span>
+                            </MudText>
+                        </MudCardContent>
+                    </MudCardActionArea>
+                </MudList>
+            }
+        </MudTreeView>
+    </MudPaper>
+</MudItem>
+
+<style>
+    .ClassPaper {
+        border-radius: 15px !important;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1) !important;
+        margin: 20px auto;
+        overflow: hidden !important;
+        /* direction: rtl; */
+        max-width: 97% !important;
+        margin-right: -4% !important;
+        margin-top: -5%;
+    }
+
+    .hover-text {
+        transition: color 0.3s ease-in-out;
+    }
+
+        .hover-text:hover {
+            color: #1e90ff; /* أزرق فاتح */
+        }
+
+    /* تقليل المسافات بين العناصر */
+    .mt-2 {
+        margin-top: 0.5rem;
+    }
+
+    .space-y-2 {
+        margin-bottom: 0.5rem;
+    }
+
+    /* تصغير حجم الكارد */
+    .repo-card {
+        border: 1px solid #e0e0e0;
+        border-radius: 6px;
+        transition: box-shadow 0.2s ease-in-out;
+    }
+
+        .repo-card:hover {
+            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+        }
+
+    /* تصغير حجم الخطوط */
+    .repo-name {
+        font-size: 10px;
+        margin: 0px !important;
+    }
+
+    .repo-details {
+        font-size: 9px;
+    }
+
+    /* تصغير حجم الصورة */
+    .mud-avatar {
+        width: 22px !important;
+        height: 22px !important;
+    }
+
+    /* تصغير الأيقونات */
+    .mud-icon {
+        font-size: 12px;
+    }
+
+    /* ضبط التباعد بين الفواصل */
+    .px-0.5 {
+        padding-left: 1px;
+        padding-right: 1px;
+    }
+
+    /* تحسين الوضع المظلم */
+    .dark .repo-name {
+        color: #fff;
+    }
+
+    .dark .repo-details {
+        color: #bdbdbd;
+    }
+
+    /* تصغير التصميم على الشاشات الصغيرة */
+
+
+
+</style>
+
+
+@code {
+    private string SelectedCategory = "All";
+    private List<string> Categories = new() { "All", "Text-to-Video", "AI Model" };
+
+    public class Repository
+    {
+        public string Name { get; set; }
+        public string ImageUrl { get; set; }
+        public string Link { get; set; }
+        public string Category { get; set; }
+        public DateTime UpdatedAt { get; set; }
+        public int Downloads { get; set; }
+        public int Likes { get; set; }
+
+        public string GetRelativeTime()
+        {
+            var diff = DateTime.UtcNow - UpdatedAt;
+            if (diff.TotalDays >= 1) return $"{(int)diff.TotalDays} days ago";
+            if (diff.TotalHours >= 1) return $"{(int)diff.TotalHours} hours ago";
+            return $"{(int)diff.TotalMinutes} minutes ago";
+        }
+    }
+
+    private List<Repository> Repositories = new()
+    {
+        new Repository
+        {
+            Name = "Wan-AI/Wan2.1-T2V-14B",
+            ImageUrl = "/N6jQbbeaa_FcUY-wI1dgG.webp",
+            Link = "/Wan-AI/Wan2.1-T2V-14B",
+            Category = "Text-to-Video",
+            UpdatedAt = DateTime.UtcNow.AddDays(-4),
+            Downloads = 142000,
+            Likes = 662
+        },
+        new Repository
+        {
+            Name = "Example-AI/Model-XYZ",
+            ImageUrl = "https://via.placeholder.com/50",
+            Link = "/Example-AI/Model-XYZ",
+            Category = "AI Model",
+            UpdatedAt = DateTime.UtcNow.AddHours(-10),
+            Downloads = 78000,
+            Likes = 320
+        },
+         new Repository
+        {
+            Name = "Mxample-AI/Model-XYZ",
+            ImageUrl = "https://via.placeholder.com/50",
+            Link = "/Example-AI/Model-XYZ",
+            Category = "AI Model",
+            UpdatedAt = DateTime.UtcNow.AddHours(-10),
+            Downloads = 68000,
+            Likes = 360
+        }
+    };
+
+    private IEnumerable<Repository> FilteredRepositories =>
+        SelectedCategory == "All" ? Repositories : Repositories.Where(r => r.Category == SelectedCategory);
+
+    private void OnCategoryChanged(IEnumerable<string> values)
+    {
+        SelectedCategory = values.FirstOrDefault() ?? "All";
+    }
+    private void OnCategoryChanged(HashSet<string> selectedCategories)
+    {
+        // تنفيذ المنطق عند تغيير الفئة
+    }
+    private string GetButtonClass(string category) =>
+        SelectedCategory == category
+            ? "bg-black text-white dark:bg-gray-800"
+            : "text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-900 dark:hover:text-gray-300";
+}
+ *@
+@* 
+ <MudItem xs="12" md="4">
+            <MudPaper Elevation="4" Class="p-4 ClassPaper">
+        <!-- عنوان القائمة -->
+        <MudDrawerHeader>
+            <MudText Typo="Typo.h6" Class="flex items-center font-semibold text-sm">
+                    <MudIcon Class="mr-1 text-gray-400" Size="Size.Small">
+                        <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" role="img"
+                             width="1em" height="1em" viewBox="0 0 5 4" fill="currentColor">
+                            <path d="M0.637335 0.531238C0.637335 0.420781 0.547792 0.331238 0.437335 0.331238C0.326878 0.331238 0.237335 0.420781 0.237335 0.531238V3.759C0.237335 3.86946 0.326878 3.959 0.437335 3.959H3.67562C3.78607 3.959 3.87562 3.86946 3.87562 3.759C3.87562 3.64854 3.78607 3.559 3.67562 3.559H0.637335V2.64129C0.645864 2.63389 0.653879 2.62566 0.661267 2.61661L1.10921 2.06816L1.79415 2.90678C1.83213 2.95328 1.889 2.98026 1.94905 2.98026C2.00909 2.98026 2.06596 2.95328 2.10395 2.90678L3.79926 0.831099C3.86913 0.74555 3.85642 0.619556 3.77088 0.549684C3.68533 0.479812 3.55933 0.49252 3.48946 0.578069L1.94905 2.46409L1.2641 1.62547C1.22612 1.57897 1.16925 1.55199 1.1092 1.55199C1.04916 1.55199 0.992287 1.57897 0.954303 1.62547L0.637335 2.01357V0.531238Z"></path>
+                            <path opacity="0.5" d="M0.637329 3.4685C0.637927 3.46779 0.63852 3.46707 0.63911 3.46635L1.31502 2.6388L1.05719 2.32214L0.637329 2.83619L0.637329 3.4685ZM2.97627 2.69627L2.74979 2.4281L3.00719 2.11295L3.12649 2.25421L3.70464 1.54635C3.77451 1.4608 3.9005 1.44809 3.98605 1.51796C4.0716 1.58784 4.08431 1.71383 4.01444 1.79938L3.28397 2.69374C3.24635 2.7398 3.19018 2.76673 3.13071 2.76722C3.07124 2.76771 3.01464 2.7417 2.97627 2.69627ZM2.48469 1.49428L2.2581 1.22598C2.21973 1.18055 2.16313 1.15455 2.10366 1.15504C2.04419 1.15553 1.98802 1.18245 1.9504 1.22851L1.57794 1.68454L1.83577 2.0012L2.10788 1.66805L2.22729 1.80943L2.48469 1.49428Z"></path>
+                        </svg>
+                    </MudIcon>
+                Trending
+                <MudText Typo="Typo.body2" Class="-mb-0.5 ml-5 text-xs font-normal text-gray-400">
+                    last 7 days
+                </MudText>
+            </MudText>
+        </MudDrawerHeader>
+        <!-- أزرار الفئات -->
+       
+        <MudChipSet T="string" SelectionMode="SelectionMode.MultiSelection" >
+        @foreach (var category in Categories)
+        {
+            <MudChip 
+            Variant="Variant.Filled"
+                Color="@(category == SelectedCategory ? Color.Dark : Color.Default)" 
+                OnClick="() => SelectCategory(category)">
+                @category
+            </MudChip>
+        }
+        </MudChipSet>
+
+        <MudTreeView T="string" Style="height: 476px; max-height: 476px; overflow-y: auto; margin-top: 5%;">
+
+   
+    <!-- عرض الريبو بناءً على الفئة المحددة -->
+ 
+        @if (FilteredRepositories.Any())
+        {
+            @foreach (var repo in FilteredRepositories)
+            {
+                <MudList T="string" Severity="Severity.Normal" Style="height:14%" Class="mud-list-item-clickable repo-card mb-2 mud-paper">
+                    <MudCardActionArea Href="@repo.Link" Class="mud-list-item-clickable hover-effect">
+                        <MudCardContent Style="margin-left: -3%; padding: 19px !important; margin-top: -6% !important ;" Class="repo-card-content">
+                            <!-- رأس البطاقة -->
+                            <MudCardHeader Style="padding: 0;">
+                                <MudAvatar Class="mr-1 w-4 h-4"  >
+                                    <MudImage Src="@repo.ImageUrl"></MudImage>
+                                    </MudAvatar>
+                                <MudText Style="font-size: 13px;" Class="font-medium hover-text">@repo.Name</MudText>
+                            </MudCardHeader>
+
+                            <!-- تفاصيل البطاقة -->
+                            <MudText Style="margin: 0px !important;" Class=" items-center space-x-2">
+                                        <MudIcon class="repo-name" Size="Size.Small" Icon="@Icons.Material.Filled.VideoLibrary" />
+                                        <span class="repo-name">@repo.Category</span>
+
+                                <span class="px-1.5 text-gray-300 dark:text-gray-500">•</span>
+
+                                <MudTooltip Text="@repo.UpdatedAt.ToString("ddd, dd MMM yyyy HH:mm:ss 'GMT'")">
+                                            <time class="repo-name" datetime="@repo.UpdatedAt.ToString("o")">@repo.GetRelativeTime()</time>
+                                </MudTooltip>
+
+                                <span class="px-1.5 text-gray-300 dark:text-gray-500">•</span>
+
+                                        <MudIcon class="repo-name" Size="Size.Small" Icon="@Icons.Material.Filled.CloudDownload" />
+                                        <span class="repo-name">@repo.Downloads</span>
+
+                                <span class="px-1.5 text-gray-300 dark:text-gray-500">•</span>
+
+                                        <MudIcon class="repo-name" Size="Size.Small" Icon="@Icons.Material.Filled.Favorite" />
+                                        <span class="repo-name">@repo.Likes</span>
+                            </MudText>
+                        </MudCardContent>
+                    </MudCardActionArea>
+                </MudList>            }
+        }
+        else
+        {
+            <MudText Color="Color.Secondary">لا يوجد مستودعات لهذه الفئة.</MudText>
+        }
+        </MudTreeView>
+    </MudPaper>
+</MudItem>>
+
+@code {
+    private List<string> Categories = new() { "All", "Models", "Datasets", "Spaces" };
+    private string SelectedCategory = "All"; // افتراضيًا يكون "All" هو المحدد
+
+    // قائمة المستودعات
+    // private List<Repository> Repositories = new()
+    // {
+    //     new Repository {
+    //         Name = "Repo 1",
+    //         Category = "Models", 
+    //         Link = "#", ImageUrl = "https://via.placeholder.com/40",
+    //         Downloads = 120,
+    //         Likes = 50,
+    //         UpdatedAt = DateTime.UtcNow 
+    //     },
+    //     new Repository { Name = "Repo 2", Category = "Datasets", Link = "#", ImageUrl = "https://via.placeholder.com/40", Downloads = 220, Likes = 70, UpdatedAt = DateTime.UtcNow.AddDays(-1) },
+    //     new Repository { Name = "Repo 3", Category = "Spaces", Link = "#", ImageUrl = "https://via.placeholder.com/40", Downloads = 300, Likes = 90, UpdatedAt = DateTime.UtcNow.AddDays(-2) },
+    //     new Repository { Name = "Repo 4", Category = "Models", Link = "#", ImageUrl = "https://via.placeholder.com/40", Downloads = 400, Likes = 100, UpdatedAt = DateTime.UtcNow.AddDays(-3) },
+    // };
+    private List<Repository> Repositories = new()
+    {
+        new Repository
+        {
+            Name = "Wan-AI/Wan2.1-T2V-14B",
+            ImageUrl = "/N6jQbbeaa_FcUY-wI1dgG.webp",
+            Link = "/Wan-AI/Wan2.1-T2V-14B",
+            Category = "Text-to-Video",
+            UpdatedAt = DateTime.UtcNow.AddDays(-4),
+            Downloads = 142000,
+            Likes = 662
+        },
+        new Repository
+        {
+            Name = "Example-AI/Model-XYZ",
+            ImageUrl = "https://via.placeholder.com/50",
+            Link = "/Example-AI/Model-XYZ",
+            Category = "AI Model",
+            UpdatedAt = DateTime.UtcNow.AddHours(-10),
+            Downloads = 78000,
+            Likes = 320
+        },
+         new Repository
+        {
+            Name = "Mxample-AI/Model-XYZ",
+            ImageUrl = "https://via.placeholder.com/50",
+            Link = "/Example-AI/Model-XYZ",
+            Category = "AI Model",
+            UpdatedAt = DateTime.UtcNow.AddHours(-10),
+            Downloads = 68000,
+            Likes = 360
+        }
+    };
+    private List<Repository> FilteredRepositories => 
+        SelectedCategory == "All" ? Repositories : Repositories.Where(r => r.Category == SelectedCategory).ToList();
+
+    private void SelectCategory(string category)
+    {
+        SelectedCategory = category; // عند النقر، يتم تغيير العنصر المحدد
+    }
+
+    // كلاس نموذج المستودع
+    private class Repository
+    {
+        public string Name { get; set; }
+        public string Category { get; set; }
+        public string Link { get; set; }
+        public string ImageUrl { get; set; }
+        public int Downloads { get; set; }
+        public int Likes { get; set; }
+        public DateTime UpdatedAt { get; set; }
+
+        public string GetRelativeTime()
+        {
+            var diff = DateTime.UtcNow - UpdatedAt;
+            if (diff.TotalDays >= 1)
+                return $"{(int)diff.TotalDays} يوم مضى";
+            if (diff.TotalHours >= 1)
+                return $"{(int)diff.TotalHours} ساعة مضت";
+            return $"{(int)diff.TotalMinutes} دقيقة مضت";
+        }
+    }
+}
+ *@
+ 
+
+@* <MudItem xs="12" md="4" >
+        <MudPaper Elevation="4" Class="p-4">
+            <MudDrawerHeader>
+                <MudText Typo="Typo.h6" Class="flex items-center font-semibold text-sm">
+                    <MudIcon Icon="mdi:trending-up" Class="mr-1 text-gray-400 text-sm" />
+                    Trending
+                    <MudText Typo="Typo.body2" Class="-mb-0.5 ml-5 text-xs font-normal text-gray-400">
+                        last 7 days
+                    </MudText>
+                </MudText>
+            </MudDrawerHeader>
+               <MudTreeView T="string" Style="height: 476px; max-height: 476px; overflow-y: auto;" >
+
+                <MudToggleButtonGroup MultiSelection="false" SelectedValuesChanged="OnCategoryChanged">
+                    @foreach (var category in Categories)
+                    {
+                        <MudToggleButton Value="@category" Class="@GetButtonClass(category) text-xs">
+                            @category
+                        </MudToggleButton>
+                    }
+                </MudToggleButtonGroup>
+     @foreach (var repo in FilteredRepositories)
+    {
+        <MudCard Class="repo-card">
+            <MudCardActionArea Href="@repo.Link">
+                <MudCardContent Class="repo-card-content">
+                    <MudCardHeader Style="padding: 0;">
+                        <MudAvatar Class="mr-1 w-4 h-4" Src="@repo.ImageUrl" />
+                        <MudText Class="repo-name">@repo.Name</MudText>
+                    </MudCardHeader>
+
+                    <MudText Style="display: flex; margin: 0px !important; width:100%">
+                                    <MudIcon Size="Size.Small" Class="mr-1.5 mud-icon" Icon="@Icons.Material.Filled.VideoLibrary" />
+                    <MudText Class="repo-name" Typo="Typo.body2">Text-to-Video</MudText>
+                    <MudText Class="px-1.5 text-gray-300 dark:text-gray-500">•</MudText>
+                                    <MudText Class="repo-name" Typo="Typo.body2">
+                        Updated 
+                        <MudTooltip Text="Wed, 26 Feb 2025 14:37:01 GMT">
+                            <time datetime="2025-02-26T14:37:01">5 days ago</time>
+                        </MudTooltip>
+                    </MudText>
+                    <MudText Class="px-1.5 text-gray-300 dark:text-gray-500">•</MudText>
+                                    <MudIcon Size="Size.Small" Class="w-3 text-gray-400 mr-0.5 mud-icon" Icon="@Icons.Material.Filled.CloudDownload" />
+                    <MudText Typo="Typo.body2">151k</MudText>
+                    <MudText Class="px-1.5 text-gray-300 dark:text-gray-500">•</MudText>
+                                    <MudIcon Size="Size.Small" Class="w-3 text-gray-400 mr-1 mud-icon" Icon="@Icons.Material.Filled.Favorite" />
+                    <MudText Typo="Typo.body2">736</MudText>
+                    </MudText>
+                </MudCardContent>
+            </MudCardActionArea>
+        </MudCard>
+    }
+
+
+              
+             <div class="mt-3 space-y-3">
+    @foreach (var repo in FilteredRepositories)
+    {
+         <MudCard Class="group repo-card border border-gray-200 dark:border-gray-700 transition hover:shadow-sm text-xs">
+            <MudCardActionArea Href="@repo.Link">
+                <MudCardContent Class="repo-card-content p-1.5">
+                    <div class="w-full truncate">
+                        <MudCardHeader>
+                            <MudAvatar Class="mr-1" Src="@repo.ImageUrl" />
+                            <MudText Class="repo-name font-mono text-black dark:group-hover:text-yellow-500 group-hover:text-indigo-600 text-xs">
+                                @repo.Name
+                            </MudText>
+                        </MudCardHeader>
+
+                        <MudText Class="repo-details text-gray-400 flex items-center text-xs whitespace-nowrap">
+                            <MudIcon Icon="mdi:video" Class="mr-1 text-[.8rem]" /> @repo.Category
+                            <span class="px-1 text-gray-300 dark:text-gray-500">•</span>
+                            <span class="truncate">Updated 
+                                <MudTooltip Text="@repo.UpdatedAt.ToString("ddd, dd MMM yyyy HH:mm:ss 'GMT'")">
+                                    <time datetime="@repo.UpdatedAt.ToString("o")">@repo.GetRelativeTime()</time>
+                                </MudTooltip>
+                            </span>
+                            <span class="px-1 text-gray-300 dark:text-gray-500">•</span>
+                            <MudIcon Icon="mdi:download" Class="w-3 text-gray-400 mr-0.5" /> @repo.Downloads
+                            <span class="px-1 text-gray-300 dark:text-gray-500">•</span>
+                            <MudIcon Icon="mdi:heart" Class="w-3 text-gray-400 mr-1" /> @repo.Likes
+                        </MudText>
+                    </div>
+                </MudCardContent>
+            </MudCardActionArea>
+        </MudCard>
+    }
+</div>
+ 
+                </MudTreeView>
+        </MudPaper>
+    </MudItem> *@

@@ -1,0 +1,173 @@
+﻿@using LAHJA.Data.UI.Components.Templates_Subscriptions
+@using LAHJA.UI.Components.Templates_Subscriptions.ModelDownloadWan.ModelDynamicCard
+@using LAHJA.UI.Components.Templates_Subscriptions.ModelDownloadWan.ModelSummaryCard
+
+<ModelSummaryCard 
+    ModelStats="@ModelStatsDo"
+    Languages="@SupportedLanguages"
+    Links="@ImportantLinks"
+                 DownloadStats="@downloadCountStatsall"
+                 />
+
+<!-- الروابط الرئيسية -->
+     
+   
+@code {
+    private List<DownloadCountStat> DownloadStatistics = new()
+{
+     new DownloadCountStat
+     {
+         Name="🖥️ Try It on",
+     },
+    new DownloadCountStat
+    {
+        Link = "Azure",
+
+        Url = "https://aka.ms/phi-4-multimodal/azure"
+    },
+    new DownloadCountStat
+    {
+
+        Link = "GitHub",// إذا كان العدد رقمًا، لا تستخدم علامات اقتباس
+
+        Url = "https://aka.ms/phi-4-multimodal/azure"
+    },
+    new DownloadCountStat
+    {
+
+       Link="Nvidia",
+        Url = "https://aka.ms/phi-4-multimodal/azure"
+    },
+       new DownloadCountStat
+    {
+
+       Link="Huggingface",
+        Url = "https://aka.ms/phi-4-multimodal/azure"
+    },
+      new DownloadCountStat
+    {
+
+     Description="playgrounds"
+    },
+};
+    private List<DownloadCountStat> DownloadStatistics1 = new()
+    {
+         new DownloadCountStat
+         {
+             Name="📱 Huggingface Spaces"
+         },
+        new DownloadCountStat
+        {
+            Link = "Thoughts Organizer",
+
+            Url = "https://aka.ms/phi-4-multimodal/azure"
+        },
+        new DownloadCountStat
+        {
+
+            Link = "Stories Come Alive",// إذا كان العدد رقمًا، لا تستخدم علامات اقتباس
+
+            Url = "https://aka.ms/phi-4-multimodal/azure"
+        },
+        new DownloadCountStat
+        {
+
+           Link="Phine Speech Translator",
+            Url = "https://aka.ms/phi-4-multimodal/azure"
+        },
+
+    };
+    List<List<DownloadCountStat>> downloadCountStatsall = new();
+
+    protected override void OnInitialized()
+    {
+        downloadCountStatsall.Add(DownloadStatistics);
+        downloadCountStatsall.Add(DownloadStatistics1);
+
+        StateHasChanged();
+    }
+    // private string ModelDescription = "Phi-4-multimodal-instruct is a lightweight open multimodal foundation model that leverages the language, vision, and speech research used for Phi-3.5 and 4.0 models. It processes text, image, and audio inputs, generating text outputs, and comes with a 128K token context length. The model incorporates supervised fine-tuning, direct preference optimization, and RLHF to enhance instruction adherence and safety.";
+    private List<DownloadCountStat> ModelStatsDo = new()
+    {
+        new DownloadCountStat
+        {
+              Name=" Multimodal Model",
+              Url="/model-summary",
+           Description="Phi-4-multimodal-instruct is a lightweight open multimodal foundation model that leverages the language, vision, and speech research used for Phi-3.5 and 4.0 models. It processes text, image, and audio inputs, generating text outputs, and comes with a 128K token context length. The model incorporates supervised fine-tuning, direct preference optimization, and RLHF to enhance instruction adherence and safety.",
+        }
+
+    };
+    private Dictionary<string, List<string>> SupportedLanguages = new()
+    {
+        { "Text", new List<string> { "Arabic", "English", "French","Arabic", "Chinese", "Czech", "Danish","Dutch" , "English", "Finnish", "French", "German", "Hebrew", "Hungarian", "Italian", "Japanese", "Korean", "Norwegian", "Polish", "Portuguese", "Russian", "Spanish", "Swedish", "Thai", "Turkish", "Ukrainian" } },
+        { "Vision", new List<string> { "English", } },
+        { "Audio", new List<string> { "English", "Chinese", "German", "English", "French","Arabic", "Chinese", "Czech", "Danish","Dutch" , } }
+    };
+    // Phi-4-multimodal-instruct is a lightweight open multimodal foundation model that leverages the language, vision, and speech research used for Phi-3.5 and 4.0 models.It processes text, image, and audio inputs, generating text outputs, and comes with a 128K token context length.The model incorporates supervised fine-tuning, direct preference optimization, and RLHF to enhance instruction adherence and safety.
+
+    private Dictionary<string, string> ImportantLinks = new()
+    {
+        { "📰 Phi-4-multimodal Microsoft Blog", "https://aka.ms/phi-4-multimodal/techreport" },
+        { "📖 Technical Report", "https://aka.ms/phi-4-multimodal/techreport" },
+        { "🏡 Phi Portal", "https://aka.ms/phi-4-multimodal/azure" },
+        { "👩‍🍳 Phi Cookbook", "https://aka.ms/phi-4-multimodal/techreport" },
+    };
+//     private List<DownloadCountStat> DownloadStatistics = new()
+// {
+//     new DownloadCountStat
+//     {
+//         Name = "Azure",
+     
+//         Url = "https://aka.ms/phi-4-multimodal/azure"
+//     },
+//     new DownloadCountStat
+//     {
+      
+//         Name = "GitHub",// إذا كان العدد رقمًا، لا تستخدم علامات اقتباس
+      
+//         Url = "https://aka.ms/phi-4-multimodal/azure"
+//     },
+//     new DownloadCountStat
+//     {
+ 
+//        Name="Nvidia",
+//         Url = "https://aka.ms/phi-4-multimodal/azure"
+//     },
+//        new DownloadCountStat
+//     {
+
+//        Name="Huggingface",
+//         Url = "https://aka.ms/phi-4-multimodal/azure"
+//     },
+//       new DownloadCountStat
+//     {
+
+//      Description="playgrounds"
+//     },
+// };
+    // private List<DownloadCountStat> DownloadStatistics = new()
+    // {
+     
+           
+        
+    //     new DownloadCountStat("Phi-4 Multimodal", "https://huggingface.co/microsoft/Phi-4-multimodal-instruct", 1000),
+    //     new DownloadCountStat("Phi-4 Mini", "https://huggingface.co/microsoft/Phi-4-mini-instruct", 750)
+    // };
+}
+
+@code {
+    // private List<DownloadCountStat> DownloadStatistics = new()
+    // {
+    //     new DownloadCountStat("Azure", "https://aka.ms/phi-4-multimodal/azure"),
+    //     new DownloadCountStat("GitHub", "https://github.com/marketplace/models/azureml/Phi-4-multimodal-instruct/playground"),
+    //     new DownloadCountStat("Nvidia ", "https://aka.ms/phi-4-multimodal/nvidia"),
+    //     new DownloadCountStat("Huggingface", "https://huggingface.co/spaces/microsoft/phi-4-multimodal")
+    // };
+
+    // private List<DownloadCountStat> HuggingfaceSpaces = new()
+    // {
+    //     new DownloadCountStat("Thoughts Organizer", "https:huggingface.co/spaces/microsoft/ThoughtsOrganizer"),
+    //     new DownloadCountStat("Stories Come Alive", "https:huggingface.co/spaces/microsoft/StoriesComeAlive"),
+    //     new DownloadCountStat("Phine Speech Translator", "https:huggingface.co/spaces/microsoft/PhineSpeechTranslator")
+    // };
+}

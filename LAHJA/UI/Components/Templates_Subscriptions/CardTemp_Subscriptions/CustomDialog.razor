@@ -1,0 +1,55 @@
+﻿@* 
+ @using MudBlazor
+
+<MudDialog>
+    <MudDialogTitle>عنوان النافذة</MudDialogTitle>
+
+    <MudDialogContent>
+        <p>@Message</p>
+    </MudDialogContent>
+    <MudDialogActions>
+        <MudButton OnClick="CloseDialog" Color="Color.Secondary">إغلاق</MudButton>
+    </MudDialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; } = default!;
+
+    [Parameter] public string Message { get; set; } = "رسالة افتراضية";
+
+    private void CloseDialog()
+    {
+        MudDialog.Close();
+    }
+}
+
+ *@
+ <MudDialog>
+@*     <MudDialogTitle>عنوان النافذة</MudDialogTitle>
+ *@
+    <DialogContent>
+        <MudText Typo="Typo.h6">@Message</MudText>
+        <MudText Typo="Typo.body1">هذا هو المحتوى داخل النافذة</MudText>
+    </DialogContent>
+
+    <DialogActions>
+        <MudButton OnClick="CloseDialog" Color="Color.Primary">موافق</MudButton>
+        <MudButton OnClick="Cancel" Color="Color.Secondary">إلغاء</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; } = default!;
+    
+    [Parameter] public string Message { get; set; } = "رسالة افتراضية";
+
+    private void CloseDialog()
+    {
+        MudDialog.Close(DialogResult.Ok(true)); // إغلاق النافذة مع إرجاع نتيجة
+    }
+
+    private void Cancel()
+    {
+        MudDialog.Cancel(); // إلغاء النافذة
+    }
+}

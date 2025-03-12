@@ -1,0 +1,248 @@
+﻿@using Domain.ShareData
+@using LAHJA.Helpers.Services
+@using LAHJA.UI.Components.Templates_Subscriptions.CardTemp_Subscriptions
+@using LAHJA.Data.UI.Components.Templates_Subscriptions
+@inject NavigationManager Navigation
+ @inject LanguageService languageService
+@inject IManageLanguageService _manageLanguageService
+
+@using MudBlazor
+
+@inject ISnackbar Snackbar
+
+<style>
+    .custom-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+/*         margin: 20px auto;
+ */    
+}
+
+    .custom {
+        width: 100% !important;
+        height: 100% !important;
+    }
+
+    .tooltip {
+        position: absolute;
+        background-color: black;
+        color: white;
+        padding: 5px;
+        border-radius: 5px;
+        top: 50px;
+        left: 20px;
+        white-space: nowrap;
+        z-index: 100;
+    }
+
+</style>
+
+
+<SubscriptionInfoTemplate />
+
+<SubscriptionDetailsTemplate />
+
+
+<Subscriptiondetails />
+
+<MetadataCard />
+
+<!-- استدعاء القالب الفرعي واستخدامه -->
+<ProductSubscriptionTemplate />
+
+
+<EventsTemplates />
+
+
+
+
+
+@* 
+<SubscriptionDetailsTemplate SubscriptionDetailss="SubscriptionDetailss"
+    OninvoicesClick="HandleinvoicesClick" />
+
+@code {
+    // بيانات ديناميكية
+    public List<SubscriptionDetails> SubscriptionDetailss { get; set; } = new List<SubscriptionDetails>
+    {
+        new SubscriptionDetails
+        {
+            Started="Started",
+            Invoice="Next invoice",
+            Cancellation ="Test mode auto-cancellation",
+            NextInvoice="$250.00 on Feb 27",
+            TestModeDate="Apr 27",
+           StartDate ="Jan 27"
+        },
+
+    };
+    private void HandleinvoicesClick()
+    {
+        Navigation.NavigateTo("/"); // غير "target-page" إلى الصفحة المطلوبة
+    }
+}
+
+<Subscriptiondetails TItem="SubscriptionItem" SubscriptionData="SubscriptionData" OnAdminsClick="HandleAdminsClick" />
+<!-- استدعاء المكون وتمرير البيانات له -->
+@code {
+    private List<SubscriptionItem> SubscriptionData { get; set; } = new();
+
+    // protected override void OnInitialized()
+    // {
+    //     SubscriptionData = new List<SubscriptionItem>
+    //     {
+    //         new SubscriptionItem { Label = "Customer", Value = "admin@example.com" },
+    //         new SubscriptionItem { Label = "Created", Value = "Jan 27, 5:23 AM" },
+    //         new SubscriptionItem { Label = "Current period", Value = "Jan 27 to Feb 27" },
+    //         new SubscriptionItem { Label = "ID", Value = "sub_1QlhzSB7xaGIYuCbChhHGlbH" },
+    //         new SubscriptionItem { Label = "Discounts", Value = "No coupon applied" },
+    //         new SubscriptionItem { Label = "Billing method", Value = "Charge specific payment method" },
+    //         new SubscriptionItem { Label = "Payment method", Value = "•••• 4242" },
+    //         new SubscriptionItem { Label = "Tax calculation", Value = "No tax rate applied" }
+    //     };
+    // }
+ 
+        private string CurrentLanguage = "er"; // اللغة الافتراضية هي العربية
+
+        // القواميس للترجمات
+        private Dictionary<string, string> TransEn = new Dictionary<string, string>()
+    {
+        { "Customer", "Customer" },
+        { "Created", "Created" },
+        { "Current period", "Current period" },
+        { "ID", "ID" },
+        { "Discounts", "Discounts" },
+        { "Billing method", "Billing method" },
+        { "Payment method", "Payment method" },
+        { "Tax calculation", "Tax calculation" }
+    };
+
+        private Dictionary<string, string> TransAr = new Dictionary<string, string>()
+    {
+        { "Customer", "العميل" },
+        { "Created", "تم الإنشاء" },
+        { "Current period", "الفترة الحالية" },
+        { "ID", "المعرف" },
+        { "Discounts", "الخصومات" },
+        { "Billing method", "طريقة الفوترة" },
+        { "Payment method", "طريقة الدفع" },
+        { "Tax calculation", "حساب الضريبة" }
+    };
+
+        private void LoadSubscriptionData()
+        {
+            // تحميل بيانات الاشتراك مع استخدام الترجمة لكل قيمة
+            SubscriptionData = new List<SubscriptionItem>
+        {
+            new SubscriptionItem { Label = GetTranslation("Customer"), Value = GetTranslatedValue("admin@example.com") },
+            new SubscriptionItem { Label = GetTranslation("Created"), Value = GetTranslatedValue("Jan 27, 5:23 AM") },
+            new SubscriptionItem { Label = GetTranslation("Current period"), Value = GetTranslatedValue("Jan 27 to Feb 27") },
+            new SubscriptionItem { Label = GetTranslation("ID"), Value = GetTranslatedValue("sub_1QlhzSB7xaGIYuCbChhHGlbH") },
+            new SubscriptionItem { Label = GetTranslation("Discounts"), Value = GetTranslatedValue("No coupon applied") },
+            new SubscriptionItem { Label = GetTranslation("Billing method"), Value = GetTranslatedValue("Charge specific payment method") },
+            new SubscriptionItem { Label = GetTranslation("Payment method"), Value = GetTranslatedValue("•••• 4242") },
+            new SubscriptionItem { Label = GetTranslation("Tax calculation"), Value = GetTranslatedValue("No tax rate applied") }
+        };
+        }
+
+        // دالة لترجمة القيم داخل الـ Value
+        private string GetTranslatedValue(string value)
+        {
+            return CurrentLanguage == "ar" ? TranslateValueToArabic(value) : value;
+        }
+
+        // دالة لترجمة القيم إلى العربية (حسب الحاجة)
+        private string TranslateValueToArabic(string value)
+        {
+            // مثال لتغيير النصوص التي قد تحتاج إلى ترجمة، يمكن تعديلها حسب حاجتك
+            if (value == "admin@example.com")
+                return "admin@example.com"; // لا حاجة لترجمة البريد الإلكتروني
+            if (value == "Jan 27, 5:23 AM")
+                return "27 يناير، 5:23 صباحًا"; // ترجمة التاريخ والوقت
+
+            // يمكن إضافة المزيد من القيم لترجمتها
+            return value; // إعادة القيمة كما هي إذا لم تكن هناك حاجة لترجمتها
+        }
+
+        // دالة للحصول على الترجمة بناءً على اللغة الحالية
+        private string GetTranslation(string key)
+        {
+            return CurrentLanguage == "ar"
+                ? TransAr.GetValueOrDefault(key, key)
+                : TransEn.GetValueOrDefault(key, key);
+        }
+
+        // لتغيير اللغة ديناميكياً
+        private void ChangeLanguage(string language)
+        {
+            CurrentLanguage = language;
+            LoadSubscriptionData(); // إعادة تحميل البيانات مع اللغة الجديدة
+            StateHasChanged(); // تحديث الواجهة بعد تغيير اللغة
+        }
+
+        protected override void OnInitialized()
+        {
+            LoadSubscriptionData(); // تحميل البيانات عند التهيئة
+        }
+    
+
+
+
+    private void HandleAdminsClick()
+    {
+        Navigation.NavigateTo("/"); // غير "target-page" إلى الصفحة المطلوبة
+    }
+    
+}
+<MetadataComponent />
+
+<!-- استدعاء القالب الفرعي واستخدامه -->
+<ProductSubscriptionTemplate SubscriptionItems="SubscriptionItems" />
+
+
+
+@code {
+    // بيانات ديناميكية
+    public List<PricingItem> SubscriptionItems { get; set; } = new List<PricingItem>
+    {
+        new PricingItem
+        {
+            ProductName = "Professional",
+            Price = "$250.00 USD / month",
+            SubscriptionId = "price_1QldGsB7xaGIYuCbCp59S5DF",
+            Quantity = 1,
+            TotalPrice = "$250.00 USD / month"
+        },
+        // new PricingItem
+        // {
+        //     ProductName = "Basic Plan",
+        //     Price = "$150.00 USD / month",
+        //     SubscriptionId = "price_2XtGsB7xaGIYuCbCp59S5FG",
+        //     Quantity = 1,
+        //     TotalPrice = "$150.00 USD / month"
+        // }
+        // يمكنك إضافة المزيد من العناصر هنا.
+    };
+}
+
+<EventsCard InboxItems="InboxItems" />
+@code {
+  
+    private List<IDAddressInboxItem> InboxItems = new()
+    {
+        new IDAddressInboxItem { Title = "A Checkout Session was completed ", Description = " 1/27/25, 5:23:57 AM" },
+        new IDAddressInboxItem { Title = "Customer cus_Rf23xXm2a6TGqt's subscription has changed ", Description = "1/27/25, 5:23:56 AM" },
+        new IDAddressInboxItem { Title = "admin@gmail.com's payment for an invoice for $250.00 succeeded ", Description = " 1/27/25, 5:23:56 AM" },
+        new IDAddressInboxItem { Title = " admin@gmail.com's invoice for $250.00 was paid", Description = " 1/27/25, 5:23:56 AM" },
+       new IDAddressInboxItem { Title = " admin@gmail.com's invoice has changed", Description = " 1/27/25, 5:23:56 AM" },
+       new IDAddressInboxItem { Title = " Customer cus_Rf23xXm2a6TGqt attempted to subscribe to price_1QldGsB7xaGIYuCbCp59S5DF", Description = " 1/27/25, 5:23:55 AM", HasIcon = true }, // ✅ تمت إضافة الأيقونة هنا
+  new IDAddressInboxItem { Title = "A draft invoice for $250.00 to admin@gmail.com was finalized", Description = " 1/27/25, 5:23:55 AM" },
+        new IDAddressInboxItem { Title = "A draft invoice was created", Description = " 1/27/25, 5:23:55 AM" },
+
+    };
+
+
+    } *@
+   
